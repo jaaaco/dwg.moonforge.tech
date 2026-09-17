@@ -22,6 +22,35 @@ const pub = (p) => join(root, 'public', 'cad', p)
 
 const patches = [
   {
+    // Paragraph tab stops: `\pi0,l0,tz;` (AutoCAD writes `tz` to clear them).
+    // "z" is neither r/c nor a number, and the loop consumed nothing for it, so
+    // it pushed zeros forever. Chrome ground through it in seconds; WebKit hung
+    // the MTEXT worker for good, and every text queued behind it stayed blank
+    // with the spinner up (reported on Safari, reproduced in WebKit).
+    name: 'mtext parser: tab stop list cannot loop forever',
+    files: ['@mlightcad/mtext-parser/dist/parser.js'],
+    from: /const value = parseFloatValue\(\);\s*\n\s*if \(!isNaN\(value\)\) \{\s*\n\s*tabStops\.push\(value\);\s*\n\s*\}\s*\n\s*else \{\s*\n\s*scanner\.consume\(1\);\s*\n\s*\}/,
+    to: `const __dwgRest = scanner.tail.length;
+                            const value = parseFloatValue();
+                            if (scanner.tail.length === __dwgRest) {
+                                scanner.consume(1); /* dwg.moonforge.tech: no number here, skip the character */
+                            }
+                            else if (!isNaN(value)) {
+                                tabStops.push(value);
+                            }`,
+    done: 'dwg.moonforge.tech: no number here'
+  },
+  {
+    name: 'mtext parser (worker bundle): tab stop list cannot loop forever',
+    files: ['@mlightcad/cad-simple-viewer/dist/mtext-renderer-worker.js'],
+    from: /\} else \{\s*\n\s*const (\w+) = (\w+)\(\);\s*\n\s*isNaN\(\1\) \? (\w+)\.consume\(1\) : (\w+)\.push\(\1\);\s*\n\s*\}/,
+    to: `} else {
+              const __dwgRest = $3.tail.length, $1 = $2();
+              $3.tail.length === __dwgRest ? $3.consume(1) : isNaN($1) || $4.push($1); /* dwg.moonforge.tech: tab stop cannot loop */
+            }`,
+    done: 'dwg.moonforge.tech: tab stop cannot loop'
+  },
+  {
     // Obliqued text (text styles at 15 degrees are common) got an extra advance
     // of tan(angle) * height after every glyph, about a quarter of the text
     // height per character. AutoCAD shears glyphs without moving the pen, so
