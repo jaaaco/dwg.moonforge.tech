@@ -69,9 +69,8 @@ Cloudflare Pages, project `dwg-moonforge-tech`, custom domain `dwg.moonforge.tec
 Run wrangler from a temporary directory: started inside a Vite project it rewrites the project's config.
 
 ```bash
-npm run build
-stage="$(mktemp -d)" && rsync -a --exclude '.*' dist/ "$stage/site/"
-cd "$stage" && npx wrangler@4 pages deploy site --project-name dwg-moonforge-tech --branch main
+./deploy.sh                      # production
+DEPLOY_BRANCH=test ./deploy.sh   # preview at test.dwg-moonforge-tech.pages.dev
 ```
 
 ## Licence

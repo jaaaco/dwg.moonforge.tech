@@ -5,7 +5,7 @@ explains the engine, the patches and why the site never calls a third-party host
 
 ## Rules that are easy to break
 
-- **No request may leave the origin.** No CDN fonts, no analytics scripts beyond Cloudflare's cookieless beacon,
+- **No request may leave the origin.** No CDN fonts, no analytics scripts (the privacy page says so),
   no engine defaults pointing at jsdelivr. The privacy promise on every page depends on it. After any change to
   the viewer, open a DWG in headless Chrome and check the request log.
 - **Never publish AutoCAD SHX, Microsoft or other non-free fonts or templates**, even though the engine's own
