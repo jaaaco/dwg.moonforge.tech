@@ -9,7 +9,7 @@ from pathlib import Path
 
 import ezdxf
 
-out = Path(__file__).resolve().parent.parent / "public" / "cad" / "templates" / "acadiso.dxf"
+out = Path(__file__).resolve().parent.parent / "templates" / "acadiso.dxf"
 out.parent.mkdir(parents=True, exist_ok=True)
 doc = ezdxf.new("R2018", setup=True, units=4)  # millimetres
 doc.header["$MEASUREMENT"] = 1  # metric

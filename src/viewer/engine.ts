@@ -11,12 +11,12 @@ import {
 import { AcDbDatabaseConverterManager, AcDbFileType, AcGeBox2d, AcGePoint2d } from '@mlightcad/data-model'
 import { AcDbLibreDwgConverter } from '@mlightcad/libredwg-converter'
 import type { DrawingLayer, Engine } from './types'
-
-// Everything the engine fetches at runtime lives under /cad on this site
-// (see scripts/prepare-cad.mjs); its defaults would call a CDN instead.
-const CAD_BASE = '/cad/'
-const DWG_PARSER = `${CAD_BASE}workers/${LIBREDWG_PARSER_WORKER_FILE}`
-const MTEXT_RENDER = `${CAD_BASE}workers/${MTEXT_RENDERER_WORKER_FILE}`
+// Everything the engine fetches at runtime is served from this site under a
+// content-hashed path (see scripts/prepare-cad.mjs); its defaults would call a
+// CDN instead.
+import { CAD_BASE, WORKER_BASE } from './cad-assets'
+const DWG_PARSER = `${WORKER_BASE}${LIBREDWG_PARSER_WORKER_FILE}`
+const MTEXT_RENDER = `${WORKER_BASE}${MTEXT_RENDERER_WORKER_FILE}`
 const CANVAS_BACKGROUND = 0x0c0c0e
 
 // Zoom-to-extents is at the mercy of one stray object: a block inserted at 0,0
