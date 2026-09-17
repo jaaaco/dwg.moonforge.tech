@@ -69,6 +69,81 @@ function drawingBox(manager: AcApDocManager): AcGeBox2d | null {
   return new AcGeBox2d(new AcGePoint2d(core.minX - margin, core.minY - margin), new AcGePoint2d(core.maxX + margin, core.maxY + margin))
 }
 
+// Navigation. The engine pans with the middle button and zooms on every wheel
+// event, which leaves a laptop without a way to pan. We want what a map gives
+// you: drag with the primary button, and two fingers on the trackpad.
+const THREE_MOUSE_PAN = 2
+// AcEdViewMode.PAN. The enum is not exported from @mlightcad/cad-simple-viewer,
+// but the view's `mode` setter takes it: left button pans, selection is off.
+const VIEW_MODE_PAN = 1
+
+/** Camera controls of the layout currently on screen, if reachable. */
+function activeControls(manager: AcApDocManager) {
+  // No public accessor for these; guarded so a package update degrades to
+  // "the extra gestures stop working" instead of a broken viewer.
+  const layoutView = (manager.curView as any)?._layoutViewManager?.activeLayoutView
+  const controls = layoutView?._cameraControls
+  return controls?.object?.isOrthographicCamera ? controls : undefined
+}
+
+/** Drag with the primary button pans. Called after every open: the layout view,
+ *  and with it the button map, is rebuilt when a document opens. */
+function applyPanMode(manager: AcApDocManager): void {
+  const view = manager.curView
+  if (!view) return
+  view.mode = VIEW_MODE_PAN
+  // PAN mode replaces the button map with LEFT only; keep the middle button too,
+  // since that is what people coming from AutoCAD reach for.
+  const controls = activeControls(manager)
+  if (controls) controls.mouseButtons = { LEFT: THREE_MOUSE_PAN, MIDDLE: THREE_MOUSE_PAN }
+}
+
+/** Two fingers on a trackpad pan; pinch and a mouse wheel keep zooming.
+ *
+ * There is no API that says which device sent a wheel event, so we look at the
+ * numbers: a trackpad swipe drifts sideways and sends fractional pixel deltas,
+ * a wheel notch is a round number with no horizontal component. A wheel that
+ * happens to look like a trackpad still zooms, which is the safer mistake;
+ * once a real trackpad gesture is recognised, its momentum tail (integer,
+ * vertical-only events) keeps panning for a moment.
+ */
+function attachTrackpadPan(container: HTMLElement, manager: AcApDocManager): void {
+  const GESTURE_TAIL_MS = 400
+  let lastTrackpadAt = 0
+
+  container.addEventListener(
+    'wheel',
+    (event: WheelEvent) => {
+      // Pinch-to-zoom arrives as a wheel event with ctrlKey set; leave that to
+      // the engine's zoom, along with anything measured in lines or pages.
+      if (event.ctrlKey || event.metaKey || event.deltaMode !== 0) return
+      const sideways = event.deltaX !== 0
+      const fractional = !Number.isInteger(event.deltaY) || !Number.isInteger(event.deltaX)
+      const now = event.timeStamp
+      if (sideways || fractional) lastTrackpadAt = now
+      else if (Math.abs(event.deltaY) >= 40 || now - lastTrackpadAt > GESTURE_TAIL_MS) return
+
+      const controls = activeControls(manager)
+      const camera = controls?.object
+      if (!camera) return
+      const height = container.clientHeight || 1
+      const worldPerPixel = (camera.top - camera.bottom) / camera.zoom / height
+      // Same direction as scrolling a page: the view follows the gesture.
+      const dx = event.deltaX * worldPerPixel
+      const dy = -event.deltaY * worldPerPixel
+      camera.position.x += dx
+      camera.position.y += dy
+      controls.target.x += dx
+      controls.target.y += dy
+      controls.update()
+      controls.dispatchEvent({ type: 'change' })
+      event.preventDefault()
+      event.stopPropagation()
+    },
+    { capture: true, passive: false }
+  )
+}
+
 export async function createEngine(container: HTMLElement): Promise<Engine> {
   AcDbDatabaseConverterManager.instance.register(
     AcDbFileType.DWG,
@@ -83,6 +158,7 @@ export async function createEngine(container: HTMLElement): Promise<Engine> {
   })
   if (!manager) throw new Error('CAD engine failed to start')
   manager.curView.backgroundColor = CANVAS_BACKGROUND
+  attachTrackpadPan(container, manager)
   if (import.meta.env.DEV) {
     // Handles for the local end-to-end checks (zooming to a known region).
     Object.assign(window, { __cad: manager, __cadModel: await import('@mlightcad/data-model') })
@@ -111,6 +187,7 @@ export async function createEngine(container: HTMLElement): Promise<Engine> {
       if (!ok) throw new Error(`openDocument returned false for ${fileName}`)
       open = true
       manager.curView.backgroundColor = CANVAS_BACKGROUND
+      applyPanMode(manager)
 
       onStage('rendering')
       const view = manager.curView
