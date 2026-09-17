@@ -1,0 +1,74 @@
+---
+import Base from '../layouts/Base.astro'
+import Viewer from '../components/Viewer.astro'
+import { path, REPO_URL } from '../lib/i18n'
+
+const locale = 'en'
+const title = 'Free DWG Viewer Online: open DWG files without AutoCAD'
+const description = 'Open and view DWG and DXF drawings in your browser. Free, open source, no upload, no account. Works on Mac, Windows, Linux and phones.'
+const faq = [
+  ['Is the file uploaded anywhere?', 'No. The drawing is read by a WebAssembly build of LibreDWG running in your browser tab. Nothing is sent to a server, and the page keeps working with the network switched off after it has loaded.'],
+  ['Do I need an account or AutoCAD?', 'No account, no installation, no trial. Open the page, choose a file.'],
+  ['Does it work on a Mac, Linux or a phone?', 'Yes. Any current browser with WebGL does the job: Safari, Chrome, Firefox or Edge, on desktop or mobile.'],
+  ['Can I edit the drawing or save it as PDF?', 'Not yet. Today it is a viewer: zoom, pan and switch layers on and off. Export to PDF and DXF is next on the list.'],
+  ['Why is it free?', 'Because looking at a drawing someone sent you should not depend on having a Windows PC, an account or a server you have to trust with the file. The code is GPL-licensed and public, so it stays free.']
+]
+const jsonLd = [
+  {
+    '@type': 'WebApplication',
+    name: 'Free DWG Viewer',
+    url: 'https://dwg.moonforge.tech/',
+    applicationCategory: 'DesignApplication',
+    operatingSystem: 'Any (web browser)',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    isAccessibleForFree: true,
+    license: 'https://www.gnu.org/licenses/gpl-3.0.html',
+    publisher: { '@id': 'https://moonforge.tech/#org' }
+  }
+]
+---
+<Base locale={locale} route="home" title={title} description={description} jsonLd={jsonLd}>
+  <div class="wrap hero">
+    <p class="kicker">Free · open source · nothing uploaded</p>
+    <h1>Open DWG files in your browser.</h1>
+    <p class="lede">A free DWG and DXF viewer that runs entirely on your device. No account, no installation, no upload, and it works on a Mac as well as it does on Windows or a phone.</p>
+  </div>
+  <div class="wrap">
+    <Viewer locale={locale} />
+  </div>
+
+  <div class="wrap section">
+    <div class="grid-3">
+      <div class="card">
+        <h3>Your file stays with you</h3>
+        <p>The drawing is decoded inside this tab by WebAssembly. No upload, no server copy, no cookies.</p>
+      </div>
+      <div class="card">
+        <h3>Any computer, any phone</h3>
+        <p>Mac, Linux, Windows, iPhone, Android. If the browser is current, it opens.</p>
+      </div>
+      <div class="card">
+        <h3>Open source, for good</h3>
+        <p>GPL-3.0 on <a href={REPO_URL}>GitHub</a>. Anyone can check what it does, host their own copy, or improve it.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap section prose">
+    <h2>Why a free DWG viewer?</h2>
+    <p>DWG is how buildings, machines and installations get shared. It is a proprietary, undocumented format, and the official free ways to open it are a Windows-only program or an online viewer that needs an account and an upload. We think looking at a drawing should be as easy as opening a PDF. <a href={path('why', locale)}>Read why we built it</a>.</p>
+
+    <h2>How to open a DWG file</h2>
+    <ol>
+      <li>Click <strong>Open DWG or DXF</strong> above, or drop the file anywhere on this page.</li>
+      <li>Scroll to zoom, drag to pan. Double-check a detail by turning layers on and off.</li>
+      <li>That is it. Close the tab and nothing remains.</li>
+    </ol>
+    <p>More options, including desktop programs, are in the guide <a href={path('guide', locale)}>how to open DWG without AutoCAD</a>. On a Mac? See <a href={path('mac', locale)}>DWG viewer for Mac</a>.</p>
+
+    <h2>Questions</h2>
+    <dl class="faq">
+      {faq.map(([q, a]) => (<><dt>{q}</dt><dd>{a}</dd></>))}
+    </dl>
+  </div>
+</Base>

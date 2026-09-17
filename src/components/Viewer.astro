@@ -1,0 +1,118 @@
+---
+import { ui, type Locale } from '../lib/i18n'
+
+interface Props { locale: Locale }
+const { locale } = Astro.props
+const t = ui[locale]
+---
+<section id="viewer" class="viewer" data-state="empty" data-strings={JSON.stringify(t)}>
+  <div class="viewer-bar">
+    <label class="btn btn-primary viewer-open">
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h4l1.5 1.5H14V13H2z" fill="none" stroke="currentColor" stroke-width="1.5" /></svg>
+      <span>{t.vOpen}</span>
+      <input type="file" accept=".dwg,.dxf" hidden data-role="file" />
+    </label>
+    <span class="viewer-status" data-role="status" role="status" aria-live="polite"></span>
+    <span class="viewer-badge" title={t.vDropHint}>● {t.vPrivacyBadge}</span>
+    <div class="viewer-actions" data-role="actions" hidden>
+      <button class="btn btn-ghost" type="button" data-role="fit">{t.vFit}</button>
+      <button class="btn btn-ghost" type="button" data-role="layers-toggle" aria-expanded="false">{t.vLayers}</button>
+      <button class="btn btn-ghost" type="button" data-role="close" aria-label={t.vClose}>✕</button>
+    </div>
+  </div>
+  <div class="viewer-body">
+    <div class="viewer-canvas" data-role="canvas"></div>
+    <div class="viewer-empty" data-role="empty">
+      <p class="viewer-drop">{t.vDrop}</p>
+      <p class="muted">{t.vDropHint}</p>
+      <button class="btn btn-ghost" type="button" data-role="sample">{t.vSample}</button>
+    </div>
+    <aside class="viewer-layers" data-role="layers" hidden>
+      <div class="viewer-layers-head">
+        <strong>{t.vLayers}</strong>
+        <button type="button" class="link" data-role="layers-all">{t.vAllOn}</button>
+      </div>
+      <ul data-role="layer-list"></ul>
+    </aside>
+    <div class="viewer-dropzone" aria-hidden="true"></div>
+  </div>
+</section>
+
+<script>
+  import { mountViewer } from '../viewer/app'
+  const root = document.getElementById('viewer')
+  if (root) mountViewer(root)
+</script>
+
+<style>
+  .viewer {
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .viewer-bar {
+    display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;
+    padding: 0.6rem; border-bottom: 1px solid var(--line);
+  }
+  .viewer-open { cursor: pointer; }
+  .viewer-status { font-size: 0.9rem; color: var(--text-muted); min-width: 0; overflow-wrap: anywhere; }
+  .viewer-badge { font-size: 0.8rem; color: #2f9e5a; margin-left: auto; white-space: nowrap; }
+  .viewer-actions { display: flex; gap: 0.4rem; }
+  .viewer-actions .btn { padding: 0.55rem 0.8rem; }
+  .viewer[data-state='open'] .viewer-badge { margin-left: 0; }
+  .viewer[data-state='open'] .viewer-actions { margin-left: auto; }
+
+  .viewer-body {
+    /* The drawing area stays dark in both themes, like model space in any CAD
+       program: layer colours are chosen for a dark ground. */
+    --vb-bg: #0c0c0e; --vb-line: #1d1d22; --vb-text: #e2e2e6; --vb-muted: #9a9aa3;
+    position: relative; height: min(72vh, 720px); min-height: 360px;
+    background: var(--vb-bg); color: var(--vb-text);
+  }
+  .viewer-canvas { position: absolute; inset: 0; }
+  .viewer-canvas :global(canvas) { display: block; touch-action: none; }
+  /* The engine ships editing chrome (command line, undo/erase toolbar, mobile
+     command panel). This is a viewer, so it stays hidden. */
+  .viewer-canvas :global(.ml-cli-container),
+  .viewer-canvas :global(.ml-mobile-cmd),
+  .viewer-canvas :global(.ml-desktop-session-accessory),
+  .viewer-canvas :global(.ml-ui-shortcut-toolbar-shell) { display: none !important; }
+
+  .viewer-empty {
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center; gap: 0.3rem; padding: 1rem;
+    background-image:
+      linear-gradient(var(--vb-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--vb-line) 1px, transparent 1px);
+    background-size: 32px 32px;
+    background-position: center;
+  }
+  .viewer-empty > * { background: var(--vb-bg); padding: 0.1rem 0.5rem; margin: 0; }
+  .viewer-empty .muted { color: var(--vb-muted); }
+  .viewer-empty .btn-ghost { color: var(--vb-text); border-color: #3a3a42; }
+  .viewer-empty .btn { margin-top: 0.7rem; }
+  .viewer-drop { font: 500 1.4rem var(--font-display); }
+  .viewer[data-state='open'] .viewer-empty,
+  .viewer[data-state='loading'] .viewer-empty { display: none; }
+
+  .viewer-layers {
+    position: absolute; top: 0; right: 0; bottom: 0; width: min(18rem, 85%);
+    background: var(--bg-raised); border-left: 1px solid var(--line);
+    overflow: auto; padding: 0.6rem 0.8rem; font-size: 0.88rem;
+  }
+  .viewer-layers-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; }
+  .viewer-layers ul { list-style: none; margin: 0; padding: 0; }
+  .viewer-layers :global(li) { display: flex; align-items: center; gap: 0.45rem; padding: 0.2rem 0; }
+  .viewer-layers :global(li label) { display: flex; align-items: center; gap: 0.45rem; cursor: pointer; overflow-wrap: anywhere; }
+  .viewer-layers :global(.swatch) { width: 10px; height: 10px; border: 1px solid var(--line); flex: none; }
+  .link { background: none; border: 0; color: var(--accent); cursor: pointer; font: inherit; padding: 0; }
+
+  .viewer-dropzone { position: absolute; inset: 8px; border: 3px dashed var(--accent); border-radius: var(--radius); display: none; pointer-events: none; }
+  .viewer[data-drag='1'] .viewer-dropzone { display: block; }
+
+  @media (max-width: 640px) {
+    .viewer-body { height: 64vh; }
+    .viewer-badge { display: none; }
+  }
+</style>

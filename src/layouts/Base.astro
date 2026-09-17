@@ -1,0 +1,91 @@
+---
+import '../styles/global.css'
+import Mark from '../components/Mark.astro'
+import { routes, path, ui, REPO_URL, MOONFORGE_URL, type Locale, type RouteKey } from '../lib/i18n'
+
+interface Props {
+  locale: Locale
+  route: RouteKey
+  title: string
+  description: string
+  jsonLd?: Record<string, unknown>[]
+}
+
+const { locale, route, title, description, jsonLd = [] } = Astro.props
+const t = ui[locale]
+const site = Astro.site!.origin
+const selfPath = path(route, locale)
+const canonical = site + (selfPath === '/' ? '/' : selfPath)
+const alternates = (Object.entries(routes[route]) as [Locale, string | null][])
+  .filter(([, p]) => p !== null)
+  .map(([l, p]) => ({ lang: l, href: site + p }))
+const otherLocale: Locale = locale === 'en' ? 'pl' : 'en'
+const langHref = routes[route][otherLocale] ?? path('home', otherLocale)
+const graph = [
+  {
+    '@type': 'Organization',
+    '@id': MOONFORGE_URL + '/#org',
+    name: 'Moonforge Labs',
+    url: MOONFORGE_URL
+  },
+  ...jsonLd
+]
+---
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {alternates.length > 1 && alternates.map((a) => <link rel="alternate" hreflang={a.lang} href={a.href} />)}
+    {alternates.length > 1 && <link rel="alternate" hreflang="x-default" href={alternates.find((a) => a.lang === 'en')!.href} />}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#080809" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={t.siteName} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={site + '/og.png'} />
+    <meta property="og:locale" content={locale === 'pl' ? 'pl_PL' : 'en_US'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@graph': graph })} />
+  </head>
+  <body>
+    <a class="skip" href="#viewer">{t.skip}</a>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href={path('home', locale)}>
+          <Mark />
+          <span>dwg<small>.moonforge</small></span>
+        </a>
+        <nav class="nav" aria-label="Main">
+          <a href={path('home', locale)} aria-current={route === 'home' ? 'page' : undefined}>{t.navViewer}</a>
+          <a href={path('guide', locale)} aria-current={route === 'guide' ? 'page' : undefined}>{t.navGuide}</a>
+          <a href={path('why', locale)} aria-current={route === 'why' ? 'page' : undefined}>{t.navWhy}</a>
+          <a href={REPO_URL} rel="noopener">{t.navSource}</a>
+          <a class="lang" href={langHref} hreflang={otherLocale} lang={otherLocale}>{t.langSwitch}</a>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <div>
+          <div>{t.footerNoTrack}</div>
+          <div>{t.footerLicense} · {t.footerMadeBy} <a href={MOONFORGE_URL}>Moonforge Labs</a></div>
+          <div class="fineprint">{t.footerTrademark}</div>
+        </div>
+        <nav aria-label="Footer">
+          <a href={path('privacy', locale)}>{t.footerPrivacy}</a>
+          <a href={path('licenses', locale)}>{t.footerLicenses}</a>
+          <a href={REPO_URL} rel="noopener">GitHub</a>
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>

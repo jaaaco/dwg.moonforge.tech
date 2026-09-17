@@ -1,0 +1,71 @@
+---
+import Base from '../layouts/Base.astro'
+import { path, REPO_URL } from '../lib/i18n'
+
+const checked = '2026-09-17'
+const sources = [
+  ['Autodesk: Buy AutoCAD', 'https://www.autodesk.com/products/autocad/buy'],
+  ['Autodesk: Buy AutoCAD LT', 'https://www.autodesk.com/products/autocad-lt/buy'],
+  ['Autodesk support: Can I buy a stand-alone (perpetual) license?', 'https://www.autodesk.com/support/technical/article/caas/sfdcarticles/sfdcarticles/Can-I-buy-a-stand-alone-perpetual-license.html'],
+  ['Autodesk: DWG TrueView overview', 'https://www.autodesk.com/products/dwg-trueview/overview'],
+  ['Autodesk support: DWG TrueView will not install on the Mac operating system', 'https://www.autodesk.com/support/technical/article/caas/sfdcarticles/sfdcarticles/DWG-TrueView-will-not-install-on-the-Mac-operating-system-to-open-DWG-files.html'],
+  ['Autodesk support: System Requirements for Autodesk DWG TrueView 2027', 'https://www.autodesk.com/support/technical/article/caas/sfdcarticles/sfdcarticles/System-Requirements-for-Autodesk-DWG-TrueView-2027.html'],
+  ['Autodesk Viewer help: Getting started', 'https://help.autodesk.com/cloudhelp/ENU/ADSKVIEWER-Help/files/ADSKVIEWER_Help_GettingStarted_html.html'],
+  ['Autodesk support: Is it possible to extend the 30-day period of your design view uploaded to Autodesk Viewer?', 'https://www.autodesk.com/support/technical/article/caas/sfdcarticles/sfdcarticles/Are-files-uploaded-to-the-Autodesk-Viewer-deleted-after-30-days-or-can-this-period-be-extended.html'],
+  ['Autodesk support: How does Autodesk Viewer store data?', 'https://www.autodesk.com/support/technical/article/caas/sfdcarticles/sfdcarticles/Where-does-Autodesk-Viewer-keep-the-data.html'],
+  ['Open Design Alliance: Open Design Specification for .dwg files', 'https://www.opendesign.com/files/guestdownloads/OpenDesign_Specification_for_.dwg_files.pdf'],
+  ['GNU LibreDWG', 'https://www.gnu.org/software/libredwg/']
+]
+---
+<Base locale="en" route="why" title="Why a free, open-source DWG viewer" description="DWG is proprietary and undocumented, and the official free ways to open it need Windows or an account plus an upload. Here is why we built a free viewer that runs in your browser.">
+  <article class="wrap hero prose">
+    <p class="kicker">Why this exists</p>
+    <h1>Opening a drawing should not come with conditions.</h1>
+    <p class="lede">DWG is how the built world gets passed around: house plans, roof details, switchboards, machine parts. Architects send it, installers receive it, clients get it in an email. We think anyone who receives one should be able to look at it, on whatever device they have, without asking anyone's permission.</p>
+
+    <h2>What it takes today</h2>
+    <p>These are the official options, as published by Autodesk and checked on {checked}.</p>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Option</th><th>Cost</th><th>Conditions</th></tr></thead>
+        <tbody>
+          <tr><td>DWG TrueView</td><td>Free</td><td>Windows only. Autodesk states it will not install on macOS. Version 2027 needs 64-bit Windows 11, 8 GB RAM and 4 GB of disk.</td></tr>
+          <tr><td>Autodesk Viewer (online)</td><td>Free</td><td>Needs an Autodesk account and an upload of your file to Autodesk's servers in the US, where it is kept for 30 days by default.</td></tr>
+          <tr><td>AutoCAD LT</td><td>US$540 a year</td><td>Subscription only. Autodesk stopped selling new perpetual licences in 2016.</td></tr>
+          <tr><td>AutoCAD</td><td>US$2,095 a year</td><td>Subscription only.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>None of this is a secret and none of it is illegal. It does mean that on a Mac or a Linux laptop, Autodesk's own advice is its online viewer: an account first, then the plan of your home or your client's building uploaded to a server abroad.</p>
+
+    <h2>A format you cannot read the manual for</h2>
+    <p>Autodesk has not published a specification of DWG. The Open Design Alliance, an industry consortium that builds DWG libraries for other CAD vendors, calls it "undocumented and proprietary" in its own published specification of the format. Software outside Autodesk reads DWG through independent implementations like theirs and GNU LibreDWG.</p>
+    <p>For comparison, PDF is an ISO standard anyone can implement. That is why a PDF opens everywhere, and it is the standard we hold drawings to.</p>
+
+    <h2>What we think</h2>
+    <p>This part is opinion, and we are saying so. Drawings outlive the software they were made with. A roof detail from 2024 will still matter when that roof leaks in 2040. Being able to read it should not depend on a vendor's pricing, platform choices or account system. AutoCAD is a capable product and plenty of people are right to pay for it. Looking at a drawing is a different job, and it should be free and open.</p>
+
+    <h2>What we built instead</h2>
+    <ul>
+      <li><strong>Free, with no catch.</strong> No account, no trial, no watermark, no "upgrade to view layers".</li>
+      <li><strong>Private by construction.</strong> The DWG is decoded by WebAssembly inside your browser tab. There is no server that receives files, so there is nothing to leak or retain.</li>
+      <li><strong>Open source under GPL-3.0.</strong> The <a href={REPO_URL}>source code</a> is public. Anyone can audit it, host their own copy, or improve it, and the licence keeps it that way.</li>
+      <li><strong>Built on free software.</strong> GNU LibreDWG reads the file, the mlightcad viewer draws it, and osifont, an ISO 3098 lettering font, sets the text. See <a href={path('licenses', 'en')}>licenses</a>.</li>
+    </ul>
+
+    <h2>Honest limits</h2>
+    <p>GNU LibreDWG describes itself as beta software, and some advanced objects in recent DWG versions do not read yet. Text uses an open font instead of AutoCAD's own fonts, so it can look slightly different. Viewing is what works today. Export to PDF and DXF comes next. If a file does not open, tell us on <a href={REPO_URL + '/issues'}>GitHub</a>, as long as you are allowed to share it.</p>
+
+    <h2>Sources</h2>
+    <p class="muted">Checked on {checked}. Prices are list prices in the US store and change over time. Polish prices are on the <a href={path('why', 'pl')}>Polish version of this page</a>.</p>
+    <ol class="sources">
+      {sources.map(([label, href]) => <li><a href={href} rel="noopener nofollow">{label}</a></li>)}
+    </ol>
+    <p class="muted">This project is not affiliated with or endorsed by Autodesk. AutoCAD and DWG are trademarks of Autodesk, Inc., used here only to describe the files the viewer opens.</p>
+  </article>
+</Base>
+
+<style>
+  .sources { font-size: 0.92rem; }
+  .sources a { overflow-wrap: anywhere; }
+</style>

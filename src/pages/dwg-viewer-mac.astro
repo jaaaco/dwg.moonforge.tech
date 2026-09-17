@@ -1,0 +1,61 @@
+---
+import Base from '../layouts/Base.astro'
+import { path } from '../lib/i18n'
+
+const title = 'DWG viewer for Mac: open DWG files on macOS for free'
+const description = "DWG TrueView does not install on macOS. Open DWG files on a Mac for free in Safari or Chrome, with no upload and no account, or compare the other Mac options."
+---
+<Base locale="en" route="mac" title={title} description={description}>
+  <article class="wrap hero prose">
+    <p class="kicker">macOS</p>
+    <h1>A DWG viewer for Mac</h1>
+    <p class="lede">Autodesk's free desktop viewer, DWG TrueView, is Windows-only and Autodesk says plainly that it will not install on macOS. Here is how to open a DWG on a Mac anyway.</p>
+
+    <h2>Open it in Safari or Chrome</h2>
+    <ol>
+      <li>Go to <a href={path('home', 'en')}>dwg.moonforge.tech</a>.</li>
+      <li>Drag the .dwg from Finder onto the page, or click <strong>Open DWG or DXF</strong>.</li>
+      <li>Zoom with the trackpad, drag to pan, switch layers in the side panel.</li>
+    </ol>
+    <p>The file is decoded inside the browser by WebAssembly and never uploaded, so it is fine for plans you should not share. It works on Apple silicon and Intel Macs, in any current browser, with nothing to install.</p>
+
+    <h2>Other options on a Mac</h2>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Option</th><th>Account</th><th>Upload</th><th>Install</th></tr></thead>
+        <tbody>
+          <tr><td><a href={path('home', 'en')}>dwg.moonforge.tech</a></td><td>No</td><td>No</td><td>No</td></tr>
+          <tr><td>Autodesk Viewer (online, suggested by Autodesk for Mac)</td><td>Yes</td><td>Yes, kept 30 days by default</td><td>No</td></tr>
+          <tr><td>ODA Viewer (desktop app with a macOS download)</td><td>No</td><td>No</td><td>Yes</td></tr>
+          <tr><td>LibreCAD (open-source 2D CAD, DWG import is basic)</td><td>No</td><td>No</td><td>Yes</td></tr>
+          <tr><td>DWG TrueView</td><td colspan="3">Does not install on macOS</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>A longer comparison, including what each option is good at, is in <a href={path('guide', 'en')}>how to open a DWG file without AutoCAD</a>.</p>
+
+    <h2>Questions</h2>
+    <dl class="faq">
+      <dt>Can Preview or Quick Look open DWG?</dt>
+      <dd>Not without extra software. Neither of them shows DWG drawings on its own.</dd>
+      <dt>Is it safe to open a client's drawing here?</dt>
+      <dd>Yes. The drawing never leaves your Mac: there is no server that receives files. You can confirm it in Safari's Web Inspector, Network tab, while opening a file.</dd>
+      <dt>Can I print or export to PDF?</dt>
+      <dd>Not yet. Export to PDF and DXF is the next feature on the list.</dd>
+    </dl>
+
+    <h2>Sources</h2>
+    <ul class="sources">
+      <li><a href="https://www.autodesk.com/support/technical/article/caas/sfdcarticles/sfdcarticles/DWG-TrueView-will-not-install-on-the-Mac-operating-system-to-open-DWG-files.html" rel="noopener nofollow">Autodesk support: DWG TrueView will not install on the Mac operating system</a></li>
+      <li><a href="https://www.autodesk.com/support/technical/article/caas/sfdcarticles/sfdcarticles/Are-files-uploaded-to-the-Autodesk-Viewer-deleted-after-30-days-or-can-this-period-be-extended.html" rel="noopener nofollow">Autodesk support: the 30-day period in Autodesk Viewer</a></li>
+      <li><a href="https://www.opendesign.com/guestfiles/oda_viewer" rel="noopener nofollow">Open Design Alliance: ODA Viewer</a></li>
+      <li><a href="https://github.com/LibreCAD/libdxfrw" rel="noopener nofollow">libdxfrw, the DXF/DWG library of LibreCAD</a></li>
+    </ul>
+    <p class="muted">Checked on 2026-09-17.</p>
+  </article>
+</Base>
+
+<style>
+  .sources { font-size: 0.92rem; }
+  .sources a { overflow-wrap: anywhere; }
+</style>

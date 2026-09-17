@@ -1,0 +1,107 @@
+---
+import Base from '../layouts/Base.astro'
+import { path } from '../lib/i18n'
+
+const title = 'How to open a DWG file without AutoCAD (free, 5 ways)'
+const description = 'Five free ways to open a DWG file without AutoCAD: in the browser with no upload, DWG TrueView on Windows, Autodesk Viewer, ODA Viewer and LibreCAD. What each needs and where each falls short.'
+const jsonLd = [
+  {
+    '@type': 'HowTo',
+    name: 'How to open a DWG file without AutoCAD',
+    step: [
+      { '@type': 'HowToStep', name: 'Open the free viewer', text: 'Go to dwg.moonforge.tech in any current browser.' },
+      { '@type': 'HowToStep', name: 'Choose the file', text: 'Click Open DWG or DXF, or drop the file on the page. It is read locally and never uploaded.' },
+      { '@type': 'HowToStep', name: 'Look around', text: 'Scroll to zoom, drag to pan, and switch layers on or off.' }
+    ]
+  }
+]
+---
+<Base locale="en" route="guide" title={title} description={description} jsonLd={jsonLd}>
+  <article class="wrap hero prose">
+    <p class="kicker">Guide</p>
+    <h1>How to open a DWG file without AutoCAD</h1>
+    <p class="lede">Someone sent you a .dwg and you do not have AutoCAD. Here are five free ways to open it, what each one needs, and where each one falls short.</p>
+
+    <h2>Short answer</h2>
+    <p>If you just need to look at the drawing, open it in <a href={path('home', 'en')}>this free browser viewer</a>. It works on Windows, Mac, Linux and phones, needs no account, and the file never leaves your device.</p>
+
+    <h2>1. In the browser, with no upload</h2>
+    <p><a href={path('home', 'en')}>dwg.moonforge.tech</a> reads the DWG with GNU LibreDWG compiled to WebAssembly, directly in your browser tab.</p>
+    <ul>
+      <li><strong>Needs:</strong> a current browser (Chrome, Safari, Firefox, Edge), on any system.</li>
+      <li><strong>Good at:</strong> quick viewing, layers on and off, privacy (no upload, no account), open source.</li>
+      <li><strong>Falls short:</strong> viewing only for now, no printing or measuring yet. Text uses an open font, so it can look a little different from AutoCAD. Some complex objects from recent DWG versions may not show.</li>
+    </ul>
+
+    <h2>2. DWG TrueView (Windows)</h2>
+    <p>Autodesk's own free desktop viewer and converter.</p>
+    <ul>
+      <li><strong>Needs:</strong> Windows. The 2027 version requires 64-bit Windows 11, 8 GB RAM and 4 GB of disk space. It does not install on macOS.</li>
+      <li><strong>Good at:</strong> the most faithful rendering, since it is Autodesk's code, plus converting between DWG versions.</li>
+      <li><strong>Falls short:</strong> Windows only, a large download and installation.</li>
+    </ul>
+
+    <h2>3. Autodesk Viewer (online)</h2>
+    <p>Autodesk's browser-based viewer.</p>
+    <ul>
+      <li><strong>Needs:</strong> an Autodesk account.</li>
+      <li><strong>Good at:</strong> faithful rendering on any system, sharing a view with others.</li>
+      <li><strong>Falls short:</strong> the file is uploaded to Autodesk's servers in the US and kept for 30 days by default. Not an option for drawings you are not allowed to hand to a third party.</li>
+    </ul>
+
+    <h2>4. ODA Viewer (desktop)</h2>
+    <p>A free desktop viewer from the Open Design Alliance, the consortium that develops DWG libraries for CAD vendors.</p>
+    <ul>
+      <li><strong>Needs:</strong> installing an app. Downloads are offered for Windows, macOS and Linux.</li>
+      <li><strong>Good at:</strong> works offline on all three desktop systems, handles many formats.</li>
+      <li><strong>Falls short:</strong> ODA presents it as a tool for rendering and testing its technology, and the interface shows it: it is aimed at developers more than at someone who just wants to look at a plan.</li>
+    </ul>
+
+    <h2>5. LibreCAD (desktop, open source)</h2>
+    <p>A free, open-source 2D CAD program for Windows, macOS and Linux that works natively with DXF.</p>
+    <ul>
+      <li><strong>Needs:</strong> installing an app.</li>
+      <li><strong>Good at:</strong> editing DXF drawings with a real CAD program at no cost.</li>
+      <li><strong>Falls short:</strong> DWG is import only, and its DWG library calls that support rudimentary. Newer or complex files often fail.</li>
+    </ul>
+
+    <h2>What about my phone?</h2>
+    <p>Open <a href={path('home', 'en')}>dwg.moonforge.tech</a> in Safari or Chrome on the phone and pick the file from Files or your downloads. Pinch to zoom, drag to pan. Big drawings take longer on a phone than on a laptop, but nothing is uploaded either way.</p>
+
+    <h2>What if nothing opens it?</h2>
+    <ul>
+      <li>Ask the sender to save the drawing as <strong>DXF</strong> or an older DWG version (for example 2013 or 2018). Almost every CAD program can do that in the Save As dialog.</li>
+      <li>If you only need to print or annotate, ask for a <strong>PDF</strong> export.</li>
+      <li>If the file might be damaged, it will usually fail everywhere. That is worth telling the sender.</li>
+    </ul>
+
+    <h2>Which one should I use?</h2>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Situation</th><th>Use</th></tr></thead>
+        <tbody>
+          <tr><td>Quick look, any computer or phone, private drawing</td><td><a href={path('home', 'en')}>Browser viewer</a></td></tr>
+          <tr><td>Windows PC, need exact AutoCAD rendering or version conversion</td><td>DWG TrueView</td></tr>
+          <tr><td>Need to share a view with a colleague and uploading is fine</td><td>Autodesk Viewer</td></tr>
+          <tr><td>Need to edit, open-source only</td><td>LibreCAD, with the file saved as DXF</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h2>Sources</h2>
+    <ul class="sources">
+      <li><a href="https://www.autodesk.com/products/dwg-trueview/overview" rel="noopener nofollow">Autodesk: DWG TrueView</a></li>
+      <li><a href="https://www.autodesk.com/support/technical/article/caas/sfdcarticles/sfdcarticles/System-Requirements-for-Autodesk-DWG-TrueView-2027.html" rel="noopener nofollow">Autodesk support: System Requirements for DWG TrueView 2027</a></li>
+      <li><a href="https://www.autodesk.com/support/technical/article/caas/sfdcarticles/sfdcarticles/DWG-TrueView-will-not-install-on-the-Mac-operating-system-to-open-DWG-files.html" rel="noopener nofollow">Autodesk support: DWG TrueView will not install on the Mac operating system</a></li>
+      <li><a href="https://help.autodesk.com/cloudhelp/ENU/ADSKVIEWER-Help/files/ADSKVIEWER_Help_GettingStarted_html.html" rel="noopener nofollow">Autodesk Viewer help: Getting started</a></li>
+      <li><a href="https://www.autodesk.com/support/technical/article/caas/sfdcarticles/sfdcarticles/Are-files-uploaded-to-the-Autodesk-Viewer-deleted-after-30-days-or-can-this-period-be-extended.html" rel="noopener nofollow">Autodesk support: the 30-day period in Autodesk Viewer</a></li>
+      <li><a href="https://www.opendesign.com/guestfiles/oda_viewer" rel="noopener nofollow">Open Design Alliance: ODA Viewer</a></li>
+      <li><a href="https://github.com/LibreCAD/libdxfrw" rel="noopener nofollow">libdxfrw, the DXF/DWG library of LibreCAD</a></li>
+    </ul>
+    <p class="muted">Checked on 2026-09-17.</p>
+  </article>
+</Base>
+
+<style>
+  .sources { font-size: 0.92rem; }
+  .sources a { overflow-wrap: anywhere; }
+</style>

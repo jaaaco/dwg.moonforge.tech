@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro'
+import { REPO_URL } from '../lib/i18n'
+---
+<Base locale="en" route="privacy" title="Privacy: Free DWG Viewer" description="What the free DWG viewer does with your files and your visit: files never leave your browser, no cookies, no tracking.">
+  <div class="wrap hero prose">
+    <h1>Privacy</h1>
+    <p class="lede">Short version: your drawings never leave your device, and we do not track you.</p>
+    <h2>Your files</h2>
+    <p>When you open a DWG or DXF file, the browser reads it into memory and decodes it with WebAssembly code that was downloaded together with this page. The file is not uploaded, not stored and not sent anywhere. Closing or reloading the tab clears it.</p>
+    <p>You do not have to take our word for it: the complete source code is public on <a href={REPO_URL}>GitHub</a>, and your browser's developer tools (Network tab) show that opening a file makes no request.</p>
+    <h2>Your visit</h2>
+    <ul>
+      <li>No cookies, no local storage of personal data, no advertising or social media scripts.</li>
+      <li>Fonts and all other assets are served from this domain; no third-party CDN sees your visit.</li>
+      <li>The site is hosted on Cloudflare Pages. Like any web host, Cloudflare processes technical request data (IP address, user agent) to deliver the page and protect it from abuse. We use Cloudflare's aggregate, cookie-free visit statistics and do not receive personal data from them.</li>
+    </ul>
+    <h2>Who runs this</h2>
+    <p>Moonforge Labs Sp. z o.o., Poland. Questions: <a href="mailto:contact@moonforge.tech">contact@moonforge.tech</a>.</p>
+  </div>
+</Base>

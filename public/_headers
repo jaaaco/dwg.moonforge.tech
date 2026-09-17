@@ -1,0 +1,22 @@
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval' 'unsafe-inline' https://static.cloudflareinsights.com; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' blob: data: https://cloudflareinsights.com; frame-ancestors 'none'; base-uri 'self'; form-action 'none'
+
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/cad/*
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+
+# The DWG parser is Emscripten output and evaluates generated code. A worker
+# runs under the CSP of its own script response, so only the workers get
+# 'unsafe-eval'; the pages keep the strict policy above.
+/cad/workers/*
+  ! Content-Security-Policy
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval' 'unsafe-eval'; connect-src 'self' blob: data:; img-src 'self' data: blob:; font-src 'self' data:
+
+/samples/*
+  Cache-Control: public, max-age=3600

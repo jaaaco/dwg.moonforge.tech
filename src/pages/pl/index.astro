@@ -1,0 +1,75 @@
+---
+import Base from '../../layouts/Base.astro'
+import Viewer from '../../components/Viewer.astro'
+import { path, REPO_URL } from '../../lib/i18n'
+
+const locale = 'pl'
+const title = 'Przeglądarka DWG online za darmo: otwórz plik DWG bez AutoCADa'
+const description = 'Otwórz i obejrzyj rysunek DWG lub DXF w przeglądarce. Za darmo, po polsku, open source. Bez wysyłania pliku i bez zakładania konta. Działa na Macu, Windowsie i telefonie.'
+const faq = [
+  ['Czy plik gdzieś jest wysyłany?', 'Nie. Rysunek czyta LibreDWG skompilowany do WebAssembly, uruchomiony w Twojej karcie przeglądarki. Nic nie trafia na serwer, a po załadowaniu strona działa nawet bez internetu.'],
+  ['Potrzebuję konta albo AutoCADa?', 'Nie. Bez konta, bez instalacji, bez wersji próbnej. Wchodzisz, wybierasz plik.'],
+  ['Działa na Macu, Linuksie, telefonie?', 'Tak. Wystarczy aktualna przeglądarka z WebGL: Safari, Chrome, Firefox albo Edge, na komputerze i na telefonie.'],
+  ['Mogę edytować rysunek albo zapisać go do PDF?', 'Jeszcze nie. Na razie to przeglądarka: zoom, przesuwanie, włączanie i wyłączanie warstw. Eksport do PDF i DXF jest następny w kolejce.'],
+  ['Dlaczego za darmo?', 'Bo obejrzenie rysunku, który ktoś Ci przysłał, nie powinno zależeć od posiadania Windowsa, zakładania konta ani wysyłania pliku na cudzy serwer. Kod jest na licencji GPL i jest publiczny, więc zostanie darmowy.']
+]
+const jsonLd = [
+  {
+    '@type': 'WebApplication',
+    name: 'Darmowa przeglądarka DWG',
+    url: 'https://dwg.moonforge.tech/pl',
+    inLanguage: 'pl',
+    applicationCategory: 'DesignApplication',
+    operatingSystem: 'Dowolny (przeglądarka)',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'PLN' },
+    isAccessibleForFree: true,
+    license: 'https://www.gnu.org/licenses/gpl-3.0.html',
+    publisher: { '@id': 'https://moonforge.tech/#org' }
+  }
+]
+---
+<Base locale={locale} route="home" title={title} description={description} jsonLd={jsonLd}>
+  <div class="wrap hero">
+    <p class="kicker">Za darmo · open source · nic nie wysyłamy</p>
+    <h1>Otwórz plik DWG w przeglądarce.</h1>
+    <p class="lede">Darmowa przeglądarka DWG i DXF, która działa w całości na Twoim urządzeniu. Bez konta, bez instalacji, bez wysyłania pliku. Na Macu działa tak samo jak na Windowsie i na telefonie.</p>
+  </div>
+  <div class="wrap">
+    <Viewer locale={locale} />
+  </div>
+
+  <div class="wrap section">
+    <div class="grid-3">
+      <div class="card">
+        <h3>Plik zostaje u Ciebie</h3>
+        <p>Rysunek dekoduje WebAssembly w tej karcie. Bez wysyłania, bez kopii na serwerze, bez ciasteczek.</p>
+      </div>
+      <div class="card">
+        <h3>Każdy komputer, każdy telefon</h3>
+        <p>Mac, Linux, Windows, iPhone, Android. Aktualna przeglądarka i gotowe.</p>
+      </div>
+      <div class="card">
+        <h3>Open source na stałe</h3>
+        <p>GPL-3.0 na <a href={REPO_URL}>GitHubie</a>. Każdy może sprawdzić, co robi, postawić własną kopię albo ją ulepszyć.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap section prose">
+    <h2>Po co darmowa przeglądarka DWG?</h2>
+    <p>W DWG krążą projekty domów, maszyn i instalacji. To zamknięty, nieudokumentowany format, a oficjalne darmowe sposoby na jego otwarcie to program tylko na Windowsa albo przeglądarka online, która wymaga konta i wysłania pliku. Uważamy, że obejrzenie rysunku powinno być tak proste jak otwarcie PDF-a. <a href={path('why', locale)}>Przeczytaj, dlaczego to zrobiliśmy</a>.</p>
+
+    <h2>Jak otworzyć plik DWG?</h2>
+    <ol>
+      <li>Kliknij <strong>Otwórz DWG lub DXF</strong> powyżej albo upuść plik w dowolnym miejscu strony.</li>
+      <li>Kółkiem przybliżasz, przeciąganiem przesuwasz. Warstwy włączysz i wyłączysz w panelu.</li>
+      <li>Tyle. Zamykasz kartę i nic po pliku nie zostaje.</li>
+    </ol>
+    <p>Inne sposoby, także programy na komputer, opisuje poradnik <a href={path('guide', locale)}>jak otworzyć plik DWG bez AutoCADa</a>.</p>
+
+    <h2>Pytania</h2>
+    <dl class="faq">
+      {faq.map(([q, a]) => (<><dt>{q}</dt><dd>{a}</dd></>))}
+    </dl>
+  </div>
+</Base>

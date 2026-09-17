@@ -1,0 +1,17 @@
+---
+import Base from '../../layouts/Base.astro'
+import LicenseTable from '../../components/LicenseTable.astro'
+import { REPO_URL } from '../../lib/i18n'
+---
+<Base locale="pl" route="licenses" title="Licencje: darmowa przeglądarka DWG" description="Darmowa przeglądarka DWG to wolne oprogramowanie na licencji GPL-3.0, zbudowane na GNU LibreDWG, mlightcad, three.js i osifont. Pełna lista komponentów i licencji.">
+  <div class="wrap hero prose">
+    <h1>Licencje</h1>
+    <p class="lede">Ta strona to wolne oprogramowanie na licencji GNU General Public License w wersji 3 lub nowszej. Powstała na pracy innych projektów wolnego oprogramowania, wymienionych poniżej.</p>
+    <h2>Ten projekt</h2>
+    <p>Copyright Moonforge Labs Sp. z o.o. Kod źródłowy: <a href={REPO_URL}>{REPO_URL.replace('https://', '')}</a>. Możesz go używać, badać, udostępniać i zmieniać na warunkach <a href="https://www.gnu.org/licenses/gpl-3.0.html" rel="noopener">GPL-3.0</a>. Kod działający w Twojej przeglądarce to dokładnie kod z tego repozytorium, zbudowany poleceniem <code>npm run build</code>.</p>
+    <h2>Komponenty</h2>
+    <LicenseTable locale="pl" />
+    <h2>Znaki towarowe</h2>
+    <p>AutoCAD i DWG są znakami towarowymi Autodesk, Inc. Projekt nie jest powiązany z Autodesk ani przez niego wspierany i używa tych nazw wyłącznie do opisania plików, które przeglądarka otwiera.</p>
+  </div>
+</Base>

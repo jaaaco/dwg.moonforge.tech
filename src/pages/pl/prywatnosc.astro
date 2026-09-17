@@ -1,0 +1,21 @@
+---
+import Base from '../../layouts/Base.astro'
+import { REPO_URL } from '../../lib/i18n'
+---
+<Base locale="pl" route="privacy" title="Prywatność: darmowa przeglądarka DWG" description="Co przeglądarka DWG robi z Twoimi plikami i wizytą: pliki nie opuszczają przeglądarki, bez ciasteczek, bez śledzenia.">
+  <div class="wrap hero prose">
+    <h1>Prywatność</h1>
+    <p class="lede">W skrócie: Twoje rysunki nie opuszczają urządzenia i nie śledzimy Cię.</p>
+    <h2>Twoje pliki</h2>
+    <p>Gdy otwierasz plik DWG albo DXF, przeglądarka wczytuje go do pamięci i dekoduje kodem WebAssembly pobranym razem ze stroną. Plik nie jest wysyłany, zapisywany ani nigdzie przekazywany. Zamknięcie albo odświeżenie karty go usuwa.</p>
+    <p>Nie musisz wierzyć nam na słowo: cały kod źródłowy jest publiczny na <a href={REPO_URL}>GitHubie</a>, a narzędzia deweloperskie przeglądarki (zakładka Network) pokażą, że otwarcie pliku nie wysyła żadnego żądania.</p>
+    <h2>Twoja wizyta</h2>
+    <ul>
+      <li>Bez ciasteczek, bez zapisywania danych osobowych w przeglądarce, bez skryptów reklamowych i społecznościowych.</li>
+      <li>Fonty i wszystkie inne zasoby serwujemy z tej domeny, więc żaden zewnętrzny CDN nie widzi Twojej wizyty.</li>
+      <li>Strona stoi na Cloudflare Pages. Jak każdy hosting, Cloudflare przetwarza techniczne dane żądania (adres IP, user agent), żeby dostarczyć stronę i chronić ją przed nadużyciami. Korzystamy z zagregowanych statystyk Cloudflare bez ciasteczek i nie dostajemy z nich danych osobowych.</li>
+    </ul>
+    <h2>Kto za tym stoi</h2>
+    <p>Moonforge Labs Sp. z o.o., Polska. Pytania: <a href="mailto:contact@moonforge.tech">contact@moonforge.tech</a>.</p>
+  </div>
+</Base>

@@ -1,0 +1,30 @@
+{
+  "name": "dwg.moonforge.tech",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "GPL-3.0-or-later",
+  "description": "Free, open-source DWG viewer that runs entirely in your browser.",
+  "scripts": {
+    "prepare-cad": "node scripts/prepare-cad.mjs",
+    "predev": "node scripts/prepare-cad.mjs",
+    "dev": "astro dev",
+    "prebuild": "node scripts/prepare-cad.mjs",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@fontsource/inter": "^5.3.0",
+    "@fontsource/space-grotesk": "^5.3.0",
+    "@mlightcad/cad-simple-viewer": "1.7.0",
+    "@mlightcad/data-model": "1.14.7",
+    "@mlightcad/libredwg-converter": "3.14.7",
+    "@mlightcad/libredwg-web": "0.7.11",
+    "@mlightcad/mtext-renderer": "0.12.12",
+    "@mlightcad/three-renderer": "1.7.0",
+    "astro": "^7.3.3",
+    "lodash-es": "4.17.21",
+    "three": "0.172.0"
+  }
+}

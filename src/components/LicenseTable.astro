@@ -1,0 +1,34 @@
+---
+import { REPO_URL } from '../lib/i18n'
+
+interface Props { locale: 'en' | 'pl' }
+const { locale } = Astro.props
+const pl = locale === 'pl'
+
+// Everything that reaches the visitor's browser. Build-only tools (Astro) are
+// listed separately below.
+const rows = [
+  ['GNU LibreDWG', pl ? 'odczyt plików DWG' : 'reads DWG files', 'GPL-3.0-or-later', 'https://www.gnu.org/software/libredwg/'],
+  ['@mlightcad/libredwg-web', pl ? 'LibreDWG skompilowany do WebAssembly' : 'LibreDWG compiled to WebAssembly', 'GPL-3.0', 'https://github.com/mlightcad/libredwg-web'],
+  ['@mlightcad/libredwg-converter', pl ? 'most między LibreDWG a modelem rysunku' : 'bridge from LibreDWG to the drawing model', 'GPL-3.0', 'https://github.com/mlightcad/realdwg-web'],
+  ['@mlightcad/cad-simple-viewer, three-renderer', pl ? 'przeglądarka i renderowanie' : 'viewer and rendering', 'MIT', 'https://github.com/mlightcad/cad-viewer'],
+  ['@mlightcad/data-model, geometry-engine, graphic-interface, common', pl ? 'model rysunku i geometria' : 'drawing model and geometry', 'MIT', 'https://github.com/mlightcad/realdwg-web'],
+  ['@mlightcad/mtext-renderer, mtext-parser, shx-parser', pl ? 'składanie tekstu' : 'text layout', 'MIT', 'https://github.com/mlightcad/mtext-renderer'],
+  ['three.js', pl ? 'WebGL' : 'WebGL', 'MIT', 'https://github.com/mrdoob/three.js'],
+  ['lodash-es, uid', pl ? 'narzędzia' : 'utilities', 'MIT', 'https://github.com/lodash/lodash'],
+  ['emf-converter', pl ? 'obrazy EMF' : 'EMF images', 'Apache-2.0', 'https://github.com/ChristopherVR/emf-converter'],
+  ['osifont', pl ? 'font rysunkowy ISO 3098 (zmodyfikowany: szerszy o 15%)' : 'ISO 3098 drawing font (modified: 15% wider)', pl ? 'GPL-3.0 z wyjątkiem dla fontów' : 'GPL-3.0 with font exception', 'https://github.com/hikikomori82/osifont'],
+  ['Space Grotesk, Inter', pl ? 'fonty strony' : 'site fonts', 'OFL-1.1', 'https://github.com/fontsource/font-files']
+]
+---
+<div class="table-scroll">
+  <table>
+    <thead><tr><th>{pl ? 'Komponent' : 'Component'}</th><th>{pl ? 'Rola' : 'Role'}</th><th>{pl ? 'Licencja' : 'License'}</th></tr></thead>
+    <tbody>
+      {rows.map(([name, role, license, href]) => (
+        <tr><td><a href={href} rel="noopener">{name}</a></td><td>{role}</td><td>{license}</td></tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+<p class="muted">{pl ? 'Budowanie strony: ' : 'Build tooling: '}<a href="https://github.com/withastro/astro" rel="noopener">Astro</a> (MIT). {pl ? 'Pełny kod, w tym poprawki nakładane na paczki mlightcad: ' : 'Complete source, including the fixes applied to the mlightcad packages: '}<a href={REPO_URL}>{REPO_URL.replace('https://', '')}</a>.</p>

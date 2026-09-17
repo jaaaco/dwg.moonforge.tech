@@ -1,0 +1,71 @@
+---
+import Base from '../../layouts/Base.astro'
+import { path, REPO_URL } from '../../lib/i18n'
+
+const checked = '2026-09-17'
+const sources = [
+  ['Autodesk: AutoCAD, ceny i zakup (PL)', 'https://www.autodesk.com/pl/products/autocad/overview'],
+  ['Autodesk: AutoCAD LT, ceny i zakup (PL)', 'https://www.autodesk.com/pl/products/autocad-lt/overview'],
+  ['Autodesk support: Can I buy a stand-alone (perpetual) license?', 'https://www.autodesk.com/support/technical/article/caas/sfdcarticles/sfdcarticles/Can-I-buy-a-stand-alone-perpetual-license.html'],
+  ['Autodesk: DWG TrueView', 'https://www.autodesk.com/products/dwg-trueview/overview'],
+  ['Autodesk support: DWG TrueView will not install on the Mac operating system', 'https://www.autodesk.com/support/technical/article/caas/sfdcarticles/sfdcarticles/DWG-TrueView-will-not-install-on-the-Mac-operating-system-to-open-DWG-files.html'],
+  ['Autodesk support: System Requirements for Autodesk DWG TrueView 2027', 'https://www.autodesk.com/support/technical/article/caas/sfdcarticles/sfdcarticles/System-Requirements-for-Autodesk-DWG-TrueView-2027.html'],
+  ['Autodesk Viewer, pomoc: Getting started', 'https://help.autodesk.com/cloudhelp/ENU/ADSKVIEWER-Help/files/ADSKVIEWER_Help_GettingStarted_html.html'],
+  ['Autodesk support: okres 30 dni dla plików w Autodesk Viewer', 'https://www.autodesk.com/support/technical/article/caas/sfdcarticles/sfdcarticles/Are-files-uploaded-to-the-Autodesk-Viewer-deleted-after-30-days-or-can-this-period-be-extended.html'],
+  ['Autodesk support: How does Autodesk Viewer store data?', 'https://www.autodesk.com/support/technical/article/caas/sfdcarticles/sfdcarticles/Where-does-Autodesk-Viewer-keep-the-data.html'],
+  ['Open Design Alliance: Open Design Specification for .dwg files', 'https://www.opendesign.com/files/guestdownloads/OpenDesign_Specification_for_.dwg_files.pdf'],
+  ['GNU LibreDWG', 'https://www.gnu.org/software/libredwg/']
+]
+---
+<Base locale="pl" route="why" title="Dlaczego darmowa przeglądarka DWG open source" description="DWG to zamknięty, nieudokumentowany format, a oficjalne darmowe sposoby na jego otwarcie wymagają Windowsa albo konta i wysłania pliku. Dlatego zrobiliśmy darmową przeglądarkę, która działa w Twojej przeglądarce.">
+  <article class="wrap hero prose">
+    <p class="kicker">Po co to jest</p>
+    <h1>Otwarcie rysunku nie powinno mieć warunków.</h1>
+    <p class="lede">W DWG krąży zbudowany świat: rzuty domów, detale dachów, rozdzielnice, części maszyn. Architekt wysyła, instalator odbiera, inwestor dostaje w mailu. Uważamy, że każdy, kto dostał taki plik, powinien móc go obejrzeć na urządzeniu, które akurat ma, i nie pytać nikogo o zgodę.</p>
+
+    <h2>Co trzeba mieć dzisiaj?</h2>
+    <p>Oficjalne możliwości według stron Autodesku, sprawdzone {checked}.</p>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Sposób</th><th>Koszt</th><th>Warunki</th></tr></thead>
+        <tbody>
+          <tr><td>DWG TrueView</td><td>Za darmo</td><td>Tylko Windows. Autodesk pisze wprost, że nie zainstaluje się na macOS. Wersja 2027 wymaga 64-bitowego Windows 11, 8 GB RAM i 4 GB miejsca.</td></tr>
+          <tr><td>Autodesk Viewer (online)</td><td>Za darmo</td><td>Konto Autodesk i wysłanie pliku na serwery Autodesku w USA, gdzie domyślnie leży 30 dni.</td></tr>
+          <tr><td>AutoCAD LT</td><td>2 510 zł rocznie</td><td>Tylko abonament. Autodesk przestał sprzedawać licencje wieczyste w 2016 roku.</td></tr>
+          <tr><td>AutoCAD</td><td>9 834 zł rocznie</td><td>Tylko abonament.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Ceny z polskiej strony Autodesku, według jej opisu z szacunkowym VAT. Nic z tego nie jest tajemnicą i nic nie jest nielegalne. Oznacza to jednak, że na Macu albo na Linuksie Autodesk sam radzi skorzystać z przeglądarki online: najpierw konto, potem rzut Twojego domu albo budynku klienta na serwerze za oceanem.</p>
+
+    <h2>Format bez instrukcji obsługi</h2>
+    <p>Autodesk nie opublikował specyfikacji DWG. Open Design Alliance, branżowe konsorcjum budujące biblioteki DWG dla innych producentów CAD, w swojej własnej specyfikacji formatu nazywa go „nieudokumentowanym i zastrzeżonym” (undocumented and proprietary). Programy spoza Autodesku czytają DWG dzięki niezależnym implementacjom, takim jak ich biblioteki i GNU LibreDWG.</p>
+    <p>Dla porównania: PDF to norma ISO, którą każdy może zaimplementować. Dlatego PDF otwiera się wszędzie i tę samą poprzeczkę stawiamy rysunkom.</p>
+
+    <h2>Co o tym myślimy?</h2>
+    <p>Ta część to opinia i mówimy to wprost. Rysunki żyją dłużej niż programy, w których powstały. Detal dachu z 2024 roku będzie ważny, kiedy ten dach zacznie przeciekać w 2040. Możliwość jego odczytania nie powinna zależeć od cennika, wyboru platformy ani systemu kont jednej firmy. AutoCAD to dobry program i wiele osób słusznie za niego płaci. Oglądanie rysunku to jednak inna robota i powinna być darmowa i otwarta.</p>
+
+    <h2>Co zrobiliśmy zamiast tego?</h2>
+    <ul>
+      <li><strong>Za darmo, bez haczyków.</strong> Bez konta, bez wersji próbnej, bez znaku wodnego, bez „kup pakiet, żeby zobaczyć warstwy”.</li>
+      <li><strong>Prywatnie z założenia.</strong> DWG dekoduje WebAssembly w karcie Twojej przeglądarki. Nie ma serwera, który odbiera pliki, więc nie ma czego wyciec ani przechowywać.</li>
+      <li><strong>Open source na licencji GPL-3.0.</strong> <a href={REPO_URL}>Kod źródłowy</a> jest publiczny. Każdy może go sprawdzić, postawić własną kopię albo poprawić, a licencja pilnuje, żeby tak zostało.</li>
+      <li><strong>Na wolnym oprogramowaniu.</strong> Plik czyta GNU LibreDWG, rysuje go przeglądarka mlightcad, a tekst składa osifont, font do opisów technicznych zgodny z ISO 3098. Szczegóły w <a href={path('licenses', 'pl')}>licencjach</a>.</li>
+    </ul>
+
+    <h2>Uczciwie o ograniczeniach</h2>
+    <p>GNU LibreDWG sam określa się jako wersja beta i części zaawansowanych obiektów z nowych wersji DWG jeszcze nie czyta. Tekst jest składany otwartym fontem zamiast fontów AutoCADa, więc może wyglądać trochę inaczej. Dziś działa oglądanie. Eksport do PDF i DXF jest następny. Jeśli jakiś plik się nie otwiera, zgłoś to na <a href={REPO_URL + '/issues'}>GitHubie</a>, o ile możesz go udostępnić.</p>
+
+    <h2>Źródła</h2>
+    <p class="muted">Sprawdzone {checked}. Ceny to ceny katalogowe i z czasem się zmieniają. Ceny w dolarach są w <a href={path('why', 'en')}>angielskiej wersji tej strony</a>.</p>
+    <ol class="sources">
+      {sources.map(([label, href]) => <li><a href={href} rel="noopener nofollow">{label}</a></li>)}
+    </ol>
+    <p class="muted">Serwis nie jest powiązany z Autodesk ani przez niego wspierany. AutoCAD i DWG są znakami towarowymi Autodesk, Inc., użytymi tu wyłącznie do opisania plików, które przeglądarka otwiera.</p>
+  </article>
+</Base>
+
+<style>
+  .sources { font-size: 0.92rem; }
+  .sources a { overflow-wrap: anywhere; }
+</style>
