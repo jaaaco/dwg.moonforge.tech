@@ -18,6 +18,10 @@ explains the engine, the patches and why the site never calls a third-party host
   trademark, or that Autodesk invented DWG. Opinion is allowed and labelled as opinion.
 - **One page per search intent, EN and PL.** Add routes in `src/lib/i18n.ts`; the sitemap and hreflang follow.
   A page without a real counterpart in the other language gets `null`, not a thin translation.
+- **The PDF export reads renderer internals** (`_geometryInfo`, batch draw ranges, hatch and linetype shader
+  uniforms, the layout view's camera). After any mlightcad upgrade, plot a real drawing and compare it with the
+  screen: missing hatches, solid-looking dashed lines or misplaced text mean the shapes moved. Details in
+  `README.md` under "Plotting to PDF".
 - Prose in Polish follows the owner's style: direct, no em dashes.
 
 ## Handy

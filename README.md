@@ -25,6 +25,7 @@ runtime (see below). Node 20+.
 | Layout: title, canonical, hreflang, Open Graph, JSON-LD | `src/layouts/Base.astro` |
 | Viewer UI (open, drop, layers, status) | `src/components/Viewer.astro`, `src/viewer/app.ts` |
 | CAD engine, loaded only when a file is opened | `src/viewer/engine.ts` |
+| Plot to PDF: geometry read back from the scene, PDF writer, preview | `src/viewer/plot.ts`, panel in `src/viewer/plot-ui.ts` |
 | Engine runtime assets: workers, WASM, fonts, template | `public/cad/`, produced by `scripts/prepare-cad.mjs` |
 | Sitemap with hreflang pairs | `src/pages/sitemap.xml.ts` |
 | Security headers, caching, per-worker CSP | `public/_headers` (Cloudflare Pages) |
@@ -49,6 +50,26 @@ few days.
 The result: opening a drawing makes no request to any host but this one. The end-to-end check below verifies
 that.
 
+### Plotting to PDF
+
+`PDF` in the viewer plots the whole drawing, the current view or a window you drag, on a sheet from A4 to A0,
+fitted or at a fixed scale, in colour or black and white. The output is **vector**, written by hand in
+`src/viewer/plot.ts`: no library, no raster snapshot, and text is filled outlines, so no font is embedded and
+no font licence is involved.
+
+The geometry is read back out of the renderer's batched three.js objects, which is the fiddly part:
+
+* line batches give segments (chained into polylines), and a linetype shader's `pattern` uniform becomes a PDF
+  dash array with the phase taken from each polyline's own distance along the line,
+* filled meshes (MTEXT glyphs, solid fills, wide polylines) are triangle soup; boundary edges are chained back
+  into contours, so a paragraph is one path with holes rather than a few hundred slivers,
+* hatches are drawn by a fragment shader over a plain polygon, so the pattern lines are re-created from the
+  uniforms (angle, base, offset, dashes) and clipped to the polygon's triangles.
+
+Only what is on screen is plotted: a slot hidden with its layer is skipped, as the renderer skips it. Because
+this reads private fields (`_geometryInfo`, the layout view's camera), the code is defensive: when a package
+update moves them, export fails loudly in the panel instead of writing a wrong PDF.
+
 ### Content Security Policy
 
 Pages run under a strict CSP. The DWG parser is Emscripten output and needs `eval`, so `/cad/workers/*` gets
@@ -62,6 +83,9 @@ There is no test suite yet. What was verified by hand before the first release:
   returns 200, unknown URLs 404, `.html` URLs redirect to clean ones, headers as in `public/_headers`.
 - Headless Chrome against that server: the sample DXF and a real 2.6 MB DWG 2004 detail drawing open on desktop
   and a 390 px phone viewport, with zero console errors and zero requests to other origins.
+- Plotting: both real drawings and the sample exported to PDF (whole drawing, a dragged window, fitted and at a
+  fixed scale, colour and black and white) in Chrome and in WebKit, then rasterised with `pdftoppm` and compared
+  with the canvas: text, hatch patterns, dashed lines and sheet size.
 
 ## Deploy
 

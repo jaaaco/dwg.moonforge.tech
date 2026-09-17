@@ -10,7 +10,7 @@ const faq = [
   ['Is the file uploaded anywhere?', 'No. The drawing is read by a WebAssembly build of LibreDWG running in your browser tab. Nothing is sent to a server, and the page keeps working with the network switched off after it has loaded.'],
   ['Do I need an account or AutoCAD?', 'No account, no installation, no trial. Open the page, choose a file.'],
   ['Does it work on a Mac, Linux or a phone?', 'Yes. Any current browser with WebGL does the job: Safari, Chrome, Firefox or Edge, on desktop or mobile.'],
-  ['Can I edit the drawing or save it as PDF?', 'Not yet. Today it is a viewer: zoom, pan and switch layers on and off. Export to PDF and DXF is next on the list.'],
+  ['Can I save the drawing as PDF?', 'Yes. Press PDF, pick the whole drawing or a window, a sheet size and a scale, and download it. The PDF is vector, so lines and text stay sharp at any zoom and print properly. Editing and DXF export are not there yet.'],
   ['Why is it free?', 'Because looking at a drawing someone sent you should not depend on having a Windows PC, an account or a server you have to trust with the file. The code is GPL-licensed and public, so it stays free.']
 ]
 const jsonLd = [
@@ -62,6 +62,7 @@ const jsonLd = [
     <ol>
       <li>Click <strong>Open DWG or DXF</strong> above, or drop the file anywhere on this page.</li>
       <li>Drag to pan, scroll to zoom. On a trackpad, two fingers pan and pinch zooms. Check a detail by turning layers on and off.</li>
+      <li>Need it on paper? <strong>PDF</strong> plots the whole drawing or a window you pick, on a sheet from A4 to A0, fitted or at a fixed scale.</li>
       <li>That is it. Close the tab and nothing remains.</li>
     </ol>
     <p>More options, including desktop programs, are in the guide <a href={path('guide', locale)}>how to open DWG without AutoCAD</a>. On a Mac? See <a href={path('mac', locale)}>DWG viewer for Mac</a>.</p>

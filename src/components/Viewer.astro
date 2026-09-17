@@ -16,6 +16,7 @@ const t = ui[locale]
     <span class="viewer-badge" title={t.vDropHint}>● {t.vPrivacyBadge}</span>
     <div class="viewer-actions" data-role="actions" hidden>
       <button class="btn btn-ghost" type="button" data-role="fit">{t.vFit}</button>
+      <button class="btn btn-ghost" type="button" data-role="plot-toggle" aria-expanded="false">{t.pExport}</button>
       <button class="btn btn-ghost" type="button" data-role="layers-toggle" aria-expanded="false">{t.vLayers}</button>
       <button class="btn btn-ghost" type="button" data-role="close" aria-label={t.vClose}>✕</button>
     </div>
@@ -34,6 +35,70 @@ const t = ui[locale]
       </div>
       <ul data-role="layer-list"></ul>
     </aside>
+    <aside class="viewer-plot" data-role="plot" hidden>
+      <div class="viewer-layers-head">
+        <strong>{t.pTitle}</strong>
+        <button type="button" class="link" data-role="plot-close" aria-label={t.pClose}>✕</button>
+      </div>
+      <div class="plot-preview"><canvas data-role="plot-canvas" width="240" height="340"></canvas></div>
+      <p class="plot-note" data-role="plot-note" role="status" aria-live="polite"></p>
+      <label>{t.pArea}
+        <select data-role="plot-area">
+          <option value="all">{t.pAreaAll}</option>
+          <option value="view">{t.pAreaView}</option>
+          <option value="window">{t.pAreaWindow}</option>
+        </select>
+      </label>
+      <button type="button" class="btn btn-ghost plot-window" data-role="plot-window">{t.pPickWindow}</button>
+      <label>{t.pPaper}
+        <select data-role="plot-paper">
+          <option value="A4">A4</option>
+          <option value="A3" selected>A3</option>
+          <option value="A2">A2</option>
+          <option value="A1">A1</option>
+          <option value="A0">A0</option>
+          <option value="letter">Letter</option>
+        </select>
+      </label>
+      <label>{t.pOrientation}
+        <select data-role="plot-orientation">
+          <option value="auto">{t.pAuto}</option>
+          <option value="landscape">{t.pLandscape}</option>
+          <option value="portrait">{t.pPortrait}</option>
+        </select>
+      </label>
+      <label>{t.pScale}
+        <select data-role="plot-scale">
+          <option value="fit">{t.pFit}</option>
+          <option value="1">1:1</option>
+          <option value="2">1:2</option>
+          <option value="5">1:5</option>
+          <option value="10">1:10</option>
+          <option value="20">1:20</option>
+          <option value="25">1:25</option>
+          <option value="50">1:50</option>
+          <option value="100">1:100</option>
+          <option value="200">1:200</option>
+          <option value="500">1:500</option>
+          <option value="1000">1:1000</option>
+        </select>
+      </label>
+      <label>{t.pColors}
+        <select data-role="plot-colors">
+          <option value="mono">{t.pMono}</option>
+          <option value="colors">{t.pAsShown}</option>
+        </select>
+      </label>
+      <label>{t.pLineWidth}
+        <select data-role="plot-width">
+          <option value="0.13">0,13 mm</option>
+          <option value="0.2" selected>0,20 mm</option>
+          <option value="0.35">0,35 mm</option>
+        </select>
+      </label>
+      <button class="btn btn-primary plot-save" type="button" data-role="plot-save" disabled>{t.pSave}</button>
+    </aside>
+    <div class="viewer-pick" data-role="pick" hidden><div class="viewer-pick-rect" data-role="pick-rect" hidden></div></div>
     <div class="viewer-dropzone" aria-hidden="true"></div>
   </div>
 </section>
@@ -110,6 +175,36 @@ const t = ui[locale]
 
   .viewer-dropzone { position: absolute; inset: 8px; border: 3px dashed var(--accent); border-radius: var(--radius); display: none; pointer-events: none; }
   .viewer[data-drag='1'] .viewer-dropzone { display: block; }
+
+  .viewer-plot {
+    position: absolute; top: 0; right: 0; bottom: 0; width: min(19rem, 92%);
+    background: var(--bg-raised); border-left: 1px solid var(--line);
+    overflow: auto; padding: 0.6rem 0.8rem 1rem; font-size: 0.88rem;
+    display: flex; flex-direction: column; gap: 0.5rem;
+  }
+  .viewer-plot[hidden] { display: none; }
+  /* The panel scrolls; nothing in it may be squeezed, or the preview canvas
+     (which keeps its own pixel size) spills out of its box. */
+  .viewer-plot > * { flex: none; }
+  .viewer-plot :global(label) { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 0.5rem; }
+  .viewer-plot :global(select) {
+    font: inherit; padding: 0.3rem 0.4rem; background: var(--bg); color: inherit;
+    border: 1px solid var(--line); border-radius: 6px; max-width: 11rem;
+  }
+  .plot-preview {
+    display: flex; justify-content: center; align-items: center;
+    background: #15151a; border: 1px solid var(--line); border-radius: 6px; padding: 0.5rem; min-height: 8rem;
+  }
+  /* The canvas carries its own size, set from the sheet's aspect. */
+  .plot-preview :global(canvas) { max-width: 100%; box-shadow: 0 1px 6px rgb(0 0 0 / 0.4); }
+  .plot-note { margin: 0; color: var(--text-muted); font-size: 0.82rem; }
+  .plot-window { width: 100%; }
+  .plot-save { margin-top: 0.2rem; }
+
+  /* Window picking sits above the canvas so the drawing never sees the drag. */
+  .viewer-pick { position: absolute; inset: 0; cursor: crosshair; background: rgb(0 0 0 / 0.25); }
+  .viewer-pick[hidden] { display: none; }
+  .viewer-pick-rect { position: absolute; border: 1px solid var(--accent); background: rgb(255 255 255 / 0.12); }
 
   @media (max-width: 640px) {
     .viewer-body { height: 64vh; }

@@ -16,8 +16,11 @@ export function mountViewer(root: HTMLElement): void {
   const layerList = $('layer-list')
   const layersToggle = $<HTMLButtonElement>('layers-toggle')
 
+  const plotToggle = $<HTMLButtonElement>('plot-toggle')
+
   let engine: Engine | null = null
   let enginePromise: Promise<Engine> | null = null
+  let plotUi: { toggle(): void; close(): void } | null = null
   let busy = false
 
   const setState = (s: 'empty' | 'loading' | 'open') => { root.dataset.state = s }
@@ -37,6 +40,8 @@ export function mountViewer(root: HTMLElement): void {
     busy = true
     setState('loading')
     closeLayers()
+    plotUi?.close()
+    fileName = name
     const started = performance.now()
     try {
       say(t.vLoadingEngine)
@@ -84,6 +89,15 @@ export function mountViewer(root: HTMLElement): void {
     layersToggle.setAttribute('aria-expanded', 'false')
   }
 
+  let fileName = ''
+
+  // The export panel is only fetched when someone asks for it.
+  plotToggle.addEventListener('click', async () => {
+    plotUi ??= (await import('./plot-ui')).mountPlotUi(root, t, () => engine, () => fileName)
+    closeLayers()
+    plotUi.toggle()
+  })
+
   fileInput.addEventListener('change', () => {
     const f = fileInput.files?.[0]
     if (f) openFile(f)
@@ -101,6 +115,7 @@ export function mountViewer(root: HTMLElement): void {
     engine?.close()
     actions.hidden = true
     closeLayers()
+    plotUi?.close()
     setState('empty')
     say('')
   })
@@ -108,6 +123,7 @@ export function mountViewer(root: HTMLElement): void {
     const show = layersPanel.hidden
     layersPanel.hidden = !show
     layersToggle.setAttribute('aria-expanded', String(show))
+    if (show) plotUi?.close()
   })
   $('layers-all').addEventListener('click', () => {
     layerList.querySelectorAll<HTMLInputElement>('input[type=checkbox]').forEach((cb) => {

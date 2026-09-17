@@ -10,6 +10,7 @@ import {
 } from '@mlightcad/cad-simple-viewer'
 import { AcDbDatabaseConverterManager, AcDbFileType, AcGeBox2d, AcGePoint2d } from '@mlightcad/data-model'
 import { AcDbLibreDwgConverter } from '@mlightcad/libredwg-converter'
+import { buildPlotGeometry, isEmptyBox, type PlotBox, type PlotGeometry } from './plot'
 import type { DrawingLayer, Engine } from './types'
 // Everything the engine fetches at runtime is served from this site under a
 // content-hashed path (see scripts/prepare-cad.mjs); its defaults would call a
@@ -144,6 +145,44 @@ function attachTrackpadPan(container: HTMLElement, manager: AcApDocManager): voi
   )
 }
 
+/** The three.js scene the active layout draws, if reachable. */
+function activeScene(manager: AcApDocManager): any {
+  const holder = (manager.curView as any)?._scene
+  if (holder?.isScene) return holder
+  if (holder?._scene?.isScene) return holder._scene
+  // Guarded fallback: a package update may move it, and plotting is optional.
+  const seen = new Set<any>()
+  const find = (node: any, depth: number): any => {
+    if (!node || depth > 6 || typeof node !== 'object' || seen.has(node)) return null
+    seen.add(node)
+    if (node.isScene) return node
+    for (const key of Object.keys(node)) {
+      try {
+        const hit = find(node[key], depth + 1)
+        if (hit) return hit
+      } catch {
+        /* getters on the view can throw before a document is open */
+      }
+    }
+    return null
+  }
+  return find(manager.curView, 0)
+}
+
+/** What the canvas currently shows, in drawing units. */
+function cameraBox(manager: AcApDocManager): PlotBox | null {
+  const camera = activeControls(manager)?.object
+  if (!camera) return null
+  const width = (camera.right - camera.left) / camera.zoom
+  const height = (camera.top - camera.bottom) / camera.zoom
+  return {
+    minX: camera.position.x - width / 2,
+    minY: camera.position.y - height / 2,
+    maxX: camera.position.x + width / 2,
+    maxY: camera.position.y + height / 2
+  }
+}
+
 export async function createEngine(container: HTMLElement): Promise<Engine> {
   AcDbDatabaseConverterManager.instance.register(
     AcDbFileType.DWG,
@@ -165,11 +204,25 @@ export async function createEngine(container: HTMLElement): Promise<Engine> {
   }
 
   let open = false
+  // Reading the geometry back out of the scene costs about a second on a large
+  // drawing, so it is kept until something on screen changes.
+  let plot: PlotGeometry | null = null
+  const dropPlot = () => {
+    plot = null
+  }
 
   const fit = () => {
     const box = drawingBox(manager)
     if (box) manager.curView.zoomTo(box)
     else manager.curView.zoomToFitDrawing()
+  }
+
+  const plotGeometry = (): PlotGeometry => {
+    if (plot) return plot
+    const scene = activeScene(manager)
+    if (!scene) throw new Error('renderer scene not reachable')
+    plot = buildPlotGeometry(scene)
+    return plot
   }
 
   return {
@@ -178,6 +231,7 @@ export async function createEngine(container: HTMLElement): Promise<Engine> {
         await manager.closeDocument()
         open = false
       }
+      dropPlot()
       onStage('reading')
       // Copy: the parser worker takes ownership of the buffer it receives.
       const buffer = bytes.slice().buffer
@@ -210,6 +264,7 @@ export async function createEngine(container: HTMLElement): Promise<Engine> {
       // HVAC, plumbing). Turning one on in the panel has to thaw it too.
       if (visible) store.setLayerFrozen(name, false)
       store.setLayerOn(name, visible)
+      dropPlot()
     },
 
     fit,
@@ -217,11 +272,38 @@ export async function createEngine(container: HTMLElement): Promise<Engine> {
     close() {
       if (!open) return
       open = false
+      dropPlot()
       void manager.closeDocument()
     },
 
     hasDrawing() {
       return open
+    },
+
+    plotGeometry,
+
+    viewBox() {
+      return cameraBox(manager)
+    },
+
+    screenToWorld(clientX, clientY) {
+      const box = cameraBox(manager)
+      if (!box) return null
+      const rect = container.getBoundingClientRect()
+      if (!rect.width || !rect.height) return null
+      return {
+        x: box.minX + ((clientX - rect.left) / rect.width) * (box.maxX - box.minX),
+        y: box.maxY - ((clientY - rect.top) / rect.height) * (box.maxY - box.minY)
+      }
+    },
+
+    extents() {
+      // Same outlier-proof box the on-screen fit uses, so "whole drawing" plots
+      // what Fit shows instead of a speck next to a stray block at 0,0.
+      const box = drawingBox(manager)
+      if (box) return { minX: box.min.x, minY: box.min.y, maxX: box.max.x, maxY: box.max.y }
+      const geometry = plotGeometry()
+      return isEmptyBox(geometry.box) ? null : geometry.box
     }
   }
 }
