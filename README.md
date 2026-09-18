@@ -26,6 +26,7 @@ runtime (see below). Node 20+.
 | Viewer UI (open, drop, layers, status) | `src/components/Viewer.astro`, `src/viewer/app.ts` |
 | CAD engine, loaded only when a file is opened | `src/viewer/engine.ts` |
 | Plot to PDF: geometry read back from the scene, PDF writer, preview | `src/viewer/plot.ts`, panel in `src/viewer/plot-ui.ts` |
+| Measuring: object snapping, distances and area, overlay | `src/viewer/measure.ts`, panel in `src/viewer/measure-ui.ts` |
 | Engine runtime assets: workers, WASM, fonts, template | `public/cad/`, produced by `scripts/prepare-cad.mjs` |
 | Sitemap with hreflang pairs | `src/pages/sitemap.xml.ts` |
 | Security headers, caching, per-worker CSP | `public/_headers` (Cloudflare Pages) |
@@ -70,6 +71,28 @@ Only what is on screen is plotted: a slot hidden with its layer is skipped, as t
 this reads private fields (`_geometryInfo`, the layout view's camera), the code is defensive: when a package
 update moves them, export fails loudly in the panel instead of writing a wrong PDF.
 
+### Measuring
+
+`Measure` reads distances off the drawing the way `DIST` does in AutoCAD: click points, get the length, the
+offsets, the bearing, a running total and, from three points on, the area of the closed outline.
+
+Picks snap to the geometry — line ends, crossings, midpoints and the nearest point on a line, in that order of
+preference — because a reading taken "roughly there" on a wall is worth nothing. The snapping index is built
+from the same `PlotGeometry` the PDF export produces, so both features share one pass over the scene: segments
+go into a uniform grid (about one cell per segment), and a segment too long to bucket lands in a short list
+scanned on every query. Hatch strokes are left out, or a wall crossing a hatched wall would offer a hundred
+meaningless crossings. On a 102 000-segment drawing the index takes about 10 ms to build and a query is well
+inside a frame.
+
+Clicks are read on the drawing container, not on an overlay that swallows them, so panning and zooming keep
+working while measuring: a press that travels more than a few pixels is a pan, anything shorter is a pick.
+
+What one unit means comes from the file's `INSUNITS` header variable, and the panel says so. That variable is
+not needed to draw, so plenty of drawings carry the wrong one (two of the three test files do: a plan drawn in
+centimetres that calls itself millimetres, and a metric detail that calls itself inches). Hence the unit
+selector next to the reading: the file's answer is the default, not the verdict. `INSUNITS` also fixes the
+scale label of the PDF export, which used to assume millimetres.
+
 ### Content Security Policy
 
 Pages run under a strict CSP. The DWG parser is Emscripten output and needs `eval`, so `/cad/workers/*` gets
@@ -83,6 +106,10 @@ There is no test suite yet. What was verified by hand before the first release:
   returns 200, unknown URLs 404, `.html` URLs redirect to clean ones, headers as in `public/_headers`.
 - Headless Chrome against that server: the sample DXF and a real 2.6 MB DWG 2004 detail drawing open on desktop
   and a 390 px phone viewport, with zero console errors and zero requests to other origins.
+- Measuring: a LINE taken straight from the database, put on screen and measured with the tool — the readout
+  matched its true length exactly on all three drawings (522, 200 and 180 units), in Chrome and in WebKit, with
+  the pick landing on the endpoint snap. Checked too: panning still works while measuring, a tap measures on a
+  390 px phone viewport, and the unit selector changes every reading.
 - Plotting: both real drawings and the sample exported to PDF (whole drawing, a dragged window, fitted and at a
   fixed scale, colour and black and white) in Chrome and in WebKit, then rasterised with `pdftoppm` and compared
   with the canvas: text, hatch patterns, dashed lines and sheet size.

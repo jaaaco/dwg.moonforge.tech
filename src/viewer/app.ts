@@ -17,10 +17,12 @@ export function mountViewer(root: HTMLElement): void {
   const layersToggle = $<HTMLButtonElement>('layers-toggle')
 
   const plotToggle = $<HTMLButtonElement>('plot-toggle')
+  const measureToggle = $<HTMLButtonElement>('measure-toggle')
 
   let engine: Engine | null = null
   let enginePromise: Promise<Engine> | null = null
   let plotUi: { toggle(): void; close(): void } | null = null
+  let measureUi: { toggle(): void; close(): void; reset(): void } | null = null
   let busy = false
 
   const setState = (s: 'empty' | 'loading' | 'open') => { root.dataset.state = s }
@@ -41,6 +43,7 @@ export function mountViewer(root: HTMLElement): void {
     setState('loading')
     closeLayers()
     plotUi?.close()
+    measureUi?.close()
     fileName = name
     const started = performance.now()
     try {
@@ -49,6 +52,8 @@ export function mountViewer(root: HTMLElement): void {
       if (bytes.byteLength > MAX_COMFORTABLE_BYTES) say(t.vTooBig)
       const result = await engine.open(bytes, name, (stage) => say(stage === 'reading' ? t.vReading : t.vRendering))
       renderLayers(result.layers)
+      // Measurements belong to the drawing they were taken on.
+      measureUi?.reset()
       setState('open')
       actions.hidden = false
       const secs = ((performance.now() - started) / 1000).toFixed(1)
@@ -91,7 +96,12 @@ export function mountViewer(root: HTMLElement): void {
 
   let fileName = ''
 
-  // The export panel is only fetched when someone asks for it.
+  // The measuring tool and the export panel are only fetched when asked for.
+  measureToggle.addEventListener('click', async () => {
+    measureUi ??= (await import('./measure-ui')).mountMeasureUi(root, t, () => engine)
+    measureUi.toggle()
+  })
+
   plotToggle.addEventListener('click', async () => {
     plotUi ??= (await import('./plot-ui')).mountPlotUi(root, t, () => engine, () => fileName)
     closeLayers()
@@ -116,6 +126,8 @@ export function mountViewer(root: HTMLElement): void {
     actions.hidden = true
     closeLayers()
     plotUi?.close()
+    measureUi?.close()
+    measureUi?.reset()
     setState('empty')
     say('')
   })

@@ -10,6 +10,7 @@ const faq = [
   ['Is the file uploaded anywhere?', 'No. The drawing is read by a WebAssembly build of LibreDWG running in your browser tab. Nothing is sent to a server, and the page keeps working with the network switched off after it has loaded.'],
   ['Do I need an account or AutoCAD?', 'No account, no installation, no trial. Open the page, choose a file.'],
   ['Does it work on a Mac, Linux or a phone?', 'Yes. Any current browser with WebGL does the job: Safari, Chrome, Firefox or Edge, on desktop or mobile.'],
+  ['Can I measure distances on the drawing?', 'Yes. Press Measure and click two points. The reading snaps to line ends, midpoints and crossings, so it lands on the geometry instead of near it, and keeps a running total and the area of a closed outline. One drawing unit is read from the file header; when the header is wrong, you can set the unit yourself.'],
   ['Can I save the drawing as PDF?', 'Yes. Press PDF, pick the whole drawing or a window, a sheet size and a scale, and download it. The PDF is vector, so lines and text stay sharp at any zoom and print properly. Editing and DXF export are not there yet.'],
   ['Why is it free?', 'Because looking at a drawing someone sent you should not depend on having a Windows PC, an account or a server you have to trust with the file. The code is GPL-licensed and public, so it stays free.']
 ]
@@ -62,6 +63,7 @@ const jsonLd = [
     <ol>
       <li>Click <strong>Open DWG or DXF</strong> above, or drop the file anywhere on this page.</li>
       <li>Drag to pan, scroll to zoom. On a trackpad, two fingers pan and pinch zooms. Check a detail by turning layers on and off.</li>
+      <li>Need a dimension? <strong>Measure</strong> snaps to line ends, midpoints and crossings, and gives the length, the angle and the area.</li>
       <li>Need it on paper? <strong>PDF</strong> plots the whole drawing or a window you pick, on a sheet from A4 to A0, fitted or at a fixed scale.</li>
       <li>That is it. Close the tab and nothing remains.</li>
     </ol>

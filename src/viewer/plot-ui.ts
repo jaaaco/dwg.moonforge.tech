@@ -43,7 +43,7 @@ export function mountPlotUi(root: HTMLElement, t: Strings, engineOf: () => Engin
   const pickRect = $('pick-rect')
 
   let windowBox: PlotBox | null = null
-  let ready: { geometry: PlotGeometry; view: PlotView } | null = null
+  let ready: { geometry: PlotGeometry; view: PlotView; scaleText: string } | null = null
   let pending = 0
 
   const say = (text: string) => {
@@ -56,12 +56,14 @@ export function mountPlotUi(root: HTMLElement, t: Strings, engineOf: () => Engin
     return engine.extents()
   }
 
-  function scaleLabel(scale: number): string {
-    // One drawing unit is taken to be one millimetre, as it is in every
-    // architectural DWG we have seen; the note under the preview says so.
+  function scaleLabel(scale: number, mmPerUnit: number): string {
+    // `scale` is sheet millimetres per drawing unit; a real-world ratio needs
+    // to know what a unit is. The file's INSUNITS answers that when it is set,
+    // and millimetres are the fallback, as in every architectural DWG we have
+    // seen. The note under the preview says which of the two applied.
     const round = (n: number) => String(n >= 10 ? Math.round(n) : Math.round(n * 10) / 10)
-    const ratio = 1 / scale
-    return ratio >= 1 ? `1:${round(ratio)}` : `${round(scale)}:1`
+    const ratio = mmPerUnit / scale
+    return ratio >= 1 ? `1:${round(ratio)}` : `${round(1 / ratio)}:1`
   }
 
   function refresh(): void {
@@ -91,14 +93,18 @@ export function mountPlotUi(root: HTMLElement, t: Strings, engineOf: () => Engin
           mono: colorsSelect.value === 'mono',
           lineWidthMm: Number(widthSelect.value)
         }
-        ready = { geometry, view }
+        const units = engine.units()
+        const mmPerUnit = (units.metres ?? 0.001) * 1000
+        const scaleText = scaleLabel(layout.scale, mmPerUnit)
+        ready = { geometry, view, scaleText }
         preview(view)
         const width = Math.round(area.maxX - area.minX)
         const height = Math.round(area.maxY - area.minY)
+        const size = units.suffix ? `${width} × ${height} ${units.suffix}` : `${width} × ${height}`
         say(
           [
-            `${scaleLabel(layout.scale)} · ${t.pSize} ${width} × ${height}`,
-            layout.clipped ? t.pClipped : t.pUnits
+            `${scaleText} · ${t.pSize} ${size}`,
+            layout.clipped ? t.pClipped : units.metres ? `${t.pUnitsFile} ${units.suffix}` : t.pUnits
           ].join(' · ')
         )
         saveButton.disabled = false
@@ -139,10 +145,7 @@ export function mountPlotUi(root: HTMLElement, t: Strings, engineOf: () => Engin
     say(t.pWriting)
     try {
       const name = fileNameOf().replace(/\.[^.]+$/, '') || 'drawing'
-      const blob = await plotToPdf(ready.geometry, ready.view, {
-        title: name,
-        subject: scaleLabel(ready.view.layout.scale)
-      })
+      const blob = await plotToPdf(ready.geometry, ready.view, { title: name, subject: ready.scaleText })
       const url = URL.createObjectURL(blob)
       const link = Object.assign(document.createElement('a'), { href: url, download: `${name}.pdf` })
       document.body.append(link)

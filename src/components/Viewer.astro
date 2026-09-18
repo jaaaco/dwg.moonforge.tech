@@ -16,6 +16,7 @@ const t = ui[locale]
     <span class="viewer-badge" title={t.vDropHint}>● {t.vPrivacyBadge}</span>
     <div class="viewer-actions" data-role="actions" hidden>
       <button class="btn btn-ghost" type="button" data-role="fit">{t.vFit}</button>
+      <button class="btn btn-ghost" type="button" data-role="measure-toggle" aria-expanded="false">{t.mMeasure}</button>
       <button class="btn btn-ghost" type="button" data-role="plot-toggle" aria-expanded="false">{t.pExport}</button>
       <button class="btn btn-ghost" type="button" data-role="layers-toggle" aria-expanded="false">{t.vLayers}</button>
       <button class="btn btn-ghost" type="button" data-role="close" aria-label={t.vClose}>✕</button>
@@ -97,6 +98,19 @@ const t = ui[locale]
         </select>
       </label>
       <button class="btn btn-primary plot-save" type="button" data-role="plot-save" disabled>{t.pSave}</button>
+    </aside>
+    <canvas class="viewer-measure" data-role="measure-canvas" hidden></canvas>
+    <aside class="viewer-measure-box" data-role="measure" hidden>
+      <div class="measure-head">
+        <strong>{t.mTitle}</strong>
+        <button type="button" class="link" data-role="measure-clear">{t.mClear}</button>
+        <button type="button" class="link" data-role="measure-close" aria-label={t.mClose}>✕</button>
+      </div>
+      <div class="measure-readout" data-role="measure-readout" role="status" aria-live="polite"></div>
+      <label class="measure-units">{t.mUnits}
+        <select data-role="measure-units"></select>
+      </label>
+      <p class="measure-hint" data-role="measure-hint"></p>
     </aside>
     <div class="viewer-pick" data-role="pick" hidden><div class="viewer-pick-rect" data-role="pick-rect" hidden></div></div>
     <div class="viewer-dropzone" aria-hidden="true"></div>
@@ -200,6 +214,31 @@ const t = ui[locale]
   .plot-note { margin: 0; color: var(--text-muted); font-size: 0.82rem; }
   .plot-window { width: 100%; }
   .plot-save { margin-top: 0.2rem; }
+
+  /* Measuring paints over the drawing but never takes a pointer event: panning
+     and zooming have to keep working while a measurement is open. */
+  .viewer-measure { position: absolute; inset: 0; pointer-events: none; }
+  .viewer-measure[hidden] { display: none; }
+  .viewer[data-measure='1'] .viewer-canvas { cursor: crosshair; }
+  .viewer-measure-box {
+    position: absolute; left: 0.6rem; bottom: 0.6rem; width: min(17rem, calc(100% - 1.2rem));
+    background: var(--bg-raised); border: 1px solid var(--line); border-radius: 8px;
+    padding: 0.5rem 0.6rem; font-size: 0.85rem; box-shadow: 0 2px 12px rgb(0 0 0 / 0.4);
+  }
+  .viewer-measure-box[hidden] { display: none; }
+  .measure-head { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.25rem; }
+  .measure-head strong { margin-right: auto; }
+  .measure-readout { display: grid; gap: 0.1rem; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+  .measure-readout :global(.measure-main) { font: 600 1.05rem/1.3 var(--font-display); }
+  .measure-units { display: flex; align-items: center; gap: 0.4rem; margin-top: 0.45rem; color: var(--text-muted); font-size: 0.78rem; }
+  .measure-units :global(select) {
+    font: inherit; padding: 0.15rem 0.3rem; background: var(--bg); color: var(--text);
+    border: 1px solid var(--line); border-radius: 5px; flex: 1; min-width: 0;
+  }
+  .measure-hint { margin: 0.35rem 0 0; color: var(--text-muted); font-size: 0.75rem; }
+  /* Same green as the snap marker on the drawing: the readout and the marker
+     are saying the same thing. */
+  .measure-hint :global(.measure-snap) { color: #5ee08a; }
 
   /* Window picking sits above the canvas so the drawing never sees the drag. */
   .viewer-pick { position: absolute; inset: 0; cursor: crosshair; background: rgb(0 0 0 / 0.25); }

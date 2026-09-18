@@ -1,3 +1,4 @@
+import type { DrawingUnits } from './measure'
 import type { PlotBox, PlotGeometry } from './plot'
 
 export interface DrawingLayer {
@@ -24,4 +25,6 @@ export interface Engine {
   /** Everything visible, in drawing units. */
   extents(): PlotBox | null
   screenToWorld(clientX: number, clientY: number): { x: number; y: number } | null
+  /** What one drawing unit is, read from the file's header. */
+  units(): DrawingUnits
 }

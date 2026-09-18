@@ -10,6 +10,7 @@ import {
 } from '@mlightcad/cad-simple-viewer'
 import { AcDbDatabaseConverterManager, AcDbFileType, AcGeBox2d, AcGePoint2d } from '@mlightcad/data-model'
 import { AcDbLibreDwgConverter } from '@mlightcad/libredwg-converter'
+import { unitsOf } from './measure'
 import { buildPlotGeometry, isEmptyBox, type PlotBox, type PlotGeometry } from './plot'
 import type { DrawingLayer, Engine } from './types'
 // Everything the engine fetches at runtime is served from this site under a
@@ -295,6 +296,37 @@ export async function createEngine(container: HTMLElement): Promise<Engine> {
         x: box.minX + ((clientX - rect.left) / rect.width) * (box.maxX - box.minX),
         y: box.maxY - ((clientY - rect.top) / rect.height) * (box.maxY - box.minY)
       }
+    },
+
+    units() {
+      // INSUNITS says what one drawing unit is; without it a measurement can
+      // only be a number. Most files do carry it, which is what makes a reading
+      // in millimetres or feet honest rather than assumed.
+      let insunits = 0
+      let lunits = 2
+      let native: ((value: number) => string) | null = null
+      try {
+        const database = (manager.curDocument as any)?.database
+        insunits = Number(database?.insunits) || 0
+        lunits = Number(database?.lunits) || 2
+        const formatter = database?.formatter
+        // Engineering, architectural and fractional drawings are read in feet
+        // and inches by the people who drew them; decimal inches would not be
+        // recognised. Every other format is plain decimal, which we do better
+        // ourselves (thousands separators in the reader's language).
+        if (formatter && (lunits === 3 || lunits === 4 || lunits === 5)) {
+          native = (value: number) => {
+            try {
+              return formatter.formatLength(value, { showUnits: true })
+            } catch {
+              return ''
+            }
+          }
+        }
+      } catch {
+        /* no document open, or a package update moved the header variables */
+      }
+      return unitsOf(insunits, native)
     },
 
     extents() {

@@ -10,6 +10,7 @@ const faq = [
   ['Czy plik gdzieś jest wysyłany?', 'Nie. Rysunek czyta LibreDWG skompilowany do WebAssembly, uruchomiony w Twojej karcie przeglądarki. Nic nie trafia na serwer, a po załadowaniu strona działa nawet bez internetu.'],
   ['Potrzebuję konta albo AutoCADa?', 'Nie. Bez konta, bez instalacji, bez wersji próbnej. Wchodzisz, wybierasz plik.'],
   ['Działa na Macu, Linuksie, telefonie?', 'Tak. Wystarczy aktualna przeglądarka z WebGL: Safari, Chrome, Firefox albo Edge, na komputerze i na telefonie.'],
+  ['Mogę mierzyć wymiary na rysunku?', 'Tak. Kliknij Miara i wskaż dwa punkty. Pomiar przyciąga się do końców linii, ich środków i przecięć, więc trafia w geometrię, a nie obok, i liczy sumę odcinków oraz pole zamkniętego obrysu. Jednostkę rysunku czytamy z nagłówka pliku; gdy jest w nim błędna, możesz ją ustawić sam.'],
   ['Mogę zapisać rysunek do PDF?', 'Tak. Kliknij PDF, wybierz cały rysunek albo zaznacz okno, rozmiar arkusza i skalę, i pobierz plik. PDF jest wektorowy, więc linie i teksty zostają ostre przy każdym powiększeniu i dobrze wychodzą na wydruku. Edycji i eksportu do DXF jeszcze nie ma.'],
   ['Dlaczego za darmo?', 'Bo obejrzenie rysunku, który ktoś Ci przysłał, nie powinno zależeć od posiadania Windowsa, zakładania konta ani wysyłania pliku na cudzy serwer. Kod jest na licencji GPL i jest publiczny, więc zostanie darmowy.']
 ]
@@ -63,6 +64,7 @@ const jsonLd = [
     <ol>
       <li>Kliknij <strong>Otwórz DWG lub DXF</strong> powyżej albo upuść plik w dowolnym miejscu strony.</li>
       <li>Przeciąganiem przesuwasz, kółkiem przybliżasz. Na trackpadzie dwa palce przesuwają, a szczypanie przybliża. Warstwy włączysz i wyłączysz w panelu.</li>
+      <li>Potrzebujesz wymiaru? <strong>Miara</strong> przyciąga się do końców linii, ich środków i przecięć, i podaje długość, kąt oraz pole.</li>
       <li>Potrzebujesz wydruku? <strong>PDF</strong> drukuje cały rysunek albo zaznaczone okno, na arkuszu od A4 do A0, dopasowany albo w wybranej skali.</li>
       <li>Tyle. Zamykasz kartę i nic po pliku nie zostaje.</li>
     </ol>

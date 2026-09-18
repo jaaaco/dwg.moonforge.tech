@@ -63,6 +63,8 @@ export interface PlotStroke {
   phase: number
   /** Flat x,y pairs in drawing units. */
   pts: Float32Array
+  /** A line of a hatch pattern: printed like any other, but not worth snapping to. */
+  hatch?: boolean
 }
 
 export interface PlotFill {
@@ -540,7 +542,8 @@ function addHatch(obj: ObjectLike, material: Anything, geom: PlotGeometry): void
           widthWorld: 0,
           dash: dash?.array ?? null,
           phase: dash ? phaseIn(from - stagger, dash) : 0,
-          pts: new Float32Array([p0x, p0y, p1x, p1y])
+          pts: new Float32Array([p0x, p0y, p1x, p1y]),
+          hatch: true
         })
         growBox(geom.box, p0x, p0y)
         growBox(geom.box, p1x, p1y)
