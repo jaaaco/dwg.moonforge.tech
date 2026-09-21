@@ -30,8 +30,8 @@ const jsonLd = [
     <p><a href={path('home', 'pl')}>dwg.moonforge.tech</a> czyta DWG za pomocą GNU LibreDWG skompilowanego do WebAssembly, bezpośrednio w karcie przeglądarki.</p>
     <ul>
       <li><strong>Wymaga:</strong> aktualnej przeglądarki (Chrome, Safari, Firefox, Edge) na dowolnym systemie.</li>
-      <li><strong>Mocne strony:</strong> szybki podgląd, włączanie i wyłączanie warstw, prywatność (bez wysyłania, bez konta), open source, po polsku.</li>
-      <li><strong>Słabe strony:</strong> na razie tylko oglądanie, bez drukowania i mierzenia. Tekst jest składany otwartym fontem, więc może wyglądać trochę inaczej niż w AutoCADzie. Część złożonych obiektów z nowych wersji DWG może się nie wyświetlić.</li>
+      <li><strong>Mocne strony:</strong> szybki podgląd, włączanie i wyłączanie warstw, <a href="/pl/pomiar-dwg">pomiar</a> z przyciąganiem do geometrii, <a href="/pl/dwg-na-pdf">eksport do PDF</a> w skali, prywatność (bez wysyłania, bez konta), open source, po polsku.</li>
+      <li><strong>Słabe strony:</strong> bez edycji i bez eksportu do DXF. Tekst jest składany otwartym fontem, więc może wyglądać trochę inaczej niż w AutoCADzie. Część złożonych obiektów z nowych wersji DWG może się nie wyświetlić.</li>
     </ul>
 
     <h2>2. DWG TrueView (Windows)</h2>
@@ -63,7 +63,7 @@ const jsonLd = [
     <ul>
       <li><strong>Wymaga:</strong> instalacji.</li>
       <li><strong>Mocne strony:</strong> prawdziwa edycja rysunków DXF za zero złotych.</li>
-      <li><strong>Słabe strony:</strong> DWG tylko importuje, a jego biblioteka sama nazywa tę obsługę podstawową (rudimentary). Nowsze albo bardziej złożone pliki często się nie otwierają.</li>
+      <li><strong>Słabe strony:</strong> DWG tylko importuje, a jego biblioteka (libdxfrw) sama opisuje odczyt DWG jako eksperymentalny. Nowsze albo bardziej złożone pliki mogą się nie otworzyć.</li>
     </ul>
 
     <h2>Jak otworzyć plik DWG na telefonie?</h2>

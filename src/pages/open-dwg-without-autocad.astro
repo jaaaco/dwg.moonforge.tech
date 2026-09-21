@@ -29,8 +29,8 @@ const jsonLd = [
     <p><a href={path('home', 'en')}>dwg.moonforge.tech</a> reads the DWG with GNU LibreDWG compiled to WebAssembly, directly in your browser tab.</p>
     <ul>
       <li><strong>Needs:</strong> a current browser (Chrome, Safari, Firefox, Edge), on any system.</li>
-      <li><strong>Good at:</strong> quick viewing, layers on and off, privacy (no upload, no account), open source.</li>
-      <li><strong>Falls short:</strong> viewing only for now, no printing or measuring yet. Text uses an open font, so it can look a little different from AutoCAD. Some complex objects from recent DWG versions may not show.</li>
+      <li><strong>Good at:</strong> quick viewing, layers on and off, <a href="/measure-dwg">measuring</a> with snapping, <a href="/dwg-to-pdf">vector PDF export</a> at scale, privacy (no upload, no account), open source.</li>
+      <li><strong>Falls short:</strong> no editing and no DXF export yet. Text uses an open font, so it can look a little different from AutoCAD. Some complex objects from recent DWG versions may not show.</li>
     </ul>
 
     <h2>2. DWG TrueView (Windows)</h2>
@@ -62,7 +62,7 @@ const jsonLd = [
     <ul>
       <li><strong>Needs:</strong> installing an app.</li>
       <li><strong>Good at:</strong> editing DXF drawings with a real CAD program at no cost.</li>
-      <li><strong>Falls short:</strong> DWG is import only, and its DWG library calls that support rudimentary. Newer or complex files often fail.</li>
+      <li><strong>Falls short:</strong> DWG is import only, and its DWG library (libdxfrw) lists DWG reading as experimental. Newer or complex files can fail.</li>
     </ul>
 
     <h2>What about my phone?</h2>
