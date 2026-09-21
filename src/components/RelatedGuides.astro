@@ -1,0 +1,32 @@
+---
+import { guideLinks, pickGuides } from '../lib/guides'
+import { ui, type Locale } from '../lib/i18n'
+
+interface Props {
+  locale: Locale
+  cluster?: string
+  tags?: string[]
+  exclude?: string
+  limit?: number
+}
+
+const { locale, cluster, tags, exclude, limit = 3 } = Astro.props
+const picked = pickGuides(await guideLinks(locale), { cluster, tags, exclude, limit })
+---
+{picked.length > 0 && (
+  <nav class="related" aria-label={ui[locale].gRelated}>
+    <h2>{ui[locale].gRelated}</h2>
+    <ul>
+      {picked.map((l) => (
+        <li><a href={l.href}>{l.title}</a><span class="muted">{l.blurb}</span></li>
+      ))}
+    </ul>
+  </nav>
+)}
+
+<style>
+  .related ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.8rem; }
+  .related li { display: grid; gap: 0.15rem; }
+  .related a { font-family: var(--font-display); font-weight: 500; }
+  .related .muted { font-size: 0.92rem; }
+</style>

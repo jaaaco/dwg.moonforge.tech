@@ -1,0 +1,211 @@
+{
+  "_comment": "Claims about other products. An article may name a product only through a fact listed in its frontmatter `facts`, and its Sources section is built from these entries, not written by the model. `quotes` must appear verbatim (whitespace-normalised) in the source page's visible text: automation/facts-check.mjs re-reads every source monthly and flags the fact when a quote disappears. `names` are the product names the fact allows an article to mention.",
+  "trueview-windows-only": {
+    "names": [
+      "DWG TrueView"
+    ],
+    "claim": "DWG TrueView, Autodesk's free desktop viewer, is built for Windows and does not install on macOS.",
+    "claim_pl": "DWG TrueView, darmowa przeglądarka Autodesku na komputer, jest zbudowana dla Windowsa i nie instaluje się na macOS.",
+    "source": {
+      "url": "https://www.autodesk.com/support/technical/article/caas/sfdcarticles/sfdcarticles/DWG-TrueView-will-not-install-on-the-Mac-operating-system-to-open-DWG-files.html",
+      "title": "Autodesk support: DWG TrueView will not install on the Mac operating system"
+    },
+    "quotes": [
+      "DWG TrueView is built to run on the Windows operating system, and will not install on the Mac OS"
+    ],
+    "checked": "2026-09-21"
+  },
+  "trueview-2027-requirements": {
+    "names": [
+      "DWG TrueView"
+    ],
+    "claim": "DWG TrueView 2027 requires 64-bit Windows 11, 8 GB of RAM and 4.0 GB of disk space to install.",
+    "claim_pl": "DWG TrueView 2027 wymaga 64-bitowego Windowsa 11, 8 GB RAM i 4,0 GB miejsca na dysku do instalacji.",
+    "source": {
+      "url": "https://www.autodesk.com/support/technical/article/caas/sfdcarticles/sfdcarticles/System-Requirements-for-Autodesk-DWG-TrueView-2027.html",
+      "title": "Autodesk support: System Requirements for DWG TrueView 2027"
+    },
+    "quotes": [
+      "64-bit Microsoft® Windows® 11",
+      "Memory 8 GB RAM",
+      "Installation 4.0 GB"
+    ],
+    "numbers": [
+      "64",
+      "11",
+      "8",
+      "4.0",
+      "4,0",
+      "2027"
+    ],
+    "checked": "2026-09-21"
+  },
+  "autodesk-viewer-free-account": {
+    "names": [
+      "Autodesk Viewer"
+    ],
+    "claim": "Autodesk Viewer is a free browser application, and using it requires an Autodesk account.",
+    "claim_pl": "Autodesk Viewer to darmowa aplikacja w przeglądarce, ale do korzystania z niej potrzebne jest konto Autodesk.",
+    "source": {
+      "url": "https://help.autodesk.com/cloudhelp/ENU/ADSKVIEWER-Help/files/ADSKVIEWER_Help_GettingStarted_html.html",
+      "title": "Autodesk Viewer help: Getting started"
+    },
+    "quotes": [
+      "Autodesk Viewer is a free browser application",
+      "To start using Autodesk Viewer, you need an Autodesk Account"
+    ],
+    "checked": "2026-09-21"
+  },
+  "autodesk-viewer-upload": {
+    "names": [
+      "Autodesk Viewer"
+    ],
+    "claim": "Autodesk Viewer shows a drawing only after the file has been uploaded to it.",
+    "claim_pl": "Autodesk Viewer pokazuje rysunek dopiero po wysłaniu do niego pliku.",
+    "source": {
+      "url": "https://help.autodesk.com/cloudhelp/ENU/ADSKVIEWER-Help/files/ADSKVIEWER_Help_GettingStarted_html.html",
+      "title": "Autodesk Viewer help: Getting started"
+    },
+    "quotes": [
+      "Before you can view and share designs, you need to upload files to Autodesk Viewer"
+    ],
+    "checked": "2026-09-21"
+  },
+  "autodesk-viewer-30-days": {
+    "names": [
+      "Autodesk Viewer"
+    ],
+    "claim": "A design uploaded to Autodesk Viewer stays available for 30 days by default, and the period can be extended by hand.",
+    "claim_pl": "Rysunek wysłany do Autodesk Viewer jest domyślnie dostępny przez 30 dni, a okres można ręcznie przedłużyć.",
+    "source": {
+      "url": "https://www.autodesk.com/support/technical/article/caas/sfdcarticles/sfdcarticles/Are-files-uploaded-to-the-Autodesk-Viewer-deleted-after-30-days-or-can-this-period-be-extended.html",
+      "title": "Autodesk support: the 30-day period in Autodesk Viewer"
+    },
+    "quotes": [
+      "your design view will be available for the next 30 days",
+      "It is possible to extend the 30 days"
+    ],
+    "numbers": [
+      "30"
+    ],
+    "checked": "2026-09-21"
+  },
+  "oda-viewer-purpose": {
+    "names": [
+      "ODA Viewer",
+      "Open Design Alliance"
+    ],
+    "claim": "ODA Viewer is a free desktop application from the Open Design Alliance, presented as a tool for rendering and testing its technology, with Linux packages among the downloads.",
+    "claim_pl": "ODA Viewer to darmowa aplikacja na komputer od Open Design Alliance, przedstawiana jako narzędzie do renderowania i testowania jej technologii; wśród pobrań są pakiety dla Linuksa.",
+    "source": {
+      "url": "https://www.opendesign.com/guestfiles/oda_viewer",
+      "title": "Open Design Alliance: ODA Viewer"
+    },
+    "quotes": [
+      "For rendering and testing",
+      "ODA VIEWER DOWNLOADS"
+    ],
+    "checked": "2026-09-21"
+  },
+  "librecad-dwg-experimental": {
+    "names": [
+      "LibreCAD",
+      "libdxfrw"
+    ],
+    "claim": "LibreCAD reads DWG through its libdxfrw library, whose own documentation lists DWG reading as experimental.",
+    "claim_pl": "LibreCAD czyta DWG biblioteką libdxfrw, a jej dokumentacja sama opisuje odczyt DWG jako eksperymentalny.",
+    "source": {
+      "url": "https://github.com/LibreCAD/libdxfrw",
+      "title": "libdxfrw, the DXF/DWG library of LibreCAD"
+    },
+    "quotes": [
+      "DWG read across the dispatched AC versions | experimental"
+    ],
+    "sourceText": "https://raw.githubusercontent.com/LibreCAD/libdxfrw/master/README.md",
+    "checked": "2026-09-21"
+  },
+  "oda-dwg-native-proprietary": {
+    "names": [
+      "Open Design Alliance"
+    ],
+    "claim": "The Open Design Alliance's specification describes DWG as the native and proprietary file format of AutoCAD and a trademark of Autodesk.",
+    "claim_pl": "Specyfikacja Open Design Alliance opisuje DWG jako natywny i zamknięty format plików AutoCADa oraz znak towarowy Autodesku.",
+    "source": {
+      "url": "https://www.opendesign.com/files/guestdownloads/OpenDesign_Specification_for_.dwg_files.pdf",
+      "title": "Open Design Alliance: Open Design Specification for .dwg files"
+    },
+    "sourceType": "pdf",
+    "quotes": [
+      "DWG is the native and proprietary file format for AutoCAD® and a trademark of Autodesk, Inc."
+    ],
+    "checked": "2026-09-21"
+  },
+  "oda-dwg-undocumented": {
+    "names": [
+      "Open Design Alliance"
+    ],
+    "claim": "The Open Design Alliance, which builds DWG libraries for other CAD vendors, calls the DWG format undocumented and proprietary in its own published specification.",
+    "claim_pl": "Open Design Alliance, która buduje biblioteki DWG dla innych producentów CAD, w swojej opublikowanej specyfikacji nazywa format DWG nieudokumentowanym i zamkniętym.",
+    "source": {
+      "url": "https://www.opendesign.com/files/guestdownloads/OpenDesign_Specification_for_.dwg_files.pdf",
+      "title": "Open Design Alliance: Open Design Specification for .dwg files"
+    },
+    "sourceType": "pdf",
+    "quotes": [
+      "undocumented and proprietary DWG"
+    ],
+    "checked": "2026-09-21"
+  },
+  "oda-dwg-version-ids": {
+    "names": [
+      "Open Design Alliance"
+    ],
+    "claim": "The first 6 bytes of a DWG file are a version ID: AC1012 is R13, AC1014 R14, AC1015 R2000, AC1018 R2004, AC1021 R2007, AC1024 R2010, AC1027 R2013 and AC1032 R2018.",
+    "claim_pl": "Pierwsze 6 bajtów pliku DWG to identyfikator wersji: AC1012 to R13, AC1014 R14, AC1015 R2000, AC1018 R2004, AC1021 R2007, AC1024 R2010, AC1027 R2013, a AC1032 R2018.",
+    "source": {
+      "url": "https://www.opendesign.com/files/guestdownloads/OpenDesign_Specification_for_.dwg_files.pdf",
+      "title": "Open Design Alliance: Open Design Specification for .dwg files"
+    },
+    "sourceType": "pdf",
+    "quotes": [
+      "The first 6 bytes are:",
+      "AC1032"
+    ],
+    "numbers": [
+      "6",
+      "1012",
+      "1014",
+      "1015",
+      "1018",
+      "1021",
+      "1024",
+      "1027",
+      "1032",
+      "13",
+      "14",
+      "2000",
+      "2004",
+      "2007",
+      "2010",
+      "2013",
+      "2018"
+    ],
+    "checked": "2026-09-21"
+  },
+  "libredwg-beta": {
+    "names": [
+      "LibreDWG"
+    ],
+    "claim": "GNU LibreDWG is a free C library for DWG files and describes itself as being in beta development.",
+    "claim_pl": "GNU LibreDWG to wolna biblioteka C do plików DWG, która sama określa się jako wersja w fazie beta.",
+    "source": {
+      "url": "https://www.gnu.org/software/libredwg/",
+      "title": "GNU LibreDWG"
+    },
+    "quotes": [
+      "GNU LibreDWG is a free C library to handle DWG files",
+      "LibreDWG is in beta development stage"
+    ],
+    "checked": "2026-09-21"
+  }
+}

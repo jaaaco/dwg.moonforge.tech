@@ -5,22 +5,30 @@ import { routes, path, ui, REPO_URL, MOONFORGE_URL, type Locale, type RouteKey }
 
 interface Props {
   locale: Locale
-  route: RouteKey
+  // A page from the route table, or an article that brings its own language
+  // variants (paired by `key` in content/, not by the table).
+  route?: RouteKey
+  paths?: Partial<Record<Locale, string>>
+  // The nav item to mark as current when the page is not itself in the nav.
+  section?: RouteKey
   title: string
   description: string
+  ogType?: 'website' | 'article'
   jsonLd?: Record<string, unknown>[]
 }
 
-const { locale, route, title, description, jsonLd = [] } = Astro.props
+const { locale, route, paths, section, title, description, ogType = 'website', jsonLd = [] } = Astro.props
 const t = ui[locale]
 const site = Astro.site!.origin
-const selfPath = path(route, locale)
+const variants: Partial<Record<Locale, string | null>> = paths ?? routes[route!]
+const selfPath = variants[locale]!
 const canonical = site + (selfPath === '/' ? '/' : selfPath)
-const alternates = (Object.entries(routes[route]) as [Locale, string | null][])
-  .filter(([, p]) => p !== null)
+const alternates = (Object.entries(variants) as [Locale, string | null | undefined][])
+  .filter(([, p]) => p)
   .map(([l, p]) => ({ lang: l, href: site + p }))
 const otherLocale: Locale = locale === 'en' ? 'pl' : 'en'
-const langHref = routes[route][otherLocale] ?? path('home', otherLocale)
+const langHref = variants[otherLocale] ?? path(section ?? 'home', otherLocale)
+const current = section ?? route
 const graph = [
   {
     '@type': 'Organization',
@@ -43,7 +51,7 @@ const graph = [
     {alternates.length > 1 && <link rel="alternate" hreflang="x-default" href={alternates.find((a) => a.lang === 'en')!.href} />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta name="theme-color" content="#080809" />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={t.siteName} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -62,9 +70,10 @@ const graph = [
           <span>dwg<small>.moonforge</small></span>
         </a>
         <nav class="nav" aria-label="Main">
-          <a href={path('home', locale)} aria-current={route === 'home' ? 'page' : undefined}>{t.navViewer}</a>
-          <a href={path('guide', locale)} aria-current={route === 'guide' ? 'page' : undefined}>{t.navGuide}</a>
-          <a href={path('why', locale)} aria-current={route === 'why' ? 'page' : undefined}>{t.navWhy}</a>
+          <a href={path('home', locale)} aria-current={current === 'home' ? 'page' : undefined}>{t.navViewer}</a>
+          <a href={path('guide', locale)} aria-current={current === 'guide' ? 'page' : undefined}>{t.navGuide}</a>
+          <a href={path('guides', locale)} aria-current={current === 'guides' ? 'page' : undefined}>{t.navGuides}</a>
+          <a href={path('why', locale)} aria-current={current === 'why' ? 'page' : undefined}>{t.navWhy}</a>
           <a href={REPO_URL} rel="noopener">{t.navSource}</a>
           <a class="lang" href={langHref} hreflang={otherLocale} lang={otherLocale}>{t.langSwitch}</a>
         </nav>

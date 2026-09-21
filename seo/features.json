@@ -1,0 +1,33 @@
+{
+  "_comment": "What the viewer can and cannot do, as of the date below. content-gen puts this in every prompt and rejects drafts that promise anything from `cannot` (patterns are checked case-insensitively on each sentence that does not also contain a negation). Update it in the same commit as the feature.",
+  "asOf": "2026-09-21",
+  "can": [
+    "Open DWG and DXF files in the browser, with the file read locally by GNU LibreDWG compiled to WebAssembly; nothing is uploaded",
+    "Works in current Chrome, Safari, Firefox and Edge on Windows, macOS, Linux, iPhone, iPad and Android; no install, no account",
+    "Pan by dragging or with two fingers, zoom with the wheel or a pinch, fit the drawing to the screen",
+    "Turn layers on and off; turning on a frozen layer thaws it",
+    "Measure: click points to get length, dx/dy, angle, a running total and the area of a closed outline; snaps to endpoints, midpoints, crossings and the nearest point on a line",
+    "The drawing unit is read from the file header and can be changed, because the header is often wrong",
+    "Export to vector PDF: the whole drawing, the current view or a picked window; sheets A4 to A0 and Letter; auto, portrait or landscape; fit to sheet or a fixed scale from 1:1 to 1:1000; colours or black and white; three line widths; preview before download",
+    "Text is drawn with an open font (osifont), so it can look slightly different from AutoCAD",
+    "Open source under GPL-3.0, code on GitHub; anyone can host their own copy"
+  ],
+  "cannot": [
+    "Edit drawings or save changes",
+    "Export or save to DXF or DWG, or convert between DWG versions",
+    "Export to JPG, PNG, SVG or other image formats",
+    "Show 3D models in 3D or render them",
+    "Open RVT, IFC, STEP, SKP, PDF or other non-DWG/DXF formats",
+    "Resolve external references (xrefs) or load missing SHX fonts",
+    "Work fully offline before the page has been loaded once"
+  ],
+  "cannotPatterns": [
+    "\\b(edit|modify|change)\\b[^.]{0,40}\\b(drawing|dwg|dxf|file)s?\\b",
+    "\\b(export|save|convert)\\w*\\b[^.]{0,30}\\b(to|as|into)\\s+(dxf|dwg|jpe?g|png|svg)\\b",
+    "\\bdwg\\s+to\\s+(dxf|jpe?g|png|svg)\\b",
+    "\\b(edytow|zmieni|modyfikow)\\w*[^.]{0,40}\\b(rysun|plik)\\w*",
+    "\\b(eksport|zapis|konwert|przekonwert)\\w*[^.]{0,30}\\b(do|na|jako)\\s+(dxf|dwg|jpe?g|png|svg)\\b",
+    "\\b(ifc|rvt|revit|step|skp|sketchup)\\b[^.]{0,30}\\b(open|otw)"
+  ],
+  "negations": ["\\bnot\\b", "\\bno\\b", "n't\\b", "\\bcannot\\b", "\\bwithout\\b", "\\bnie\\b", "\\bbez\\b", "\\bnigdy\\b", "\\bjeszcze nie\\b", "\\bnot yet\\b"]
+}

@@ -1,0 +1,93 @@
+---
+import Base from '../layouts/Base.astro'
+import RelatedGuides from './RelatedGuides.astro'
+import { render } from 'astro:content'
+import { counterpart, dateOf, sourcesFor, type GuideEntry } from '../lib/guides'
+import { guidePath, path, ui, MOONFORGE_URL } from '../lib/i18n'
+
+interface Props { entry: GuideEntry }
+const { entry } = Astro.props
+const d = entry.data
+const t = ui[d.locale]
+const { Content } = await render(entry)
+const other = await counterpart(entry)
+const paths = {
+  [d.locale]: guidePath(d.locale, d.slug),
+  ...(other ? { [other.data.locale]: guidePath(other.data.locale, other.data.slug) } : {})
+}
+const site = Astro.site!.origin
+const url = site + guidePath(d.locale, d.slug)
+const { sources, checked } = sourcesFor(d.facts)
+const iso = (x: Date) => x.toISOString().slice(0, 10)
+const jsonLd: Record<string, unknown>[] = [
+  {
+    '@type': 'TechArticle',
+    headline: d.title,
+    description: d.description,
+    inLanguage: d.locale,
+    datePublished: iso(d.date),
+    dateModified: iso(dateOf(entry)),
+    url,
+    mainEntityOfPage: url,
+    author: { '@id': MOONFORGE_URL + '/#org' },
+    publisher: { '@id': MOONFORGE_URL + '/#org' }
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: t.siteName, item: site + path('home', d.locale) },
+      { '@type': 'ListItem', position: 2, name: t.gHubTitle, item: site + path('guides', d.locale) },
+      { '@type': 'ListItem', position: 3, name: d.title, item: url }
+    ]
+  },
+  ...(d.faq.length
+    ? [{
+        '@type': 'FAQPage',
+        mainEntity: d.faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } }))
+      }]
+    : [])
+]
+---
+<Base locale={d.locale} paths={paths} section="guides" title={d.title} description={d.description} ogType="article" jsonLd={jsonLd}>
+  <article class="wrap hero prose">
+    <p class="kicker"><a href={path('guides', d.locale)}>{t.gHubTitle}</a></p>
+    <Content />
+
+    {d.faq.length > 0 && (
+      <>
+        <h2>{t.gQuestions}</h2>
+        <dl class="faq">
+          {d.faq.map((f) => (<><dt>{f.q}</dt><dd>{f.a}</dd></>))}
+        </dl>
+      </>
+    )}
+
+    <aside class="cta card">
+      <h2>{t.gCtaTitle}</h2>
+      <p>{t.gCtaText}</p>
+      <a class="btn btn-primary" href={path(d.tool, d.locale)}>{t.gCtaButton}</a>
+    </aside>
+
+    {sources.length > 0 && (
+      <>
+        <h2>{t.gSources}</h2>
+        <ul class="sources">
+          {sources.map((s) => (<li><a href={s.url} rel="noopener nofollow">{s.title}</a></li>))}
+        </ul>
+        <p class="muted">{t.gChecked} {checked}.</p>
+      </>
+    )}
+    {sources.length === 0 && <p class="muted">{t.gUpdated}: {iso(dateOf(entry))}.</p>}
+
+    <RelatedGuides locale={d.locale} cluster={d.cluster} tags={d.tags} exclude={guidePath(d.locale, d.slug)} />
+  </article>
+</Base>
+
+<style>
+  .kicker a { color: inherit; text-decoration: none; }
+  .cta { margin: 2.4rem 0 0; }
+  .cta h2 { margin-top: 0; }
+  .cta p { margin: 0 0 0.9rem; }
+  .sources { font-size: 0.92rem; }
+  .sources a { overflow-wrap: anywhere; }
+</style>

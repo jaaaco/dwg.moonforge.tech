@@ -8,6 +8,10 @@ export const routes = {
   why: { en: '/why', pl: '/pl/dlaczego' },
   guide: { en: '/open-dwg-without-autocad', pl: '/pl/jak-otworzyc-plik-dwg' },
   mac: { en: '/dwg-viewer-mac', pl: null },
+  dwgToPdf: { en: '/dwg-to-pdf', pl: '/pl/dwg-na-pdf' },
+  dxfViewer: { en: '/dxf-viewer', pl: '/pl/przegladarka-dxf' },
+  measure: { en: '/measure-dwg', pl: '/pl/pomiar-dwg' },
+  guides: { en: '/guides', pl: '/pl/poradniki' },
   privacy: { en: '/privacy', pl: '/pl/prywatnosc' },
   licenses: { en: '/licenses', pl: '/pl/licencje' }
 } as const satisfies Record<string, Record<Locale, string | null>>
@@ -16,6 +20,14 @@ export type RouteKey = keyof typeof routes
 
 export function path(key: RouteKey, locale: Locale): string {
   return routes[key][locale] ?? routes[key].en
+}
+
+// Articles live in content/<locale>/<slug>.md and are paired across languages
+// by their `key`, not by the route table above.
+export const guideBase: Record<Locale, string> = { en: '/guides', pl: '/pl/poradniki' }
+
+export function guidePath(locale: Locale, slug: string): string {
+  return `${guideBase[locale]}/${slug}`
 }
 
 export const REPO_URL = 'https://github.com/jaaaco/dwg.moonforge.tech'
@@ -27,6 +39,7 @@ export const ui = {
     navViewer: 'Viewer',
     navWhy: 'Why',
     navGuide: 'How to open DWG',
+    navGuides: 'Guides',
     navSource: 'Source code',
     langSwitch: 'Polski',
     footerMadeBy: 'Made by',
@@ -36,6 +49,17 @@ export const ui = {
     footerNoTrack: 'No cookies. No upload. No account.',
     footerTrademark: 'Not affiliated with or endorsed by Autodesk. AutoCAD and DWG are trademarks of Autodesk, Inc.',
     skip: 'Skip to viewer',
+    // guides
+    gKicker: 'Guide',
+    gHubTitle: 'DWG guides',
+    gRelated: 'Related guides',
+    gSources: 'Sources',
+    gChecked: 'Sources checked on',
+    gUpdated: 'Updated',
+    gQuestions: 'Questions',
+    gCtaTitle: 'Open your drawing now',
+    gCtaText: 'Free, in this browser tab. The file is never uploaded.',
+    gCtaButton: 'Open the DWG viewer',
     // viewer
     vOpen: 'Open DWG or DXF',
     vDrop: 'Drop a drawing here',
@@ -107,6 +131,7 @@ export const ui = {
     navViewer: 'Przeglądarka',
     navWhy: 'Dlaczego',
     navGuide: 'Jak otworzyć DWG',
+    navGuides: 'Poradniki',
     navSource: 'Kod źródłowy',
     langSwitch: 'English',
     footerMadeBy: 'Zrobione przez',
@@ -116,6 +141,16 @@ export const ui = {
     footerNoTrack: 'Bez ciasteczek. Bez wysyłania plików. Bez konta.',
     footerTrademark: 'Serwis nie jest powiązany z Autodesk ani przez niego wspierany. AutoCAD i DWG są znakami towarowymi Autodesk, Inc.',
     skip: 'Przejdź do przeglądarki',
+    gKicker: 'Poradnik',
+    gHubTitle: 'Poradniki DWG',
+    gRelated: 'Powiązane poradniki',
+    gSources: 'Źródła',
+    gChecked: 'Źródła sprawdzone',
+    gUpdated: 'Aktualizacja',
+    gQuestions: 'Pytania',
+    gCtaTitle: 'Otwórz swój rysunek',
+    gCtaText: 'Za darmo, w tej karcie przeglądarki. Plik nigdzie nie jest wysyłany.',
+    gCtaButton: 'Otwórz przeglądarkę DWG',
     vOpen: 'Otwórz DWG lub DXF',
     vDrop: 'Upuść rysunek tutaj',
     vDropHint: 'Plik czyta Twoja przeglądarka. Nigdzie go nie wysyłamy.',

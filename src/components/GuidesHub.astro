@@ -1,0 +1,53 @@
+---
+import Base from '../layouts/Base.astro'
+import { guideLinks } from '../lib/guides'
+import { ui, type Locale } from '../lib/i18n'
+
+interface Props { locale: Locale; title: string; description: string; lede: string }
+const { locale, title, description, lede } = Astro.props
+const t = ui[locale]
+
+// Topic = the part of a cluster before the colon. Rendered as plain HTML so a
+// crawler following the nav link finds every guide without running script
+// (the /blog dead end from pdf.techsource.pro).
+const topics: Record<string, { en: string; pl: string }> = {
+  open: { en: 'Opening DWG files', pl: 'Otwieranie plików DWG' },
+  convert: { en: 'PDF and printing', pl: 'PDF i drukowanie' },
+  measure: { en: 'Measuring', pl: 'Pomiary' },
+  format: { en: 'About the format', pl: 'O formacie DWG' },
+  audience: { en: 'For your situation', pl: 'W Twojej sytuacji' },
+  alternatives: { en: 'Other viewers', pl: 'Inne przeglądarki' }
+}
+const links = (await guideLinks(locale)).sort((a, b) => b.date.getTime() - a.date.getTime())
+const groups = Object.entries(topics)
+  .map(([key, label]) => ({ label: label[locale], items: links.filter((l) => l.cluster.split(':')[0] === key) }))
+  .filter((g) => g.items.length > 0)
+const jsonLd = [{
+  '@type': 'CollectionPage',
+  name: title,
+  inLanguage: locale,
+  hasPart: links.map((l) => ({ '@type': 'WebPage', name: l.title, url: Astro.site!.origin + l.href }))
+}]
+---
+<Base locale={locale} route="guides" title={title} description={description} jsonLd={jsonLd}>
+  <div class="wrap hero prose">
+    <p class="kicker">{t.gKicker}</p>
+    <h1>{t.gHubTitle}</h1>
+    <p class="lede">{lede}</p>
+    {groups.map((g) => (
+      <section>
+        <h2>{g.label}</h2>
+        <ul class="hub">
+          {g.items.map((l) => (<li><a href={l.href}>{l.title}</a><span class="muted">{l.blurb}</span></li>))}
+        </ul>
+      </section>
+    ))}
+  </div>
+</Base>
+
+<style>
+  .hub { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.9rem; }
+  .hub li { display: grid; gap: 0.15rem; }
+  .hub a { font-family: var(--font-display); font-weight: 500; font-size: 1.05rem; }
+  .hub .muted { font-size: 0.93rem; }
+</style>
