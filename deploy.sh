@@ -30,3 +30,11 @@ rsync -a --exclude '.*' dist/ "$stage/site/"
 cd "$stage"
 npx --yes wrangler@4 pages deploy site --project-name "$PROJECT" --branch "$BRANCH" \
   --commit-hash "$(git -C "$here" rev-parse --short HEAD)" --commit-dirty=true
+
+# Tell Bing, Yandex and Seznam what is live (Google does not take part in
+# IndexNow; Search Console covers it). Production only: a preview URL must
+# never be submitted. A failed ping does not fail the deploy.
+if [ "$BRANCH" = main ]; then
+  cd "$here"
+  node scripts/indexnow.mjs || echo "[deploy] IndexNow ping failed, deploy itself is fine" >&2
+fi

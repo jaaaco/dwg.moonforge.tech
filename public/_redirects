@@ -1,0 +1,3 @@
+# Cloudflare Pages redirects. Syntax: <from> <to> <status>. No trailing "!"
+# (that is Netlify's forced-redirect syntax and Pages rejects it).
+# automation/unpublish.mjs appends retired article URLs here.
