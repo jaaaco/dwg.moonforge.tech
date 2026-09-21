@@ -1,0 +1,66 @@
+---
+import Base from '../layouts/Base.astro'
+import Viewer from '../components/Viewer.astro'
+import RelatedGuides from '../components/RelatedGuides.astro'
+import { path } from '../lib/i18n'
+
+const locale = 'en'
+const title = 'DXF viewer online: open DXF files free, no upload'
+const description = 'Open and view DXF files in your browser, with layers, measuring and PDF export. Free and open source. No account, and the file is never uploaded.'
+const faq = [
+  ['What is the difference between DXF and DWG?', 'Both hold the same kind of 2D and 3D drawing. DWG is the compact binary format AutoCAD saves by default. DXF is the exchange format that almost every CAD, CAM and laser cutting program can write and read. This viewer opens both.'],
+  ['Can I check a DXF before sending it to a laser cutter or CNC?', 'Yes. Open it, turn layers on and off to see what will be cut, and measure the part: the reading snaps to line ends and crossings, so you can confirm a hole spacing or the overall size before the job goes out.'],
+  ['Does it open binary DXF and old DXF versions?', 'It opens the DXF files CAD programs normally write. If a file does not open, try saving it again as DXF from the program that made it, or as a DWG.'],
+  ['Can I edit the DXF or save it again?', 'No. This is a viewer: it opens, measures and plots to PDF, but it does not change the file or save DXF.'],
+  ['Is the file uploaded?', 'No. It is read inside your browser tab, and nothing leaves your device.']
+]
+const jsonLd = [
+  {
+    '@type': 'HowTo',
+    name: 'How to open a DXF file online',
+    step: [
+      { '@type': 'HowToStep', name: 'Open the file', text: 'Click Open DWG or DXF, or drop the .dxf file on the page. It is read locally and never uploaded.' },
+      { '@type': 'HowToStep', name: 'Look around', text: 'Drag to pan, scroll or pinch to zoom, and switch layers on or off.' },
+      { '@type': 'HowToStep', name: 'Measure or print', text: 'Use Measure for distances and areas, or PDF for a vector PDF at scale.' }
+    ]
+  },
+  { '@type': 'FAQPage', mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) }
+]
+---
+<Base locale={locale} route="dxfViewer" title={title} description={description} jsonLd={jsonLd}>
+  <div class="wrap hero">
+    <p class="kicker">DXF viewer · free · nothing uploaded</p>
+    <h1>Open DXF files in your browser.</h1>
+    <p class="lede">A free DXF viewer that runs on your device: layers, measuring with snapping, and a vector PDF at scale. It opens DWG as well. No account, no installation, no upload.</p>
+  </div>
+  <div class="wrap">
+    <Viewer locale={locale} />
+  </div>
+
+  <div class="wrap section prose">
+    <h2>How to open a DXF file</h2>
+    <ol>
+      <li>Click <strong>Open DWG or DXF</strong> above, or drop the .dxf file anywhere on this page.</li>
+      <li>Drag to pan, scroll to zoom. On a trackpad, two fingers pan and pinch zooms.</li>
+      <li>Open <strong>Layers</strong> to switch parts of the drawing on and off.</li>
+      <li>Press <strong>Measure</strong> to take a dimension, or <strong>PDF</strong> to plot it on a sheet.</li>
+    </ol>
+
+    <h2>Who opens DXF files, and what for</h2>
+    <ul>
+      <li><strong>Laser cutting, CNC and waterjet:</strong> check the part before it goes to the machine. Hidden construction layers show up in the Layers panel, and <a href={path('measure', locale)}>measuring</a> confirms the overall size and hole spacing.</li>
+      <li><strong>Architecture and installation plans:</strong> DXF is the safe format to send to someone whose CAD program is not the same as yours. Open it here without installing anything.</li>
+      <li><strong>Printing:</strong> <a href={path('dwgToPdf', locale)}>export to PDF</a> works the same for DXF as for DWG, fitted or to scale, A4 to A0.</li>
+    </ul>
+
+    <h2>What it does not do</h2>
+    <p>It is a viewer, not an editor: it does not change the file, and it cannot save DXF or DWG. Text is drawn with an open font, so it can look slightly different from the program the drawing came from. For editing a DXF, you need a CAD program; <a href={path('guide', locale)}>how to open a DWG file without AutoCAD</a> covers the free ones, including LibreCAD, which works with DXF natively.</p>
+
+    <h2>Questions</h2>
+    <dl class="faq">
+      {faq.map(([q, a]) => (<><dt>{q}</dt><dd>{a}</dd></>))}
+    </dl>
+
+    <RelatedGuides locale={locale} cluster="open:dxf" tags={['dxf', 'open']} exclude={path('dxfViewer', locale)} />
+  </div>
+</Base>

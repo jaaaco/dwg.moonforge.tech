@@ -1,0 +1,74 @@
+---
+import Base from '../../layouts/Base.astro'
+import Viewer from '../../components/Viewer.astro'
+import RelatedGuides from '../../components/RelatedGuides.astro'
+import { path } from '../../lib/i18n'
+
+const locale = 'pl'
+const title = 'Pomiar w pliku DWG online: odległość i pole za darmo'
+const description = 'Zmierz długość, kąt i pole na rysunku DWG lub DXF w przeglądarce. Przyciąganie do końców linii, środków i przecięć. Za darmo, bez konta, nic nie wysyłamy.'
+const faq = [
+  ['Jak dokładny jest pomiar?', 'Tak dokładny jak rysunek. Wynik bierze się z geometrii zapisanej w pliku, a nie z pikseli, a punkt przyciągnięty do końca linii leży dokładnie na nim. Sprawdziliśmy to na linii, której długość znamy z bazy rysunku: odczyt zgadza się co do jednostki.'],
+  ['Czemu długość wychodzi dziesięć razy za duża?', 'Prawie zawsze chodzi o jednostkę. Nagłówek pliku mówi, czym jest jedna jednostka rysunku, i często się myli. Zmierz coś, co znasz, np. drzwi, i ustaw jednostkę w panelu.'],
+  ['Policzę metraż pokoju?', 'Tak. Klikaj po kolei narożniki pokoju. Od trzeciego punktu panel pokazuje pole zamkniętego obrysu.'],
+  ['Działa na telefonie?', 'Tak. Zamiast klikać, stukasz w punkty. Przed wskazaniem narożnika powiększ rysunek dwoma palcami, z bliska łatwiej trafić przyciąganiem.'],
+  ['Zapiszę wymiary w rysunku?', 'Nie. Przeglądarka nie edytuje rysunków. Pomiary zostają na ekranie, dopóki ich nie wyczyścisz albo nie otworzysz innego pliku.']
+]
+const jsonLd = [
+  {
+    '@type': 'HowTo',
+    name: 'Jak zmierzyć odległość albo pole w pliku DWG',
+    step: [
+      { '@type': 'HowToStep', name: 'Otwórz rysunek', text: 'Kliknij Otwórz DWG lub DXF albo upuść plik na stronę. Plik jest czytany lokalnie i nigdzie nie trafia.' },
+      { '@type': 'HowToStep', name: 'Wskaż punkty', text: 'Panel pomiaru otwiera się sam. Klikaj punkty na rysunku; każdy przyciąga się do końca linii, przecięcia, środka albo najbliższego punktu na linii.' },
+      { '@type': 'HowToStep', name: 'Odczytaj wynik', text: 'Panel pokazuje długość, dx, dy i kąt każdego odcinka, sumę, a od trzech punktów pole zamkniętego obrysu.' },
+      { '@type': 'HowToStep', name: 'Sprawdź jednostkę', text: 'Porównaj znany wymiar i zmień jednostkę w panelu, jeśli nagłówek pliku jest błędny.' }
+    ]
+  },
+  { '@type': 'FAQPage', mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) }
+]
+---
+<Base locale={locale} route="measure" title={title} description={description} jsonLd={jsonLd}>
+  <div class="wrap hero">
+    <p class="kicker">Pomiar · za darmo · nic nie wysyłamy</p>
+    <h1>Zmierz rysunek DWG w przeglądarce.</h1>
+    <p class="lede">Otwórz rysunek poniżej, a panel pomiaru otworzy się razem z nim. Klikasz punkty i dostajesz długości, kąty i pola, przyciągnięte do geometrii. Wynik trafia w narożnik ściany, a nie gdzieś obok.</p>
+  </div>
+  <div class="wrap">
+    <Viewer locale={locale} open="measure" />
+  </div>
+
+  <div class="wrap section prose">
+    <h2>Jak zmierzyć odległość w pliku DWG</h2>
+    <ol>
+      <li>Kliknij <strong>Otwórz DWG lub DXF</strong> albo upuść plik w dowolnym miejscu strony.</li>
+      <li>Powiększ fragment, który Cię interesuje. Przeciąganie nadal przesuwa widok, także w trakcie pomiaru.</li>
+      <li>Kliknij pierwszy punkt, potem drugi. Panel pokaże długość, przesunięcia dx i dy oraz kąt.</li>
+      <li>Klikaj dalej, żeby dokładać odcinki: dostajesz każdy z nich i sumę. <strong>Esc</strong> kończy pomiar, <strong>Backspace</strong> cofa ostatni punkt.</li>
+    </ol>
+
+    <h2>Przyciąganie: dlaczego wynik jest dokładny</h2>
+    <p>Pomiar „mniej więcej tam” na ścianie jest nic niewart. Każdy punkt przyciąga się do geometrii, w tej kolejności:</p>
+    <ul>
+      <li><strong>koniec</strong> linii albo odcinka łuku,</li>
+      <li><strong>przecięcie</strong> dwóch linii,</li>
+      <li><strong>środek</strong> odcinka,</li>
+      <li><strong>najbliższy punkt na linii</strong>, gdy nic lepszego nie ma w pobliżu.</li>
+    </ul>
+    <p>Znacznik na rysunku i panel mówią, co zostało złapane. Kreskowania są wyłączone z przyciągania, bo inaczej każda zakreskowana ściana podsuwałaby setkę bezsensownych przecięć.</p>
+
+    <h2>Pomiar pola, czyli metraż z rzutu</h2>
+    <p>Klikaj po kolei narożniki pokoju albo działki. Od trzeciego punktu panel dokłada pole zamkniętego obrysu. To najszybszy sposób, żeby policzyć metraż z rzutu, który przysłał architekt, bez przerysowywania czegokolwiek.</p>
+
+    <h2>Problem z jednostką i jak go zauważyć</h2>
+    <p>Przeglądarka podaje długości w jednostce, którą plik deklaruje w nagłówku. Tego ustawienia nie trzeba ruszać, żeby rysować, więc zwykle zostaje takie, jakie było w szablonie. W dwóch z trzech prawdziwych rysunków, na których testowaliśmy, było błędne: jeden deklarował milimetry, a był w centymetrach, drugi deklarował cale, a był metryczny.</p>
+    <p>Dlatego najpierw zmierz coś, co znasz: drzwi, typową ścianę, miejsce parkingowe. Jeśli wynik różni się o rząd wielkości, zmień jednostkę w panelu. Gdy plik w ogóle nie podaje jednostki, przeglądarka przyjmuje milimetry i mówi to wprost. Jednostka wybrana tutaj działa tylko przy pomiarze: <a href={path('dwgToPdf', locale)}>wydruk do PDF w skali</a> nadal czyta nagłówek pliku, więc przy błędnym nagłówku trzeba tam wybrać skalę przesuniętą o ten sam rząd wielkości.</p>
+
+    <h2>Pytania</h2>
+    <dl class="faq">
+      {faq.map(([q, a]) => (<><dt>{q}</dt><dd>{a}</dd></>))}
+    </dl>
+
+    <RelatedGuides locale={locale} cluster="measure:general" tags={['measure']} exclude={path('measure', locale)} />
+  </div>
+</Base>

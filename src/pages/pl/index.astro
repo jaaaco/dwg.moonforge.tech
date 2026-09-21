@@ -64,11 +64,11 @@ const jsonLd = [
     <ol>
       <li>Kliknij <strong>Otwórz DWG lub DXF</strong> powyżej albo upuść plik w dowolnym miejscu strony.</li>
       <li>Przeciąganiem przesuwasz, kółkiem przybliżasz. Na trackpadzie dwa palce przesuwają, a szczypanie przybliża. Warstwy włączysz i wyłączysz w panelu.</li>
-      <li>Potrzebujesz wymiaru? <strong>Miara</strong> przyciąga się do końców linii, ich środków i przecięć, i podaje długość, kąt oraz pole.</li>
-      <li>Potrzebujesz wydruku? <strong>PDF</strong> drukuje cały rysunek albo zaznaczone okno, na arkuszu od A4 do A0, dopasowany albo w wybranej skali.</li>
+      <li>Potrzebujesz wymiaru? <strong>Miara</strong> przyciąga się do końców linii, ich środków i przecięć, i podaje długość, kąt oraz pole. <a href={path('measure', locale)}>Więcej o pomiarze</a>.</li>
+      <li>Potrzebujesz wydruku? <strong>PDF</strong> drukuje cały rysunek albo zaznaczone okno, na arkuszu od A4 do A0, dopasowany albo w wybranej skali. <a href={path('dwgToPdf', locale)}>Więcej o DWG na PDF</a>.</li>
       <li>Tyle. Zamykasz kartę i nic po pliku nie zostaje.</li>
     </ol>
-    <p>Inne sposoby, także programy na komputer, opisuje poradnik <a href={path('guide', locale)}>jak otworzyć plik DWG bez AutoCADa</a>.</p>
+    <p>Inne sposoby, także programy na komputer, opisuje poradnik <a href={path('guide', locale)}>jak otworzyć plik DWG bez AutoCADa</a>. Masz plik DXF? Zobacz <a href={path('dxfViewer', locale)}>przeglądarkę DXF</a>. Wszystkie poradniki są w <a href={path('guides', locale)}>poradnikach DWG</a>.</p>
 
     <h2>Pytania</h2>
     <dl class="faq">

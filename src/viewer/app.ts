@@ -59,6 +59,8 @@ export function mountViewer(root: HTMLElement): void {
       const secs = ((performance.now() - started) / 1000).toFixed(1)
       say(`${name} · ${formatBytes(bytes.byteLength)} · ${secs} s`)
       document.title = `${name} · ${document.title.replace(/^.* · /, '')}`
+      if (root.dataset.open === 'pdf') plotToggle.click()
+      else if (root.dataset.open === 'measure') measureToggle.click()
     } catch (err) {
       console.error(err)
       setState(engine?.hasDrawing() ? 'open' : 'empty')

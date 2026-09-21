@@ -1,0 +1,74 @@
+---
+import Base from '../layouts/Base.astro'
+import Viewer from '../components/Viewer.astro'
+import RelatedGuides from '../components/RelatedGuides.astro'
+import { path } from '../lib/i18n'
+
+const locale = 'en'
+const title = 'DWG to PDF converter: free, no upload, vector PDF to scale'
+const description = 'Convert a DWG or DXF to a vector PDF in your browser. Pick a window, a sheet from A4 to A0 and a scale like 1:50. Free, no account, the file is never uploaded.'
+const faq = [
+  ['Is there a file size limit?', 'No upload means no upload limit. The only limit is your device: a drawing of a few megabytes converts in seconds on a laptop, and files above 25 MB can take a while on a phone.'],
+  ['Can I convert DWG to PDF on a Mac or a phone?', 'Yes. It runs in Safari, Chrome, Firefox or Edge, on macOS, Windows, Linux, iPhone and Android. Nothing to install.'],
+  ['Can I select or search the text in the PDF?', 'No. Text is written as filled outlines, so it looks exactly like the screen and no font has to be embedded, but a PDF reader sees shapes, not letters.'],
+  ['Can it turn a PDF back into a DWG?', 'No. This goes one way, DWG or DXF to PDF. DXF and DWG export are not there yet.'],
+  ['Is the drawing sent anywhere?', 'No. The DWG is read and the PDF is written inside your browser tab. You can check it in the browser developer tools, Network tab: no request carries the file.']
+]
+const jsonLd = [
+  {
+    '@type': 'HowTo',
+    name: 'How to convert a DWG file to PDF',
+    step: [
+      { '@type': 'HowToStep', name: 'Open the drawing', text: 'Click Open DWG or DXF, or drop the file on the page. It is read locally and never uploaded.' },
+      { '@type': 'HowToStep', name: 'Choose what to plot', text: 'The PDF panel opens by itself. Pick the whole drawing, the current view or a window you drag on the drawing.' },
+      { '@type': 'HowToStep', name: 'Set the sheet and scale', text: 'Choose a sheet from A4 to A0 or Letter, the orientation, and fit to sheet or a fixed scale from 1:1 to 1:1000.' },
+      { '@type': 'HowToStep', name: 'Download', text: 'Check the preview and click Download PDF.' }
+    ]
+  },
+  { '@type': 'FAQPage', mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) }
+]
+---
+<Base locale={locale} route="dwgToPdf" title={title} description={description} jsonLd={jsonLd}>
+  <div class="wrap hero">
+    <p class="kicker">DWG to PDF · free · nothing uploaded</p>
+    <h1>Convert DWG to PDF in your browser.</h1>
+    <p class="lede">Open the drawing below and the export panel opens with it. You get a vector PDF, at a scale you choose, on a sheet from A4 to A0. No account, and the file never leaves your device.</p>
+  </div>
+  <div class="wrap">
+    <Viewer locale={locale} open="pdf" />
+  </div>
+
+  <div class="wrap section prose">
+    <h2>How to convert a DWG to PDF</h2>
+    <ol>
+      <li>Click <strong>Open DWG or DXF</strong> above, or drop the file anywhere on this page.</li>
+      <li>The <strong>Export to PDF</strong> panel opens. Choose the <strong>area</strong>: the whole drawing, the current view, or <strong>Window</strong> to drag a rectangle around the part you need.</li>
+      <li>Pick the <strong>sheet</strong> (A4, A3, A2, A1, A0 or Letter) and the orientation, or leave it on Auto.</li>
+      <li>Pick the <strong>scale</strong>: fit to sheet, or a fixed scale from 1:1 to 1:1000.</li>
+      <li>Choose black and white or the colours as on screen, and a line width of 0.13, 0.20 or 0.35 mm.</li>
+      <li>Check the preview, then <strong>Download PDF</strong>.</li>
+    </ol>
+
+    <h2>What the PDF looks like</h2>
+    <ul>
+      <li><strong>Vector, not a screenshot.</strong> Lines stay sharp at any zoom and print cleanly on a plotter.</li>
+      <li><strong>Dashed lines and hatches come through</strong> as lines and patterns, not as a grey blur.</li>
+      <li><strong>Only what you see is plotted.</strong> Turn layers off in the Layers panel first, and they stay out of the PDF.</li>
+      <li><strong>Text is drawn as outlines.</strong> It matches the screen and no font is embedded, but it cannot be selected or searched in the PDF.</li>
+    </ul>
+
+    <h2>Printing to scale: check the unit first</h2>
+    <p>A scale like 1:50 only means something if the viewer knows what one drawing unit is. It takes the unit from the file header, and the panel tells you which one it used. The trouble is that the header is often wrong: two of the three real drawings we tested declared millimetres or inches while being drawn in other metric units. A 1:50 PDF of such a file comes out ten or more times too big or too small.</p>
+    <p>So before you print to scale, take one dimension you know, a door or a wall, and check it with <a href={path('measure', locale)}>the measuring tool</a>. If it reads 90 where you expected 900 millimetres, the file is in centimetres while its header says millimetres, and the scale has to be shifted by the same factor: choose 1:5 to get a true 1:50. When the area does not fit the sheet at the chosen scale, the panel warns you that it will be cut off.</p>
+
+    <h2>When this is the right tool</h2>
+    <p>You were sent a DWG and need a PDF to print, to mark up, or to send to someone who does not have CAD. It works for one drawing at a time. If you need batch conversion of hundreds of files, a desktop CAD program is the better choice. More ways to open a DWG are in <a href={path('guide', locale)}>how to open a DWG file without AutoCAD</a>.</p>
+
+    <h2>Questions</h2>
+    <dl class="faq">
+      {faq.map(([q, a]) => (<><dt>{q}</dt><dd>{a}</dd></>))}
+    </dl>
+
+    <RelatedGuides locale={locale} cluster="convert:pdf" tags={['print', 'pdf']} exclude={path('dwgToPdf', locale)} />
+  </div>
+</Base>

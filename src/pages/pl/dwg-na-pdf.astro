@@ -1,0 +1,74 @@
+---
+import Base from '../../layouts/Base.astro'
+import Viewer from '../../components/Viewer.astro'
+import RelatedGuides from '../../components/RelatedGuides.astro'
+import { path } from '../../lib/i18n'
+
+const locale = 'pl'
+const title = 'DWG na PDF za darmo: konwerter bez wysyłania pliku, w skali'
+const description = 'Zamień DWG lub DXF na wektorowy PDF w przeglądarce. Wybierz okno, arkusz od A4 do A0 i skalę, np. 1:50. Za darmo, bez konta, plik nigdzie nie jest wysyłany.'
+const faq = [
+  ['Jest limit rozmiaru pliku?', 'Nie ma wysyłania, więc nie ma limitu wysyłania. Ogranicza tylko Twoje urządzenie: rysunek na kilka megabajtów zamienia się w kilka sekund na laptopie, a pliki powyżej 25 MB na telefonie potrafią chwilę potrwać.'],
+  ['Zrobię PDF z DWG na Macu albo na telefonie?', 'Tak. Działa w Safari, Chrome, Firefoksie i Edge, na macOS, Windowsie, Linuksie, iPhonie i Androidzie. Nic nie instalujesz.'],
+  ['Da się zaznaczyć albo wyszukać tekst w PDF-ie?', 'Nie. Teksty są zapisane jako wypełnione kontury, więc wyglądają dokładnie jak na ekranie i nie trzeba osadzać fontu, ale czytnik PDF widzi kształty, a nie litery.'],
+  ['Zamieni PDF z powrotem na DWG?', 'Nie. Działa w jedną stronę: DWG albo DXF do PDF. Eksportu do DXF i DWG jeszcze nie ma.'],
+  ['Czy rysunek gdzieś trafia?', 'Nie. DWG jest czytany, a PDF zapisywany w Twojej karcie przeglądarki. Sprawdzisz to w narzędziach deweloperskich, zakładka Sieć: żadne zapytanie nie niesie pliku.']
+]
+const jsonLd = [
+  {
+    '@type': 'HowTo',
+    name: 'Jak zamienić plik DWG na PDF',
+    step: [
+      { '@type': 'HowToStep', name: 'Otwórz rysunek', text: 'Kliknij Otwórz DWG lub DXF albo upuść plik na stronę. Plik jest czytany lokalnie i nigdzie nie trafia.' },
+      { '@type': 'HowToStep', name: 'Wybierz obszar', text: 'Panel PDF otwiera się sam. Wybierz cały rysunek, bieżący widok albo okno zaznaczone na rysunku.' },
+      { '@type': 'HowToStep', name: 'Ustaw arkusz i skalę', text: 'Wybierz arkusz od A4 do A0 albo Letter, orientację i dopasowanie do arkusza albo skalę od 1:1 do 1:1000.' },
+      { '@type': 'HowToStep', name: 'Pobierz', text: 'Sprawdź podgląd i kliknij Pobierz PDF.' }
+    ]
+  },
+  { '@type': 'FAQPage', mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) }
+]
+---
+<Base locale={locale} route="dwgToPdf" title={title} description={description} jsonLd={jsonLd}>
+  <div class="wrap hero">
+    <p class="kicker">DWG na PDF · za darmo · nic nie wysyłamy</p>
+    <h1>Zamień DWG na PDF w przeglądarce.</h1>
+    <p class="lede">Otwórz rysunek poniżej, a panel eksportu otworzy się razem z nim. Dostajesz wektorowy PDF w wybranej skali, na arkuszu od A4 do A0. Bez konta, a plik nie opuszcza Twojego urządzenia.</p>
+  </div>
+  <div class="wrap">
+    <Viewer locale={locale} open="pdf" />
+  </div>
+
+  <div class="wrap section prose">
+    <h2>Jak zrobić PDF z pliku DWG</h2>
+    <ol>
+      <li>Kliknij <strong>Otwórz DWG lub DXF</strong> albo upuść plik w dowolnym miejscu strony.</li>
+      <li>Otworzy się panel <strong>Eksport do PDF</strong>. Wybierz <strong>obszar</strong>: cały rysunek, bieżący widok albo <strong>Okno</strong>, żeby zaznaczyć prostokątem tylko potrzebny fragment.</li>
+      <li>Wybierz <strong>arkusz</strong> (A4, A3, A2, A1, A0 albo Letter) i orientację, albo zostaw automatyczną.</li>
+      <li>Wybierz <strong>skalę</strong>: dopasowanie do arkusza albo stała skala od 1:1 do 1:1000.</li>
+      <li>Ustaw wydruk czarno-biały albo kolory jak na ekranie i grubość linii 0,13, 0,20 lub 0,35 mm.</li>
+      <li>Rzuć okiem na podgląd i kliknij <strong>Pobierz PDF</strong>.</li>
+    </ol>
+
+    <h2>Jaki PDF dostajesz</h2>
+    <ul>
+      <li><strong>Wektorowy, nie zrzut ekranu.</strong> Linie są ostre przy każdym powiększeniu i porządnie wychodzą z plotera.</li>
+      <li><strong>Linie przerywane i kreskowania zostają</strong> liniami i wzorami, a nie szarą plamą.</li>
+      <li><strong>Drukuje się to, co widać.</strong> Wyłącz warstwy w panelu Warstwy i nie trafią do PDF-a.</li>
+      <li><strong>Teksty są konturami.</strong> Wyglądają jak na ekranie i nie trzeba osadzać fontu, ale w PDF-ie nie da się ich zaznaczyć ani wyszukać.</li>
+    </ul>
+
+    <h2>Wydruk w skali: najpierw sprawdź jednostkę</h2>
+    <p>Skala 1:50 ma sens tylko wtedy, gdy wiadomo, czym jest jedna jednostka rysunku. Przeglądarka bierze ją z nagłówka pliku, a panel pokazuje, jaką przyjął. Kłopot w tym, że nagłówek często kłamie: dwa z trzech prawdziwych rysunków, na których testowaliśmy, deklarowały milimetry albo cale, a były narysowane w innych jednostkach metrycznych. PDF 1:50 z takiego pliku wychodzi dziesięć i więcej razy za duży albo za mały.</p>
+    <p>Dlatego przed wydrukiem w skali zmierz jeden wymiar, który znasz, np. drzwi albo ścianę, <a href={path('measure', locale)}>narzędziem do pomiaru</a>. Jeśli wychodzi 90 tam, gdzie spodziewasz się 900 milimetrów, plik jest w centymetrach, choć nagłówek mówi o milimetrach, i skalę trzeba przesunąć o ten sam rząd: wybierz 1:5, żeby dostać prawdziwe 1:50. Gdy obszar nie mieści się na arkuszu w wybranej skali, panel ostrzega, że zostanie obcięty.</p>
+
+    <h2>Kiedy to jest właściwe narzędzie</h2>
+    <p>Dostałeś plik DWG i potrzebujesz PDF-a do wydruku, do naniesienia uwag albo do wysłania komuś, kto nie ma programu CAD. Działa na jednym rysunku naraz. Do masowej konwersji setek plików lepszy będzie program CAD na komputerze. Inne sposoby otwarcia DWG opisuje poradnik <a href={path('guide', locale)}>jak otworzyć plik DWG bez AutoCADa</a>.</p>
+
+    <h2>Pytania</h2>
+    <dl class="faq">
+      {faq.map(([q, a]) => (<><dt>{q}</dt><dd>{a}</dd></>))}
+    </dl>
+
+    <RelatedGuides locale={locale} cluster="convert:pdf" tags={['print', 'pdf']} exclude={path('dwgToPdf', locale)} />
+  </div>
+</Base>

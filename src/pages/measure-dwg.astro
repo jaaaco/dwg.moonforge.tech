@@ -1,0 +1,74 @@
+---
+import Base from '../layouts/Base.astro'
+import Viewer from '../components/Viewer.astro'
+import RelatedGuides from '../components/RelatedGuides.astro'
+import { path } from '../lib/i18n'
+
+const locale = 'en'
+const title = 'Measure a DWG online: distances and areas, free, no upload'
+const description = 'Measure lengths, angles and areas on a DWG or DXF drawing in your browser. Snaps to line ends, midpoints and crossings. Free, no account, nothing uploaded.'
+const faq = [
+  ['How accurate is it?', 'As accurate as the drawing. The reading comes from the geometry in the file, not from pixels, and a point snapped to a line end sits exactly on it. We checked it on a line whose length we know from the drawing database: the reading matched exactly.'],
+  ['Why does the length look ten times too big?', 'Almost always the unit. The file header says what one drawing unit is, and it is often wrong. Measure something you know, like a door, and set the unit in the panel.'],
+  ['Can I measure the area of a room?', 'Yes. Click the corners of the room one after another. From the third point on, the panel shows the area of the closed outline.'],
+  ['Does it work on a phone?', 'Yes. Tap points instead of clicking. Pinch to zoom in before you pick a corner, the snapping is easier to hit up close.'],
+  ['Can I save the measurements into the drawing?', 'No. The viewer does not edit drawings. Measurements stay on screen until you clear them or open another file.']
+]
+const jsonLd = [
+  {
+    '@type': 'HowTo',
+    name: 'How to measure a distance or an area in a DWG file',
+    step: [
+      { '@type': 'HowToStep', name: 'Open the drawing', text: 'Click Open DWG or DXF, or drop the file on the page. It is read locally and never uploaded.' },
+      { '@type': 'HowToStep', name: 'Pick points', text: 'The measuring panel opens by itself. Click points on the drawing; each pick snaps to a line end, crossing, midpoint or the nearest point on a line.' },
+      { '@type': 'HowToStep', name: 'Read the result', text: 'The panel shows the length, dx, dy and angle of each segment, the running total, and from three points the area of the closed outline.' },
+      { '@type': 'HowToStep', name: 'Check the unit', text: 'Compare a known dimension and change the unit in the panel if the file header is wrong.' }
+    ]
+  },
+  { '@type': 'FAQPage', mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) }
+]
+---
+<Base locale={locale} route="measure" title={title} description={description} jsonLd={jsonLd}>
+  <div class="wrap hero">
+    <p class="kicker">Measure · free · nothing uploaded</p>
+    <h1>Measure a DWG drawing in your browser.</h1>
+    <p class="lede">Open the drawing below and the measuring panel opens with it. Click points to get lengths, angles and areas, snapped to the geometry, so the reading lands on the wall corner and not somewhere near it.</p>
+  </div>
+  <div class="wrap">
+    <Viewer locale={locale} open="measure" />
+  </div>
+
+  <div class="wrap section prose">
+    <h2>How to measure a distance in a DWG</h2>
+    <ol>
+      <li>Click <strong>Open DWG or DXF</strong> above, or drop the file anywhere on this page.</li>
+      <li>Zoom in to the part you need. Dragging still pans while you measure.</li>
+      <li>Click the first point, then the second. The panel shows the length, the offsets dx and dy, and the angle.</li>
+      <li>Keep clicking to add segments: you get each one and the running total. <strong>Esc</strong> ends the measurement, <strong>Backspace</strong> undoes the last point.</li>
+    </ol>
+
+    <h2>Snapping: why the reading is exact</h2>
+    <p>A measurement taken "roughly there" on a wall is worth nothing. Each pick snaps to the geometry, in this order of preference:</p>
+    <ul>
+      <li><strong>endpoint</strong> of a line or arc segment,</li>
+      <li><strong>crossing</strong> of two lines,</li>
+      <li><strong>midpoint</strong> of a segment,</li>
+      <li>the <strong>nearest point on a line</strong>, when nothing better is close.</li>
+    </ul>
+    <p>The marker and the panel tell you which one you got. Hatch patterns are left out of snapping, otherwise every hatched wall would offer a hundred meaningless crossings.</p>
+
+    <h2>Measuring an area</h2>
+    <p>Click the corners of a room or a plot one after another. From the third point on, the panel adds the area of the closed outline. It is the quickest way to get a floor area off a plan someone sent you, without redrawing anything.</p>
+
+    <h2>The unit problem, and how to spot it</h2>
+    <p>The viewer shows lengths in the unit the file declares in its header. That header is a setting nobody needs to touch to draw, so it often stays whatever the template said: in two of the three real drawings we tested, it was wrong. One declared millimetres and was drawn in centimetres, another declared inches and was metric.</p>
+    <p>So measure one thing you know first: a door, a standard wall, a parking space. If the number is off by a factor of ten, change the unit in the panel. When the file does not declare a unit at all, the viewer assumes millimetres and says so. The unit you pick here is for measuring only: <a href={path('dwgToPdf', locale)}>printing to PDF at scale</a> still reads the file header, so a wrong header there means picking a scale ten times off to compensate.</p>
+
+    <h2>Questions</h2>
+    <dl class="faq">
+      {faq.map(([q, a]) => (<><dt>{q}</dt><dd>{a}</dd></>))}
+    </dl>
+
+    <RelatedGuides locale={locale} cluster="measure:general" tags={['measure']} exclude={path('measure', locale)} />
+  </div>
+</Base>

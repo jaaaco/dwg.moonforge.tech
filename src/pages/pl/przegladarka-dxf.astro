@@ -1,0 +1,66 @@
+---
+import Base from '../../layouts/Base.astro'
+import Viewer from '../../components/Viewer.astro'
+import RelatedGuides from '../../components/RelatedGuides.astro'
+import { path } from '../../lib/i18n'
+
+const locale = 'pl'
+const title = 'Przeglądarka DXF online: otwórz plik DXF za darmo'
+const description = 'Otwórz i obejrzyj plik DXF w przeglądarce: warstwy, pomiar i eksport do PDF. Za darmo i open source. Bez konta, a plik nigdzie nie jest wysyłany.'
+const faq = [
+  ['Czym się różni DXF od DWG?', 'Oba przechowują ten sam rodzaj rysunku 2D i 3D. DWG to zwarty format binarny, w którym AutoCAD zapisuje domyślnie. DXF to format wymiany, który zapisze i odczyta niemal każdy program CAD, CAM i do cięcia laserem. Ta przeglądarka otwiera oba.'],
+  ['Sprawdzę DXF przed wysłaniem do cięcia laserem albo na CNC?', 'Tak. Otwórz plik, włączaj i wyłączaj warstwy, żeby zobaczyć, co faktycznie pójdzie do cięcia, i zmierz detal: pomiar przyciąga się do końców i przecięć linii, więc potwierdzisz rozstaw otworów albo wymiar zewnętrzny, zanim zlecenie wyjdzie.'],
+  ['Otworzy binarny DXF i stare wersje?', 'Otwiera pliki DXF, które zwykle zapisują programy CAD. Jeśli plik się nie otwiera, zapisz go ponownie jako DXF w programie, w którym powstał, albo jako DWG.'],
+  ['Mogę edytować DXF albo zapisać go ponownie?', 'Nie. To przeglądarka: otwiera, mierzy i drukuje do PDF, ale nie zmienia pliku i nie zapisuje DXF.'],
+  ['Czy plik jest gdzieś wysyłany?', 'Nie. Jest czytany w Twojej karcie przeglądarki i nic nie opuszcza Twojego urządzenia.']
+]
+const jsonLd = [
+  {
+    '@type': 'HowTo',
+    name: 'Jak otworzyć plik DXF online',
+    step: [
+      { '@type': 'HowToStep', name: 'Otwórz plik', text: 'Kliknij Otwórz DWG lub DXF albo upuść plik .dxf na stronę. Plik jest czytany lokalnie i nigdzie nie trafia.' },
+      { '@type': 'HowToStep', name: 'Obejrzyj', text: 'Przeciągaj, żeby przesuwać, kółkiem albo dwoma palcami powiększaj, włączaj i wyłączaj warstwy.' },
+      { '@type': 'HowToStep', name: 'Zmierz albo wydrukuj', text: 'Miara daje odległości i pola, PDF daje wektorowy wydruk w skali.' }
+    ]
+  },
+  { '@type': 'FAQPage', mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) }
+]
+---
+<Base locale={locale} route="dxfViewer" title={title} description={description} jsonLd={jsonLd}>
+  <div class="wrap hero">
+    <p class="kicker">Przeglądarka DXF · za darmo · nic nie wysyłamy</p>
+    <h1>Otwórz plik DXF w przeglądarce.</h1>
+    <p class="lede">Darmowa przeglądarka DXF, która działa na Twoim urządzeniu: warstwy, pomiar z przyciąganiem i wektorowy PDF w skali. Otwiera też DWG. Bez konta, bez instalacji, bez wysyłania pliku.</p>
+  </div>
+  <div class="wrap">
+    <Viewer locale={locale} />
+  </div>
+
+  <div class="wrap section prose">
+    <h2>Jak otworzyć plik DXF</h2>
+    <ol>
+      <li>Kliknij <strong>Otwórz DWG lub DXF</strong> albo upuść plik .dxf w dowolnym miejscu strony.</li>
+      <li>Przeciągaj, żeby przesuwać, kółkiem powiększaj. Na gładziku dwa palce przesuwają, a szczypanie powiększa.</li>
+      <li>Otwórz <strong>Warstwy</strong>, żeby włączać i wyłączać części rysunku.</li>
+      <li>Kliknij <strong>Miara</strong>, żeby zdjąć wymiar, albo <strong>PDF</strong>, żeby wydrukować rysunek na arkuszu.</li>
+    </ol>
+
+    <h2>Kto otwiera pliki DXF i po co</h2>
+    <ul>
+      <li><strong>Cięcie laserem, CNC, waterjet:</strong> sprawdzasz detal, zanim trafi na maszynę. Ukryte warstwy pomocnicze wychodzą w panelu Warstwy, a <a href={path('measure', locale)}>pomiar</a> potwierdza wymiar zewnętrzny i rozstaw otworów.</li>
+      <li><strong>Rzuty architektoniczne i projekty instalacji:</strong> DXF to bezpieczny format, gdy odbiorca ma inny program CAD niż Ty. Tutaj otworzysz go bez instalowania czegokolwiek.</li>
+      <li><strong>Wydruk:</strong> <a href={path('dwgToPdf', locale)}>eksport do PDF</a> działa dla DXF tak samo jak dla DWG, z dopasowaniem albo w skali, od A4 do A0.</li>
+    </ul>
+
+    <h2>Czego nie zrobi</h2>
+    <p>To przeglądarka, nie edytor: nie zmienia pliku i nie zapisuje DXF ani DWG. Teksty są składane otwartym fontem, więc mogą wyglądać trochę inaczej niż w programie, w którym rysunek powstał. Do edycji DXF potrzebny jest program CAD; darmowe opisuje poradnik <a href={path('guide', locale)}>jak otworzyć plik DWG bez AutoCADa</a>, w tym LibreCAD, który pracuje na DXF natywnie.</p>
+
+    <h2>Pytania</h2>
+    <dl class="faq">
+      {faq.map(([q, a]) => (<><dt>{q}</dt><dd>{a}</dd></>))}
+    </dl>
+
+    <RelatedGuides locale={locale} cluster="open:dxf" tags={['dxf', 'open']} exclude={path('dxfViewer', locale)} />
+  </div>
+</Base>

@@ -1,11 +1,15 @@
 ---
 import { ui, type Locale } from '../lib/i18n'
 
-interface Props { locale: Locale }
-const { locale } = Astro.props
+interface Props {
+  locale: Locale
+  // Tool pages (DWG to PDF, measuring) open their panel as soon as a drawing is in.
+  open?: 'pdf' | 'measure'
+}
+const { locale, open } = Astro.props
 const t = ui[locale]
 ---
-<section id="viewer" class="viewer" data-state="empty" data-strings={JSON.stringify(t)}>
+<section id="viewer" class="viewer" data-state="empty" data-open={open} data-strings={JSON.stringify(t)}>
   <div class="viewer-bar">
     <label class="btn btn-primary viewer-open">
       <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h4l1.5 1.5H14V13H2z" fill="none" stroke="currentColor" stroke-width="1.5" /></svg>
