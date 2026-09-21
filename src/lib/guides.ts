@@ -1,5 +1,6 @@
 import { getCollection, type CollectionEntry } from 'astro:content'
 import facts from '../../seo/facts.json'
+import pagesJson from '../../seo/pages.json'
 import { guidePath, path, type Locale, type RouteKey } from './i18n'
 
 export type GuideEntry = CollectionEntry<'guides'>
@@ -15,40 +16,10 @@ export interface GuideLink {
   date: Date
 }
 
-// Hand-written pages that belong in the guides hub. Labels here are short
-// link text, not the pages' SEO titles (those live in the pages themselves).
-const pages: { route: RouteKey; cluster: string; tags: string[]; en: [string, string] | null; pl: [string, string] | null }[] = [
-  {
-    route: 'guide', cluster: 'open:general', tags: ['open', 'alternatives'],
-    en: ['How to open a DWG file without AutoCAD', 'Five free ways, what each needs and where each falls short.'],
-    pl: ['Jak otworzyć plik DWG bez AutoCADa', 'Pięć darmowych sposobów: czego wymagają i gdzie odpadają.']
-  },
-  {
-    route: 'dwgToPdf', cluster: 'convert:pdf', tags: ['convert', 'print', 'pdf'],
-    en: ['Convert DWG to PDF', 'A vector PDF at scale, A4 to A0, without uploading the drawing.'],
-    pl: ['DWG na PDF za darmo', 'Wektorowy PDF w skali, od A4 do A0, bez wysyłania rysunku.']
-  },
-  {
-    route: 'measure', cluster: 'measure:general', tags: ['measure'],
-    en: ['Measure distances and areas in a DWG', 'Snap to line ends and crossings, read length, angle and area.'],
-    pl: ['Pomiar w pliku DWG', 'Przyciąganie do końców i przecięć linii, długość, kąt i pole.']
-  },
-  {
-    route: 'dxfViewer', cluster: 'open:dxf', tags: ['open', 'dxf'],
-    en: ['DXF viewer online', 'Open DXF files in the browser, with layers, measuring and PDF export.'],
-    pl: ['Przeglądarka DXF online', 'Otwórz plik DXF w przeglądarce: warstwy, pomiar i eksport do PDF.']
-  },
-  {
-    route: 'mac', cluster: 'open:mac', tags: ['open', 'mac'],
-    en: ['DWG viewer for Mac', 'DWG TrueView does not install on macOS. What to use instead.'],
-    pl: null
-  },
-  {
-    route: 'why', cluster: 'format:open', tags: ['format'],
-    en: ['Why a free, open-source DWG viewer', 'The facts about DWG, with sources, and why we built this.'],
-    pl: ['Dlaczego darmowa przeglądarka DWG', 'Fakty o formacie DWG ze źródłami i powód, dla którego to zrobiliśmy.']
-  }
-]
+// Hand-written pages for the hub and "related" boxes live in seo/pages.json,
+// which the article generator reads too (they are the internal links it may use).
+type PageEntry = { route: RouteKey; cluster: string; tags: string[]; hub: boolean; en: [string, string] | null; pl: [string, string] | null }
+const pages = (pagesJson as unknown as { pages: PageEntry[] }).pages.filter((p) => p.hub)
 
 // Pages written before the article collection existed share one date: the
 // launch. Articles carry their own.

@@ -1,24 +1,80 @@
 {
-  "_comment": "Hard rules for generated articles, from the repo CLAUDE.md. `competitors`: a draft that names one of these must list, in frontmatter `facts`, a fact from seo/facts.json whose `names` covers it. `banned`: claims the site must never make, checked on the whole body.",
+  "_comment": "Hard rules for generated articles, from the repo CLAUDE.md. `competitors`: a draft that names one of these must list, in frontmatter `facts`, a fact from seo/facts.json whose `names` covers it. `banned`: claims the site must never make, checked on the whole body. A rule with negatable=true is checked per sentence and skipped when the sentence is negated (\"you do not need a licence to view\" is the point, not the offence).",
   "competitors": [
-    { "name": "Autodesk Viewer", "pattern": "\\bautodesk viewer\\b" },
-    { "name": "DWG TrueView", "pattern": "\\btrue ?view\\b" },
-    { "name": "ODA Viewer", "pattern": "\\boda viewer\\b" },
-    { "name": "Open Design Alliance", "pattern": "\\bopen design alliance\\b" },
-    { "name": "LibreCAD", "pattern": "\\blibrecad\\b" },
-    { "name": "libdxfrw", "pattern": "\\blibdxfrw\\b" },
-    { "name": "ShareCAD", "pattern": "\\bsharecad\\b" },
-    { "name": "eDrawings", "pattern": "\\bedrawings\\b" },
-    { "name": "DraftSight", "pattern": "\\bdraftsight\\b" },
-    { "name": "QCAD", "pattern": "\\bqcad\\b" },
-    { "name": "A360", "pattern": "\\ba360\\b" },
-    { "name": "Autodesk Drive", "pattern": "\\bautodesk drive\\b" }
+    {
+      "name": "Autodesk Viewer",
+      "pattern": "\\bautodesk viewer\\b"
+    },
+    {
+      "name": "DWG TrueView",
+      "pattern": "\\btrue ?view\\b"
+    },
+    {
+      "name": "ODA Viewer",
+      "pattern": "\\boda viewer\\b"
+    },
+    {
+      "name": "Open Design Alliance",
+      "pattern": "\\bopen design alliance\\b"
+    },
+    {
+      "name": "LibreCAD",
+      "pattern": "\\blibrecad\\b"
+    },
+    {
+      "name": "libdxfrw",
+      "pattern": "\\blibdxfrw\\b"
+    },
+    {
+      "name": "ShareCAD",
+      "pattern": "\\bsharecad\\b"
+    },
+    {
+      "name": "eDrawings",
+      "pattern": "\\bedrawings\\b"
+    },
+    {
+      "name": "DraftSight",
+      "pattern": "\\bdraftsight\\b"
+    },
+    {
+      "name": "QCAD",
+      "pattern": "\\bqcad\\b"
+    },
+    {
+      "name": "A360",
+      "pattern": "\\ba360\\b"
+    },
+    {
+      "name": "Autodesk Drive",
+      "pattern": "\\bautodesk drive\\b"
+    }
   ],
   "banned": [
-    { "pattern": "(subscription|licen[cs]e|abonament|subskrypcj|licencj)\\w*[^.]{0,60}\\b(to|do)\\s+(view|open|see|ogl[aą]d|otw)", "why": "Viewing is free with DWG TrueView and Autodesk Viewer; never say a subscription is needed to view" },
-    { "pattern": "\\bdwg\\b[^.]{0,30}\\b(is not|isn't|nie jest)\\b[^.]{0,20}\\b(trademark|znak)", "why": "Never write that DWG is not a trademark" },
-    { "pattern": "autodesk[^.]{0,40}\\b(invented|created|wymy[sś]li|stworzy)\\w*[^.]{0,20}\\bdwg\\b", "why": "Never write that Autodesk invented DWG" },
-    { "pattern": "\\b(up to|aż do|nawet do)\\s+\\d", "why": "No 'up to N' marketing numbers" },
-    { "pattern": "\\b(100%|completely|fully|w pełni|całkowicie)\\s+(accurate|identical|compatible|dokładn|identyczn|zgodn)", "why": "Never promise exact AutoCAD fidelity" }
+    {
+      "pattern": "(subscription|licen[cs]e|abonament|subskrypcj|licencj)\\w*[^.]{0,60}(?:^|\\s)(to|do|żeby|aby|by|in order to)\\s+(view|open|see|ogl[aą]d|otw|zobacz)",
+      "why": "Viewing is free with DWG TrueView and Autodesk Viewer; never say a subscription is needed to view",
+      "negatable": true
+    },
+    {
+      "pattern": "\\bdwg\\b[^.]{0,30}\\b(is not|isn't|nie jest)\\b[^.]{0,20}\\b(trademark|znak)",
+      "why": "Never write that DWG is not a trademark",
+      "negatable": false
+    },
+    {
+      "pattern": "autodesk[^.]{0,40}\\b(invented|created|wymy[sś]li|stworzy)\\w*[^.]{0,20}\\bdwg\\b",
+      "why": "Never write that Autodesk invented DWG",
+      "negatable": false
+    },
+    {
+      "pattern": "\\b(up to|aż do|nawet do)\\s+\\d",
+      "why": "No 'up to N' marketing numbers",
+      "negatable": false
+    },
+    {
+      "pattern": "\\b(100%|completely|fully|w pełni|całkowicie)\\s+(accurate|identical|compatible|dokładn|identyczn|zgodn)",
+      "why": "Never promise exact AutoCAD fidelity",
+      "negatable": true
+    }
   ]
 }

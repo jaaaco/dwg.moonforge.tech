@@ -1,0 +1,29 @@
+{
+  "_comment": "Hand-written pages that belong in the guides hub and in related-links boxes, with short link text (not the pages' SEO titles, which live in the pages). Read by src/lib/guides.ts and by automation/content-gen.mjs, which offers these as the internal links an article may use.",
+  "pages": [
+    { "route": "home", "cluster": "open:viewer", "tags": ["open"], "hub": false,
+      "en": ["Free DWG viewer", "Open DWG and DXF files in the browser, nothing uploaded."],
+      "pl": ["Darmowa przeglądarka DWG", "Otwórz plik DWG lub DXF w przeglądarce, nic nie wysyłamy."] },
+    { "route": "guide", "cluster": "open:general", "tags": ["open", "alternatives"], "hub": true,
+      "en": ["How to open a DWG file without AutoCAD", "Five free ways, what each needs and where each falls short."],
+      "pl": ["Jak otworzyć plik DWG bez AutoCADa", "Pięć darmowych sposobów: czego wymagają i gdzie odpadają."] },
+    { "route": "dwgToPdf", "cluster": "convert:pdf", "tags": ["convert", "print", "pdf"], "hub": true,
+      "en": ["Convert DWG to PDF", "A vector PDF at scale, A4 to A0, without uploading the drawing."],
+      "pl": ["DWG na PDF za darmo", "Wektorowy PDF w skali, od A4 do A0, bez wysyłania rysunku."] },
+    { "route": "measure", "cluster": "measure:general", "tags": ["measure"], "hub": true,
+      "en": ["Measure distances and areas in a DWG", "Snap to line ends and crossings, read length, angle and area."],
+      "pl": ["Pomiar w pliku DWG", "Przyciąganie do końców i przecięć linii, długość, kąt i pole."] },
+    { "route": "dxfViewer", "cluster": "open:dxf", "tags": ["open", "dxf"], "hub": true,
+      "en": ["DXF viewer online", "Open DXF files in the browser, with layers, measuring and PDF export."],
+      "pl": ["Przeglądarka DXF online", "Otwórz plik DXF w przeglądarce: warstwy, pomiar i eksport do PDF."] },
+    { "route": "mac", "cluster": "open:mac", "tags": ["open", "mac"], "hub": true,
+      "en": ["DWG viewer for Mac", "DWG TrueView does not install on macOS. What to use instead."],
+      "pl": null },
+    { "route": "why", "cluster": "format:open", "tags": ["format"], "hub": true,
+      "en": ["Why a free, open-source DWG viewer", "The facts about DWG, with sources, and why we built this."],
+      "pl": ["Dlaczego darmowa przeglądarka DWG", "Fakty o formacie DWG ze źródłami i powód, dla którego to zrobiliśmy."] },
+    { "route": "guides", "cluster": "hub", "tags": [], "hub": false,
+      "en": ["All DWG guides", "Every guide on this site."],
+      "pl": ["Wszystkie poradniki DWG", "Wszystkie poradniki w serwisie."] }
+  ]
+}
