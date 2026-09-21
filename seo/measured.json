@@ -1,0 +1,35 @@
+{
+  "_comment": "Things we measured ourselves, and the only figures besides seo/facts.json that a generated article may quote. content-gen rejects a number with a unit (%, s, ms, MB, KB, GB) that is not listed in some `numbers` here or in facts.json. Real client drawings stay private: only the figures below are published, never names or content. When benchmarks/ exists, its results.json joins this list.",
+  "items": [
+    {
+      "text": "A 2.6 MB DWG 2004 architectural detail opened in 3.4 s on a desktop and 2.3 s in a phone-sized view, measured on the live site on 2026-09-17.",
+      "text_pl": "Detal architektoniczny DWG 2004 o rozmiarze 2,6 MB otworzył się w 3,4 s na komputerze i w 2,3 s w widoku telefonu, pomiar na produkcji 2026-09-17.",
+      "numbers": ["2.6", "2,6", "3.4", "3,4", "2.3", "2,3", "2004"]
+    },
+    {
+      "text": "A DWG 2018 (AC1032) smart home installation plan with multileaders, 88 dimensions, dynamic blocks with attributes and frozen layers opened in 3.5 s without errors.",
+      "text_pl": "Rzut instalacji smart home w DWG 2018 (AC1032) z multileaderami, 88 wymiarami, blokami dynamicznymi z atrybutami i zamrożonymi warstwami otworzył się w 3,5 s bez błędów.",
+      "numbers": ["2018", "88", "3.5", "3,5"]
+    },
+    {
+      "text": "In 2 of the 3 real drawings we tested, the drawing unit in the file header (INSUNITS) was wrong: one declared millimetres and was drawn in centimetres, one declared inches and was metric.",
+      "text_pl": "W 2 z 3 prawdziwych rysunków, na których testowaliśmy, jednostka w nagłówku pliku (INSUNITS) była błędna: jeden deklarował milimetry, a był w centymetrach, drugi deklarował cale, a był metryczny.",
+      "numbers": ["2", "3"]
+    },
+    {
+      "text": "The snapping index for measuring is built from 102,000 line segments in about 10 ms.",
+      "text_pl": "Indeks przyciągania dla pomiaru powstaje z 102 tys. odcinków w około 10 ms.",
+      "numbers": ["102,000", "102 000", "102", "10"]
+    },
+    {
+      "text": "The viewer warns that files above 25 MB may take a while on a phone.",
+      "text_pl": "Przeglądarka ostrzega, że pliki powyżej 25 MB mogą się dłużej otwierać na telefonie.",
+      "numbers": ["25"]
+    },
+    {
+      "text": "Measuring was checked against a line whose length is known from the drawing database: the reading matched exactly.",
+      "text_pl": "Pomiar sprawdziliśmy na linii o znanej z bazy rysunku długości: odczyt zgodził się dokładnie.",
+      "numbers": []
+    }
+  ]
+}

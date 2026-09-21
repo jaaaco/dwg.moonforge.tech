@@ -26,6 +26,17 @@ explains the engine, the patches and why the site never calls a third-party host
 - **Never present a measurement as more certain than the file.** `INSUNITS` is wrong in most drawings we have
   seen, so the unit is offered, not asserted: the reading shows the file's unit and lets the reader change it.
 - Prose in Polish follows the owner's style: direct, no em dashes.
+- **Articles are published automatically** (`automation/content-gen.mjs`, owner's decision 2026-09-21). The
+  checks in `automation/content-lib.mjs` are the only review a draft gets, so never loosen one to let a draft
+  through; fix the data instead. After touching `content-lib.mjs` or anything in `seo/`, run
+  `node automation/test-guards.mjs`.
+- **A new feature updates `seo/features.json` in the same commit**, or the generator keeps saying it is missing
+  (or, worse, a removed feature keeps being promised).
+- **A claim about another product goes in `seo/facts.json` first**, with a verbatim quote from its source, then
+  onto a page. `automation/facts-check.mjs` re-reads the sources monthly; the LibreCAD claim on the guide went
+  stale within three days of launch.
+- **Never publish into a void.** The generator refuses to run while the home page is not indexed. Links in
+  first (the pdf.techsource.pro lesson); `--skip-gate` is for a human who knows why.
 
 ## Handy
 

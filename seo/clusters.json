@@ -1,0 +1,994 @@
+{
+  "_comment": "The topic map: one search intent per entry, one page per language. owner=engine entries are written by automation/content-gen.mjs in priority order (Polish first, the English counterpart on the next run); owner=page/manual are hand-written and listed so the harvester can file phrases under them and the engine never duplicates them. A language set to null has no real counterpart (a page gets null, not a thin translation). `retired` lists languages taken down with automation/unpublish.mjs, so the engine does not write them again. `match` are regexes over harvested phrases. `facts` are the only seo/facts.json ids the article may use, and so the only other products it may name. Adding a cluster is how the site grows; the harvest only suggests.",
+  "clusters": [
+    {
+      "key": "open-general",
+      "cluster": "open:general",
+      "owner": "page",
+      "en": {
+        "slug": "/open-dwg-without-autocad",
+        "match": [
+          "without autocad",
+          "open dwg (file )?free",
+          "how to open (a )?dwg"
+        ]
+      },
+      "pl": {
+        "slug": "/pl/jak-otworzyc-plik-dwg",
+        "match": [
+          "bez autocad",
+          "czym otworzy",
+          "jak otworzy[cć] (plik )?dwg$",
+          "w czym otworzy"
+        ]
+      }
+    },
+    {
+      "key": "open-mac",
+      "cluster": "open:mac",
+      "owner": "page",
+      "en": {
+        "slug": "/dwg-viewer-mac",
+        "match": [
+          "\\bmac",
+          "macos",
+          "macbook"
+        ]
+      },
+      "pl": null
+    },
+    {
+      "key": "open-mac-pl",
+      "cluster": "open:mac",
+      "owner": "manual",
+      "en": null,
+      "pl": {
+        "slug": "/pl/przegladarka-dwg-mac",
+        "match": [
+          "\\bmac",
+          "macos",
+          "macbook"
+        ]
+      }
+    },
+    {
+      "key": "dwg-to-pdf",
+      "cluster": "convert:pdf",
+      "owner": "page",
+      "en": {
+        "slug": "/dwg-to-pdf",
+        "match": [
+          "to pdf",
+          "pdf convert"
+        ]
+      },
+      "pl": {
+        "slug": "/pl/dwg-na-pdf",
+        "match": [
+          "na pdf",
+          "do pdf",
+          "konwert\\w* dwg"
+        ]
+      }
+    },
+    {
+      "key": "dxf-viewer",
+      "cluster": "open:dxf",
+      "owner": "page",
+      "en": {
+        "slug": "/dxf-viewer",
+        "match": [
+          "\\bdxf (viewer|file|online|open)",
+          "open dxf"
+        ]
+      },
+      "pl": {
+        "slug": "/pl/przegladarka-dxf",
+        "match": [
+          "\\bdxf"
+        ]
+      }
+    },
+    {
+      "key": "measure",
+      "cluster": "measure:general",
+      "owner": "page",
+      "en": {
+        "slug": "/measure-dwg",
+        "match": [
+          "measur",
+          "distance"
+        ]
+      },
+      "pl": {
+        "slug": "/pl/pomiar-dwg",
+        "match": [
+          "pomiar",
+          "zmierz",
+          "wymiar"
+        ]
+      }
+    },
+    {
+      "key": "why",
+      "cluster": "format:open",
+      "owner": "page",
+      "en": {
+        "slug": "/why",
+        "match": [
+          "open format",
+          "proprietary"
+        ]
+      },
+      "pl": {
+        "slug": "/pl/dlaczego",
+        "match": [
+          "otwarty format"
+        ]
+      }
+    },
+    {
+      "key": "what-is-dwg",
+      "cluster": "format:what-is-dwg",
+      "owner": "manual",
+      "en": {
+        "slug": "what-is-a-dwg-file",
+        "match": [
+          "what is (a )?dwg",
+          "dwg file (meaning|format|type)",
+          "dwg meaning",
+          "dwg extension"
+        ]
+      },
+      "pl": {
+        "slug": "plik-dwg-co-to",
+        "match": [
+          "co to",
+          "co to jest",
+          "rozszerzenie dwg",
+          "format dwg"
+        ]
+      }
+    },
+    {
+      "key": "open-phone",
+      "cluster": "open:phone",
+      "owner": "manual",
+      "en": {
+        "slug": "open-dwg-on-phone",
+        "match": [
+          "iphone",
+          "android",
+          "ipad",
+          "phone",
+          "mobile",
+          "tablet"
+        ]
+      },
+      "pl": {
+        "slug": "jak-otworzyc-dwg-na-telefonie",
+        "match": [
+          "telefon",
+          "iphone",
+          "android",
+          "smartfon",
+          "ipad",
+          "tablet"
+        ]
+      }
+    },
+    {
+      "key": "dwg-versions",
+      "cluster": "format:versions",
+      "owner": "manual",
+      "en": {
+        "slug": "/dwg-versions",
+        "match": [
+          "dwg version",
+          "ac10\\d\\d",
+          "which version",
+          "check (the )?version"
+        ]
+      },
+      "pl": {
+        "slug": "/pl/wersje-dwg",
+        "match": [
+          "wersj"
+        ]
+      }
+    },
+    {
+      "key": "viewers-compared",
+      "cluster": "alternatives:compared",
+      "owner": "manual",
+      "en": {
+        "slug": "/free-dwg-viewers-compared",
+        "match": [
+          "best (free )?dwg viewer",
+          "dwg viewer comparison",
+          "free dwg viewers"
+        ]
+      },
+      "pl": {
+        "slug": "/pl/darmowe-przegladarki-dwg",
+        "match": [
+          "najlepsz",
+          "darmowe przegl",
+          "por[oó]wnanie"
+        ]
+      }
+    },
+    {
+      "key": "architect-sent-dwg",
+      "cluster": "audience:homeowner",
+      "owner": "engine",
+      "priority": 1,
+      "tool": "home",
+      "tags": [
+        "open",
+        "audience",
+        "measure"
+      ],
+      "facts": [],
+      "angle": "The reader is building or renovating a home and the architect or designer sent the plans as DWG. They have no CAD, maybe only a phone or a Mac, and want to see the rooms, check a dimension or the floor area, print a sheet for the builder, and not upload their home's plans to a stranger. Walk them through opening it here, finding their way (layers, zoom, model vs sheet names they will see), checking a dimension with Measure (and the wrong-unit trap from the measured data), getting a room's area, and making a PDF for the builder. Tell them what to ask the architect for if something is missing (a PDF set, a DXF, an older DWG version, missing xrefs or fonts).",
+      "en": {
+        "phrase": "architect sent me a dwg file how do i open it",
+        "slug": "architect-sent-dwg-file",
+        "match": [
+          "architect",
+          "house plan",
+          "floor plan",
+          "home plan"
+        ]
+      },
+      "pl": {
+        "phrase": "architekt przysłał projekt domu w dwg jak go obejrzeć",
+        "slug": "projekt-domu-dwg-od-architekta",
+        "match": [
+          "architekt",
+          "projekt domu",
+          "rzut domu",
+          "projekt budowlany"
+        ]
+      }
+    },
+    {
+      "key": "dwg-wont-open",
+      "cluster": "open:troubleshooting",
+      "owner": "engine",
+      "priority": 2,
+      "tool": "home",
+      "tags": [
+        "open",
+        "troubleshooting"
+      ],
+      "facts": [
+        "oda-dwg-version-ids",
+        "oda-dwg-undocumented",
+        "libredwg-beta"
+      ],
+      "angle": "The file will not open, or opens empty, broken or with missing parts. Go through causes in order of likelihood: not really a DWG (wrong extension, a .bak, a zip), a newer format than the program reads (the version ID in the first 6 bytes), a damaged or truncated file (partial download, email size limits), external references not sent along, the drawing is in a layout or far from the origin so it looks empty, missing fonts turning text into boxes. For each: how to tell, and what fixes it (ask for DXF or an older version, re-send, zoom to extents, turn layers on). Be honest that this viewer uses GNU LibreDWG, which is in beta, so some advanced objects in recent versions may not show.",
+      "en": {
+        "phrase": "dwg file won't open",
+        "slug": "dwg-file-wont-open",
+        "match": [
+          "won'?t open",
+          "not open",
+          "cannot open",
+          "can'?t open",
+          "not valid",
+          "corrupt",
+          "damaged",
+          "blank",
+          "empty",
+          "error"
+        ]
+      },
+      "pl": {
+        "phrase": "plik dwg się nie otwiera",
+        "slug": "plik-dwg-sie-nie-otwiera",
+        "match": [
+          "nie otwiera",
+          "nie mo[zż]na otworzy",
+          "b[lł][aą]d",
+          "uszkodz",
+          "pusty"
+        ]
+      }
+    },
+    {
+      "key": "newer-dwg-version",
+      "cluster": "open:version-mismatch",
+      "owner": "engine",
+      "priority": 3,
+      "tool": "home",
+      "tags": [
+        "open",
+        "format",
+        "versions"
+      ],
+      "facts": [
+        "oda-dwg-version-ids"
+      ],
+      "angle": "The reader's program says the drawing was made with a newer version and refuses it, or a colleague cannot open what they sent. Explain that DWG changed format a limited number of times (the version ID table from the facts), that a newer format cannot be read by software older than it, and the practical fixes: ask the sender to save as an older version or as DXF, or open it here, which reads versions up to R2018 (AC1032). Show how to read the version ID from the first 6 bytes of the file with a text editor or a one-line command, as a concrete, checkable tip.",
+      "en": {
+        "phrase": "open newer dwg version in older software",
+        "slug": "open-newer-dwg-version",
+        "match": [
+          "newer version",
+          "more recent version",
+          "older version",
+          "save as (an )?older",
+          "2018 in",
+          "2013 in",
+          "convert dwg version"
+        ]
+      },
+      "pl": {
+        "phrase": "otworzyć dwg z nowszej wersji w starszym programie",
+        "slug": "dwg-z-nowszej-wersji",
+        "match": [
+          "nowsz",
+          "starsz",
+          "zapisa[cć] w starszej"
+        ]
+      }
+    },
+    {
+      "key": "print-to-scale",
+      "cluster": "convert:print-scale",
+      "owner": "engine",
+      "priority": 4,
+      "tool": "dwgToPdf",
+      "tags": [
+        "print",
+        "pdf",
+        "convert"
+      ],
+      "facts": [],
+      "angle": "The reader needs a DWG on paper at a real scale, 1:50 or 1:100, to hand to a builder or check on site. Explain what scale on paper means (sheet millimetres per real millimetre), which sheet fits which scale for a typical house plan, why 'fit to sheet' is not a scale, and the unit trap: the scale is computed from the unit in the file header, which was wrong in 2 of our 3 test drawings, so check a known dimension first and shift the scale if needed. Then the exact steps in the PDF panel (window, sheet, scale, black and white, line width, preview, the clipping warning) and how to print the PDF at 100% without the printer shrinking it.",
+      "en": {
+        "phrase": "print dwg to scale 1:50 pdf",
+        "slug": "print-dwg-to-scale",
+        "match": [
+          "to scale",
+          "1:50",
+          "1:100",
+          "plot",
+          "print dwg",
+          "a3",
+          "a4",
+          "a1"
+        ]
+      },
+      "pl": {
+        "phrase": "jak wydrukować dwg w skali 1:50",
+        "slug": "wydruk-dwg-w-skali",
+        "match": [
+          "w skali",
+          "1:50",
+          "1:100",
+          "wydruk",
+          "wydrukowa",
+          "drukowa",
+          "a3",
+          "a4"
+        ]
+      }
+    },
+    {
+      "key": "floor-area",
+      "cluster": "measure:area",
+      "owner": "engine",
+      "priority": 5,
+      "tool": "measure",
+      "tags": [
+        "measure",
+        "audience"
+      ],
+      "facts": [],
+      "angle": "The reader wants the floor area of rooms or a whole flat from a DWG plan: to check a developer's figures, estimate flooring or paint, or compare with the contract. Show how to click a room's outline with Measure to get the area, where to click (inner face of walls for usable floor area, snapping to wall corners), how to handle L-shaped rooms and bay windows (split into simple outlines and add up), and to verify the unit before trusting the number. Keep to measuring; do not state legal definitions of floor area.",
+      "en": {
+        "phrase": "calculate floor area from dwg plan",
+        "slug": "floor-area-from-dwg",
+        "match": [
+          "area",
+          "square (feet|meters|metres)",
+          "floor area",
+          "room size"
+        ]
+      },
+      "pl": {
+        "phrase": "jak policzyć metraż z rzutu dwg",
+        "slug": "metraz-z-rzutu-dwg",
+        "match": [
+          "metra[zż]",
+          "powierzchni",
+          "pole",
+          "m2",
+          "m²"
+        ]
+      }
+    },
+    {
+      "key": "need-autocad",
+      "cluster": "open:need-autocad",
+      "owner": "engine",
+      "priority": 6,
+      "tool": "home",
+      "tags": [
+        "open",
+        "alternatives"
+      ],
+      "facts": [
+        "trueview-windows-only",
+        "autodesk-viewer-free-account",
+        "autodesk-viewer-upload"
+      ],
+      "angle": "Short, direct answer to 'do I need AutoCAD to open a DWG?': no. Viewing is free. Name the free options from the facts (DWG TrueView on Windows, Autodesk Viewer online with an account and an upload) and this viewer (any device, no account, no upload), and say when you do need a CAD program: to edit. Never say a subscription or licence is needed to view a drawing.",
+      "en": {
+        "phrase": "do i need autocad to open a dwg file",
+        "slug": "do-i-need-autocad-to-open-dwg",
+        "match": [
+          "need autocad",
+          "without buying",
+          "free autocad",
+          "autocad free"
+        ]
+      },
+      "pl": {
+        "phrase": "czy potrzebuję autocada żeby otworzyć plik dwg",
+        "slug": "czy-potrzebny-autocad-do-dwg",
+        "match": [
+          "potrzebn\\w* autocad",
+          "za darmo autocad",
+          "autocad za darmo",
+          "darmowy autocad"
+        ]
+      }
+    },
+    {
+      "key": "dwg-vs-dxf",
+      "cluster": "format:dwg-vs-dxf",
+      "owner": "engine",
+      "priority": 7,
+      "tool": "dxfViewer",
+      "tags": [
+        "format",
+        "dxf"
+      ],
+      "facts": [
+        "oda-dwg-native-proprietary",
+        "librecad-dwg-experimental"
+      ],
+      "angle": "The practical difference between DWG and DXF for someone who has to choose what to send or ask for: what each is, which programs read which (CAD, CAM, laser cutting), when to send DXF (different CAD programs, CNC and laser shops, open-source tools) and when DWG (same CAD, smaller files), what can be lost converting between them (in general terms), and that this viewer opens both. Use a comparison table.",
+      "en": {
+        "phrase": "dwg vs dxf difference",
+        "slug": "dwg-vs-dxf",
+        "match": [
+          "dwg vs dxf",
+          "dxf vs dwg",
+          "difference between dwg and dxf",
+          "dwg or dxf"
+        ]
+      },
+      "pl": {
+        "phrase": "dwg a dxf różnice",
+        "slug": "dwg-a-dxf-roznice",
+        "match": [
+          "dwg a dxf",
+          "dxf a dwg",
+          "r[oó][zż]nic",
+          "dwg czy dxf"
+        ]
+      }
+    },
+    {
+      "key": "no-upload",
+      "cluster": "open:no-upload",
+      "owner": "engine",
+      "priority": 8,
+      "tool": "home",
+      "tags": [
+        "open",
+        "privacy"
+      ],
+      "facts": [
+        "autodesk-viewer-upload",
+        "autodesk-viewer-30-days"
+      ],
+      "angle": "The reader handles drawings they must not share: a client's building, security layouts, an NDA project. Explain what 'online viewer' usually means (the file is uploaded to someone's server; the facts show Autodesk Viewer keeps an uploaded design for 30 days by default), how this viewer differs (WebAssembly in the tab, no server that receives files), and how to verify it yourself in the browser's Network tab or by going offline after loading. Keep it factual, no fear-mongering.",
+      "en": {
+        "phrase": "open dwg online without uploading",
+        "slug": "open-dwg-without-uploading",
+        "match": [
+          "without upload",
+          "no upload",
+          "privacy",
+          "secure",
+          "confidential",
+          "offline",
+          "locally"
+        ]
+      },
+      "pl": {
+        "phrase": "otworzyć dwg online bez wysyłania pliku",
+        "slug": "dwg-bez-wysylania-pliku",
+        "match": [
+          "bez wysy",
+          "prywatn",
+          "bezpieczn",
+          "poufn",
+          "offline",
+          "lokalnie"
+        ]
+      }
+    },
+    {
+      "key": "email-attachment",
+      "cluster": "open:email",
+      "owner": "engine",
+      "priority": 9,
+      "tool": "home",
+      "tags": [
+        "open"
+      ],
+      "facts": [],
+      "angle": "The reader got a DWG as an email attachment (Gmail, Outlook, on a computer or phone) and the preview shows nothing. Explain that mail clients do not preview DWG, then the shortest path: save the attachment, open this page, pick the file (on a phone: from Files / Downloads). Cover the common snags: the attachment is a zip or a WeTransfer link, several files arrived (xrefs belong together), the file name has a .bak or .dwl extension (those are not the drawing).",
+      "en": {
+        "phrase": "open dwg attachment from email",
+        "slug": "open-dwg-email-attachment",
+        "match": [
+          "email",
+          "attachment",
+          "gmail",
+          "outlook"
+        ]
+      },
+      "pl": {
+        "phrase": "jak otworzyć załącznik dwg z maila",
+        "slug": "zalacznik-dwg-z-maila",
+        "match": [
+          "mail",
+          "za[lł][aą]cznik",
+          "gmail",
+          "outlook"
+        ]
+      }
+    },
+    {
+      "key": "layers",
+      "cluster": "format:layers",
+      "owner": "engine",
+      "priority": 10,
+      "tool": "home",
+      "tags": [
+        "format",
+        "layers"
+      ],
+      "facts": [],
+      "angle": "What layers in a DWG are and how to use them when you only view a drawing: hide furniture to see walls, show only the electrical layer, find why something is invisible (layer off or frozen). In this viewer, switching a frozen layer on thaws it. Practical: how layer names usually map to trades, and that printing to PDF keeps only visible layers.",
+      "en": {
+        "phrase": "dwg layers turn on off frozen",
+        "slug": "dwg-layers",
+        "match": [
+          "layer",
+          "frozen",
+          "freeze",
+          "thaw"
+        ]
+      },
+      "pl": {
+        "phrase": "warstwy w pliku dwg jak włączyć",
+        "slug": "warstwy-dwg",
+        "match": [
+          "warstw",
+          "zamro[zż]"
+        ]
+      }
+    },
+    {
+      "key": "wrong-units",
+      "cluster": "measure:units",
+      "owner": "engine",
+      "priority": 11,
+      "tool": "measure",
+      "tags": [
+        "measure",
+        "format"
+      ],
+      "facts": [],
+      "angle": "Why dimensions read off a DWG come out ten or a thousand times too big or small: the header variable INSUNITS says what one drawing unit is, nobody has to set it to draw, and in 2 of the 3 real drawings we tested it was wrong. How to spot it (measure a door), how to fix the reading in this viewer (change the unit in the Measure panel), and the consequence for PDF at scale (the export uses the header unit, so shift the scale). This is our own finding; state it as such.",
+      "en": {
+        "phrase": "dwg wrong units scale measurements",
+        "slug": "dwg-wrong-units",
+        "match": [
+          "units",
+          "insunits",
+          "wrong scale",
+          "scale wrong",
+          "millimet",
+          "inches"
+        ]
+      },
+      "pl": {
+        "phrase": "zła skala w pliku dwg jednostki",
+        "slug": "zle-jednostki-dwg",
+        "match": [
+          "jednost",
+          "z[lł]a skala",
+          "milimetr",
+          "centymetr",
+          "cale"
+        ]
+      }
+    },
+    {
+      "key": "cable-length",
+      "cluster": "measure:cable",
+      "owner": "engine",
+      "priority": 12,
+      "tool": "measure",
+      "tags": [
+        "measure",
+        "audience",
+        "electrical"
+      ],
+      "facts": [],
+      "angle": "An electrician or installer estimating cable length from an installation plan in DWG. Show how to measure a run as a chain of segments with Measure (running total), snapping to wall corners and box symbols, adding vertical drops and reserve by hand, and summing circuits. Tie it to quoting a job. Do not state electrical code rules or reserve percentages.",
+      "en": {
+        "phrase": "measure cable length from floor plan dwg",
+        "slug": "cable-length-from-dwg-plan",
+        "match": [
+          "cable",
+          "wire",
+          "wiring",
+          "conduit",
+          "cable length"
+        ]
+      },
+      "pl": {
+        "phrase": "jak policzyć długość kabla z rzutu dwg",
+        "slug": "dlugosc-kabla-z-rzutu-dwg",
+        "match": [
+          "kabl",
+          "przew[oó]d",
+          "instalacj\\w* elektryczn",
+          "okablowan"
+        ]
+      }
+    },
+    {
+      "key": "windows-free",
+      "cluster": "open:windows",
+      "owner": "engine",
+      "priority": 13,
+      "tool": "home",
+      "tags": [
+        "open",
+        "windows"
+      ],
+      "facts": [
+        "trueview-windows-only",
+        "trueview-2027-requirements"
+      ],
+      "angle": "Free DWG viewing on Windows 10/11: the two realistic choices. DWG TrueView (free desktop app; its 2027 requirements from the facts) when you need Autodesk's own rendering or version conversion; this viewer when the PC is old, locked down (no admin rights to install), shared, or you just need a quick look. A short decision list, then the steps for this viewer.",
+      "en": {
+        "phrase": "free dwg viewer windows 11",
+        "slug": "free-dwg-viewer-windows",
+        "match": [
+          "windows",
+          "win 10",
+          "win 11",
+          "pc"
+        ]
+      },
+      "pl": {
+        "phrase": "darmowa przeglądarka dwg windows 11",
+        "slug": "przegladarka-dwg-windows",
+        "match": [
+          "windows",
+          "win 10",
+          "win 11",
+          "komputer"
+        ]
+      }
+    },
+    {
+      "key": "linux-chromebook",
+      "cluster": "open:linux",
+      "owner": "engine",
+      "priority": 14,
+      "tool": "home",
+      "tags": [
+        "open",
+        "linux"
+      ],
+      "facts": [
+        "trueview-windows-only",
+        "oda-viewer-purpose",
+        "librecad-dwg-experimental"
+      ],
+      "angle": "Opening DWG on Linux and on a Chromebook, where the Autodesk desktop viewer is not an option (it is Windows-only per the facts). Options: this viewer in any browser (works on ChromeOS too), ODA Viewer which ships Linux packages, LibreCAD for editing with DWG import that its own library calls experimental. Give a short recommendation per need.",
+      "en": {
+        "phrase": "open dwg file on linux or chromebook",
+        "slug": "open-dwg-on-linux",
+        "match": [
+          "linux",
+          "ubuntu",
+          "chromebook",
+          "chromeos",
+          "fedora",
+          "debian"
+        ]
+      },
+      "pl": {
+        "phrase": "jak otworzyć dwg na linuksie",
+        "slug": "dwg-na-linuksie",
+        "match": [
+          "linux",
+          "ubuntu",
+          "chromebook"
+        ]
+      }
+    },
+    {
+      "key": "autodesk-viewer-alternative",
+      "cluster": "alternatives:autodesk-viewer",
+      "owner": "engine",
+      "priority": 15,
+      "tool": "home",
+      "tags": [
+        "alternatives",
+        "privacy"
+      ],
+      "facts": [
+        "autodesk-viewer-free-account",
+        "autodesk-viewer-upload",
+        "autodesk-viewer-30-days"
+      ],
+      "angle": "For someone looking for an Autodesk Viewer alternative: fair summary of what Autodesk Viewer is (free, browser-based, needs an account and an upload, designs kept 30 days by default and extendable, all from the facts), what it is good at (sharing a view with others), and when a no-account, no-upload viewer fits better. No disparagement, facts only, opinion labelled.",
+      "en": {
+        "phrase": "autodesk viewer alternative without account",
+        "slug": "autodesk-viewer-alternative",
+        "match": [
+          "autodesk viewer",
+          "a360",
+          "without account",
+          "no account",
+          "no sign"
+        ]
+      },
+      "pl": {
+        "phrase": "autodesk viewer alternatywa bez konta",
+        "slug": "autodesk-viewer-alternatywa",
+        "match": [
+          "autodesk viewer",
+          "bez konta",
+          "bez logowania",
+          "bez rejestracji"
+        ]
+      }
+    },
+    {
+      "key": "trueview-alternative",
+      "cluster": "alternatives:trueview",
+      "owner": "engine",
+      "priority": 16,
+      "tool": "home",
+      "tags": [
+        "alternatives"
+      ],
+      "facts": [
+        "trueview-windows-only",
+        "trueview-2027-requirements"
+      ],
+      "angle": "For someone searching a DWG TrueView alternative: what TrueView is and is good at (free, Autodesk's own rendering, version conversion), its limits from the facts (Windows only, the 2027 system requirements), and the situations where something else fits: Mac, Linux, phone, a PC without install rights, low-spec hardware. Recommend per situation.",
+      "en": {
+        "phrase": "dwg trueview alternative",
+        "slug": "dwg-trueview-alternative",
+        "match": [
+          "trueview",
+          "true view"
+        ]
+      },
+      "pl": {
+        "phrase": "dwg trueview alternatywa",
+        "slug": "dwg-trueview-alternatywa",
+        "match": [
+          "trueview",
+          "true view"
+        ]
+      }
+    },
+    {
+      "key": "missing-fonts",
+      "cluster": "format:fonts",
+      "owner": "engine",
+      "priority": 17,
+      "tool": "home",
+      "tags": [
+        "format",
+        "troubleshooting"
+      ],
+      "facts": [],
+      "angle": "Why text in a DWG looks different, overlaps or turns into boxes or question marks elsewhere: the drawing references fonts (often SHX shape fonts or system TrueType fonts) that are not inside the file and not on the other computer, so programs substitute. Explain what to ask the sender for, and that this viewer deliberately draws all text with one open font (osifont), which keeps it readable but not identical. Do not claim any font files are freely redistributable.",
+      "en": {
+        "phrase": "dwg missing shx fonts text wrong",
+        "slug": "dwg-missing-fonts",
+        "match": [
+          "font",
+          "shx",
+          "text (looks|is) (wrong|different)",
+          "question marks"
+        ]
+      },
+      "pl": {
+        "phrase": "brakujące czcionki shx w dwg",
+        "slug": "brakujace-czcionki-dwg",
+        "match": [
+          "czcionk",
+          "font",
+          "shx",
+          "krzaki"
+        ]
+      }
+    },
+    {
+      "key": "xrefs",
+      "cluster": "format:xrefs",
+      "owner": "engine",
+      "priority": 18,
+      "tool": "home",
+      "tags": [
+        "format",
+        "troubleshooting"
+      ],
+      "facts": [],
+      "angle": "Parts of the drawing are missing because they live in other files: external references (xrefs). How to recognise it (a mostly empty sheet, a message about missing references in CAD), why it happens (the sender sent one file of a set), and what to ask for: all referenced files together, or a bound single DWG, or a PDF. This viewer opens one file and does not resolve xrefs; say so.",
+      "en": {
+        "phrase": "dwg missing xref external reference",
+        "slug": "dwg-missing-xrefs",
+        "match": [
+          "xref",
+          "external reference",
+          "reference missing"
+        ]
+      },
+      "pl": {
+        "phrase": "brakujące xrefy w pliku dwg",
+        "slug": "brakujace-xrefy-dwg",
+        "match": [
+          "xref",
+          "odno[sś]nik",
+          "referencj"
+        ]
+      }
+    },
+    {
+      "key": "model-layout",
+      "cluster": "format:layouts",
+      "owner": "engine",
+      "priority": 19,
+      "tool": "home",
+      "tags": [
+        "format"
+      ],
+      "facts": [],
+      "angle": "Model space vs layouts (paper space) explained for a non-CAD reader: the drawing lives at full size in model space; layouts are sheets that frame views of it with a title block for printing. Why a drawing can look tiny, empty or far off-centre (objects far from the origin, a layout with nothing in it), and how to get your bearings with Fit and zoom. Do not claim this viewer shows or switches layouts.",
+      "en": {
+        "phrase": "dwg model space vs layout paper space",
+        "slug": "dwg-model-space-vs-layout",
+        "match": [
+          "model space",
+          "paper space",
+          "layout",
+          "viewport"
+        ]
+      },
+      "pl": {
+        "phrase": "model i arkusz w pliku dwg",
+        "slug": "model-i-arkusz-dwg",
+        "match": [
+          "model",
+          "arkusz",
+          "layout",
+          "rzutni"
+        ]
+      }
+    },
+    {
+      "key": "electrical-plan",
+      "cluster": "audience:electrical",
+      "owner": "engine",
+      "priority": 20,
+      "tool": "measure",
+      "tags": [
+        "audience",
+        "electrical",
+        "layers"
+      ],
+      "facts": [],
+      "angle": "An investor or installer looking at an electrical installation plan in DWG: how to find their way around (electrical layers, symbol legend usually on the sheet, circuits and cable routes), check socket and switch positions against furniture by toggling layers, measure distances from walls and cable runs, and print a sheet per floor for the site. Viewer-centric; do not state electrical standards or symbol norms.",
+      "en": {
+        "phrase": "how to read electrical plan dwg",
+        "slug": "read-electrical-plan-dwg",
+        "match": [
+          "electrical plan",
+          "electrical drawing",
+          "wiring diagram"
+        ]
+      },
+      "pl": {
+        "phrase": "jak czytać projekt instalacji elektrycznej dwg",
+        "slug": "projekt-instalacji-elektrycznej-dwg",
+        "match": [
+          "elektryczn",
+          "instalacj",
+          "gniazd",
+          "obwod"
+        ]
+      }
+    },
+    {
+      "key": "librecad-dwg",
+      "cluster": "alternatives:librecad",
+      "owner": "engine",
+      "priority": 21,
+      "tool": "dxfViewer",
+      "tags": [
+        "alternatives",
+        "dxf",
+        "open-source"
+      ],
+      "facts": [
+        "librecad-dwg-experimental",
+        "libredwg-beta"
+      ],
+      "angle": "Opening DWG in LibreCAD and in free software generally: LibreCAD edits DXF natively and imports DWG through libdxfrw, whose own documentation lists DWG reading as experimental; GNU LibreDWG, used by this viewer, is in beta. When it works, when to convert to DXF first, and how to use this viewer to check a file before editing it in LibreCAD.",
+      "en": {
+        "phrase": "open dwg in librecad",
+        "slug": "librecad-dwg",
+        "match": [
+          "librecad",
+          "open source cad",
+          "free cad"
+        ]
+      },
+      "pl": {
+        "phrase": "librecad otwieranie plików dwg",
+        "slug": "librecad-dwg",
+        "match": [
+          "librecad",
+          "darmowy cad",
+          "cad open source"
+        ]
+      }
+    },
+    {
+      "key": "viewer-home",
+      "cluster": "open:viewer",
+      "owner": "page",
+      "en": {
+        "slug": "/",
+        "match": [
+          "online",
+          "browser",
+          "\\bviewer\\b",
+          "^open dwg( file)?$",
+          "free dwg",
+          "dwg reader"
+        ]
+      },
+      "pl": {
+        "slug": "/pl",
+        "match": [
+          "online",
+          "przegl[aą]dark",
+          "darmow",
+          "otw[oó]rz dwg$"
+        ]
+      }
+    }
+  ]
+}

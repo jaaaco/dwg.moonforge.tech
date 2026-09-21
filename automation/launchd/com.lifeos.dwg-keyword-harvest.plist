@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.lifeos.dwg-keyword-harvest</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/opt/homebrew/bin/node</string>
+        <string>/Users/jaaaco/projects/dwg.moonforge.tech/automation/keyword-harvest.mjs</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/jaaaco/projects/dwg.moonforge.tech</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/Users/jaaaco/.local/bin:/usr/bin:/bin</string>
+        <key>HOME</key>
+        <string>/Users/jaaaco</string>
+    </dict>
+
+    <!-- Monday 06:47, half an hour after the PDF site's harvest, so the two never hammer the autocomplete endpoints together. -->
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Weekday</key>
+        <integer>1</integer>
+        <key>Hour</key>
+        <integer>6</integer>
+        <key>Minute</key>
+        <integer>47</integer>
+    </dict>
+
+    <key>RunAtLoad</key>
+    <false/>
+
+    <key>StandardOutPath</key>
+    <string>/Users/jaaaco/projects/dwg.moonforge.tech/automation/logs/launchd.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/jaaaco/projects/dwg.moonforge.tech/automation/logs/launchd.log</string>
+</dict>
+</plist>

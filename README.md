@@ -114,6 +114,38 @@ There is no test suite yet. What was verified by hand before the first release:
   fixed scale, colour and black and white) in Chrome and in WebKit, then rasterised with `pdftoppm` and compared
   with the canvas: text, hatch patterns, dashed lines and sheet size.
 
+## Guides and the content engine
+
+Articles are markdown in `content/<en|pl>/<slug>.md` (Astro content collection, schema in
+`src/content.config.ts`), paired across languages by `key` and rendered by `src/components/GuideArticle.astro`
+under `/guides/<slug>` and `/pl/poradniki/<slug>`. Hubs: `/guides`, `/pl/poradniki`. Hand-written pages keep
+living in `src/pages` and are listed for the hubs in `seo/pages.json`.
+
+What an article may say is data, not prose:
+
+| File | Holds |
+|---|---|
+| `seo/clusters.json` | the topic map: one intent per entry, owner (engine / page / manual), priority, the angle for the writer, which facts it may use |
+| `seo/facts.json` | claims about other products, each with its source, verbatim quotes and a check date; the Sources section is built from it |
+| `seo/features.json` | what the viewer can and cannot do; update it in the same commit as a feature |
+| `seo/measured.json` | our own measurements, the only figures with a unit an article may quote |
+| `seo/policy.json` | product names that need a fact, and claims the site never makes |
+
+`automation/` (ported from pdf.techsource.pro, runs from launchd, reports to Telegram):
+
+| Script | When | Does |
+|---|---|---|
+| `content-gen.mjs` | Tue + Fri 07:53 (from 2026-10-13) | next topic from the map, Polish then English; `claude -p --tools ""`; checks from `content-lib.mjs`; build, commit, push, `deploy.sh`. Stops when the tree is dirty or the home page is not indexed |
+| `keyword-harvest.mjs` | Mon 06:47 | autocomplete + Super User phrases, filed under topics, committed |
+| `deploy-watch.mjs` | daily 08:51 | status, unique titles, canonicals, robots, 404; IndexNow when the URL set changes |
+| `rank-report.mjs` | Mon 09:23 | Search Console (`sc-domain:moonforge.tech`, filtered to this host): cannibalisation, positions 11-20, silent and stale pages, unfiled phrases, fresh questions |
+| `facts-check.mjs` | 1st of month 10:07 | re-reads every source, flags facts whose quote disappeared, moves check dates |
+| `unpublish.mjs` | by hand | retire an article: 301 in `public/_redirects`, topic language marked retired, deploy |
+| `test-guards.mjs` | by hand | runs the draft checks on hand-made drafts; run after touching `content-lib.mjs` or `seo/` |
+
+Plists are in `automation/launchd/`; installed copies live in `~/Library/LaunchAgents`. Pause the writer with
+`launchctl bootout gui/$(id -u)/com.lifeos.dwg-content-gen`.
+
 ## Deploy
 
 Cloudflare Pages, project `dwg-moonforge-tech`, custom domain `dwg.moonforge.tech` (DNS zone on Cloudflare).
@@ -123,6 +155,8 @@ Run wrangler from a temporary directory: started inside a Vite project it rewrit
 ./deploy.sh                      # production
 DEPLOY_BRANCH=test ./deploy.sh   # preview at test.dwg-moonforge-tech.pages.dev
 ```
+
+A production deploy ends with an IndexNow ping (`scripts/indexnow.mjs`, key file in `public/`).
 
 ## Licence
 
