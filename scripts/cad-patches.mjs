@@ -93,7 +93,7 @@ export const patches = [
     // LibreDWG hands MTEXT line breaks over as raw "\n" (and keeps tabs), which
     // the MTEXT parser does not treat as a paragraph break: the word before the
     // newline disappeared ("GR. 1,5 mm" rendered as "GR. 1,5").
-    upstream: { repo: 'https://github.com/mlightcad/realdwg-web', state: 'NOT reported, READY TO SEND, and the only one of these that is clean. Confirmed against published packages 2026-09-27: libredwg-converter 3.14.14 still does contents = mtext.text, and mtext-parser 1.5.2 given "GR. 1,5 mm\\nTEST" yields GR. / 1,5 / NEW_PARAGRAPH / TEST. The word before the break is dropped, not just unsplit. Fix belongs in the converter (emit \\P), and the parser silently losing a word is worth mentioning in the same report. The package lives in the realdwg-web monorepo.' },
+    upstream: { issue: 'https://github.com/mlightcad/realdwg-web/issues/221', repo: 'https://github.com/mlightcad/realdwg-web', state: 'Reported 2026-09-27: https://github.com/mlightcad/realdwg-web/issues/221 (awaiting maintainer; asked which layer should own the fix). Confirmed against published packages 2026-09-27: libredwg-converter 3.14.14 still does contents = mtext.text, and mtext-parser 1.5.2 given "GR. 1,5 mm\\nTEST" yields GR. / 1,5 / NEW_PARAGRAPH / TEST. The word before the break is dropped, not just unsplit. Fix belongs in the converter (emit \\P), and the parser silently losing a word is worth mentioning in the same report. The package lives in the realdwg-web monorepo.' },
     name: 'converter: MTEXT newlines become \\P',
     files: ['@mlightcad/libredwg-converter/lib/AcDbEntitiyConverter.js'],
     from: /dbEntity\.contents = mtext\.text;/,
