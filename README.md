@@ -35,6 +35,25 @@ The engine is [mlightcad](https://github.com/mlightcad/cad-viewer) (`@mlightcad/
 `@mlightcad/libredwg-converter` (GPL-3.0) for DWG. Versions are pinned exactly: the packages release every
 few days.
 
+### Upstream fixes we carry
+
+The patches live as data in `scripts/cad-patches.mjs`, each with an `upstream` note saying whether it
+was reported, where, and what the next step is. Before touching any of them, run:
+
+```bash
+npm run check-upstream        # installs the latest @mlightcad packages in a temp dir, re-tests every patch
+```
+
+It answers the only question that matters per patch: is the bug still in the published package? A
+"still broken" line with `NOT reported` in its note is a contribution waiting to be made; a "check by
+hand" line means the code moved upstream, so confirm on the new version before dropping our patch,
+and never report a bug that is already fixed.
+
+State as of 2026-09-27: tab-stop hang reported and fixed in
+[mtext-parser#10](https://github.com/mlightcad/mtext-parser/pull/10) (open); `%%d` and the converter's
+MTEXT newlines are confirmed broken in the latest releases and ready to send; the word-wrap pair is
+gone from mtext-renderer 0.13.0, so the next move there is a version bump, not a bug report.
+
 ### What `scripts/prepare-cad.mjs` does, and why
 
 1. **Patches four rendering bugs** in the pinned mlightcad packages (text wrapping, oblique text width, the

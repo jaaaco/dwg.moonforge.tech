@@ -12,7 +12,8 @@
     "prebuild": "node scripts/prepare-cad.mjs",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "astro check",
+    "check-upstream": "node scripts/check-upstream.mjs"
   },
   "dependencies": {
     "@fontsource/inter": "^5.3.0",
