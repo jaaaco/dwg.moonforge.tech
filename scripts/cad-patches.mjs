@@ -48,7 +48,7 @@ export const patches = [
     // of tan(angle) * height after every glyph, about a quarter of the text
     // height per character. AutoCAD shears glyphs without moving the pen, so
     // lines came out far wider than their MTEXT box and ran into each other.
-    upstream: { repo: 'https://github.com/mlightcad/mtext-renderer', state: 'NOT reported. Still present in mtext-renderer 0.13.0 and cad-simple-viewer 1.7.1 (checked 2026-09-27). Before reporting, confirm the semantics in the source rather than the minified bundle: AutoCAD shears glyphs without advancing the pen, so tan(angle) * height per glyph makes a line far wider than its MTEXT box.' },
+    upstream: { repo: 'https://github.com/mlightcad/mtext-renderer', state: 'NOT reported, and not a slip upstream: the source adds it deliberately (obliqueExtraAdvance, documented, fed into penAdvance). Our claim is that AutoCAD shears glyphs without advancing the pen, which is why our lines overflowed their own MTEXT box. That is an issue with a measured repro drawing, not a drive-by PR, so it needs the box width and the rendered width side by side before it is worth anyone reading (source checked 2026-09-27).' },
     name: 'mtext: oblique shear does not widen text',
     files: ['@mlightcad/mtext-renderer/dist/index.js', '@mlightcad/cad-simple-viewer/dist/mtext-renderer-worker.js'],
     from: /\), (\w+) = Math\.tan\((\w+)\) \* (\w+);/,
@@ -82,7 +82,7 @@ export const patches = [
   {
     // %%d tried code 126 first, which is "~" in every text font; 176 is the
     // degree sign. 126 stays as the fallback for amgdt-style symbol fonts.
-    upstream: { repo: 'https://github.com/mlightcad/mtext-renderer', state: 'NOT reported, READY TO SEND. Confirmed still broken in 0.13.0 (2026-09-27): the table is d: [126, 176] and 126 is ~ in text fonts. Smallest possible PR.' },
+    upstream: { repo: 'https://github.com/mlightcad/mtext-renderer', state: 'DO NOT report: this one is ours. Upstream looks the codes up in symbol fonts only (getCodeShapeFromSymbolFonts) and falls back to the Unicode character when there is none, which is correct. We see a tilde because prepare-cad aliases the symbol font names (amgdt, gdt, aigdt...) to osifont, so byte 126 resolves in a text font. The real fix is to stop aliasing symbol fonts and drop this patch (checked in the source 2026-09-27).' },
     name: 'mtext: %%d renders a degree sign',
     files: ['@mlightcad/mtext-renderer/dist/index.js', '@mlightcad/cad-simple-viewer/dist/mtext-renderer-worker.js'],
     from: /d: \[126, 176\]/,
@@ -93,7 +93,7 @@ export const patches = [
     // LibreDWG hands MTEXT line breaks over as raw "\n" (and keeps tabs), which
     // the MTEXT parser does not treat as a paragraph break: the word before the
     // newline disappeared ("GR. 1,5 mm" rendered as "GR. 1,5").
-    upstream: { repo: 'https://github.com/mlightcad/realdwg-web', state: 'NOT reported, READY TO SEND. Confirmed still broken in libredwg-converter 3.14.14 (2026-09-27): contents = mtext.text. LibreDWG hands over raw \\n, the MTEXT parser only understands \\P, so the word before a line break disappears ("GR. 1,5 mm" rendered as "GR. 1,5"). The package lives in the realdwg-web monorepo, not in a repo of its own.' },
+    upstream: { repo: 'https://github.com/mlightcad/realdwg-web', state: 'NOT reported, READY TO SEND, and the only one of these that is clean. Confirmed against published packages 2026-09-27: libredwg-converter 3.14.14 still does contents = mtext.text, and mtext-parser 1.5.2 given "GR. 1,5 mm\\nTEST" yields GR. / 1,5 / NEW_PARAGRAPH / TEST. The word before the break is dropped, not just unsplit. Fix belongs in the converter (emit \\P), and the parser silently losing a word is worth mentioning in the same report. The package lives in the realdwg-web monorepo.' },
     name: 'converter: MTEXT newlines become \\P',
     files: ['@mlightcad/libredwg-converter/lib/AcDbEntitiyConverter.js'],
     from: /dbEntity\.contents = mtext\.text;/,
