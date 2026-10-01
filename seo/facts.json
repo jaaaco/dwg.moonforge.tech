@@ -13,7 +13,7 @@
     "quotes": [
       "DWG TrueView is built to run on the Windows operating system, and will not install on the Mac OS"
     ],
-    "checked": "2026-09-21"
+    "checked": "2026-10-01"
   },
   "trueview-2027-requirements": {
     "names": [
@@ -38,7 +38,7 @@
       "4,0",
       "2027"
     ],
-    "checked": "2026-09-21"
+    "checked": "2026-10-01"
   },
   "autodesk-viewer-free-account": {
     "names": [
@@ -54,7 +54,7 @@
       "Autodesk Viewer is a free browser application",
       "To start using Autodesk Viewer, you need an Autodesk Account"
     ],
-    "checked": "2026-09-21"
+    "checked": "2026-10-01"
   },
   "autodesk-viewer-upload": {
     "names": [
@@ -69,7 +69,7 @@
     "quotes": [
       "Before you can view and share designs, you need to upload files to Autodesk Viewer"
     ],
-    "checked": "2026-09-21"
+    "checked": "2026-10-01"
   },
   "autodesk-viewer-30-days": {
     "names": [
@@ -88,7 +88,7 @@
     "numbers": [
       "30"
     ],
-    "checked": "2026-09-21"
+    "checked": "2026-10-01"
   },
   "oda-viewer-purpose": {
     "names": [
@@ -105,7 +105,7 @@
       "For rendering and testing",
       "ODA VIEWER DOWNLOADS"
     ],
-    "checked": "2026-09-21"
+    "checked": "2026-10-01"
   },
   "librecad-dwg-experimental": {
     "names": [
@@ -122,7 +122,7 @@
       "DWG read across the dispatched AC versions | experimental"
     ],
     "sourceText": "https://raw.githubusercontent.com/LibreCAD/libdxfrw/master/README.md",
-    "checked": "2026-09-21"
+    "checked": "2026-10-01"
   },
   "oda-dwg-native-proprietary": {
     "names": [
@@ -138,7 +138,7 @@
     "quotes": [
       "DWG is the native and proprietary file format for AutoCAD® and a trademark of Autodesk, Inc."
     ],
-    "checked": "2026-09-21"
+    "checked": "2026-10-01"
   },
   "oda-dwg-undocumented": {
     "names": [
@@ -154,7 +154,7 @@
     "quotes": [
       "undocumented and proprietary DWG"
     ],
-    "checked": "2026-09-21"
+    "checked": "2026-10-01"
   },
   "oda-dwg-version-ids": {
     "names": [
@@ -190,7 +190,7 @@
       "2013",
       "2018"
     ],
-    "checked": "2026-09-21"
+    "checked": "2026-10-01"
   },
   "libredwg-beta": {
     "names": [
@@ -206,6 +206,6 @@
       "GNU LibreDWG is a free C library to handle DWG files",
       "LibreDWG is in beta development stage"
     ],
-    "checked": "2026-09-21"
+    "checked": "2026-10-01"
   }
 }
